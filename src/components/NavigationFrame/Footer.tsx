@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from '../Link';
+import HelpUrls from '../../utils/HelpUrls';
 
 const useStyles = makeStyles({
   root: {
@@ -34,11 +35,11 @@ interface footerElementI {
 }
 
 const listElement: footerElementI[] = [
-  { name: 'Contact', link: 'mailto:contact@bonfida.com' },
-  { name: 'Discord', link: 'https://discord.com' },
-  { name: 'Github', link: 'https://github.com' },
-  { name: 'Twitter', link: 'https://twitter.com' },
-  { name: 'Medium', link: 'https://medium.com' },
+  { name: 'Contact', link: HelpUrls.contact },
+  { name: 'Discord', link: HelpUrls.discord },
+  { name: 'Github', link: HelpUrls.github },
+  { name: 'Twitter', link: HelpUrls.twitter },
+  { name: 'Medium', link: HelpUrls.medium },
 ];
 
 const Footer = () => {
