@@ -1,39 +1,39 @@
-import { useLocalStorageState } from "./utils";
-import { Account, AccountInfo, Connection, PublicKey } from "@solana/web3.js";
-import React, { useContext, useEffect, useMemo, useRef } from "react";
-import { setCache, useAsyncData } from "./fetch-loop";
-import tuple from "immutable-tuple";
-import { ConnectionContextValues, EndpointInfo } from "./types";
+import { useLocalStorageState } from './utils';
+import { Account, AccountInfo, Connection, PublicKey } from '@solana/web3.js';
+import React, { useContext, useEffect, useMemo, useRef } from 'react';
+import { setCache, useAsyncData } from './fetch-loop';
+import tuple from 'immutable-tuple';
+import { ConnectionContextValues, EndpointInfo } from './types';
 
 export const ENDPOINTS: EndpointInfo[] = [
   {
-    name: "mainnet-beta",
-    endpoint: "https://solana-api.projectserum.com",
+    name: 'mainnet-beta',
+    endpoint: 'https://solana-api.projectserum.com',
     custom: false,
   },
-  { name: "localnet", endpoint: "http://127.0.0.1:8899", custom: false },
+  { name: 'localnet', endpoint: 'http://127.0.0.1:8899', custom: false },
 ];
 
 const accountListenerCount = new Map();
 
 const ConnectionContext: React.Context<null | ConnectionContextValues> = React.createContext<null | ConnectionContextValues>(
-  null
+  null,
 );
 
 export function ConnectionProvider({ children }) {
   const [endpoint, setEndpoint] = useLocalStorageState<string>(
-    "connectionEndpts",
-    ENDPOINTS[0].endpoint
+    'connectionEndpts',
+    ENDPOINTS[0].endpoint,
   );
   const [customEndpoints, setCustomEndpoints] = useLocalStorageState<
     EndpointInfo[]
-  >("customConnectionEndpoints", []);
+  >('customConnectionEndpoints', []);
   const availableEndpoints = ENDPOINTS.concat(customEndpoints);
 
-  const connection = useMemo(() => new Connection(endpoint, "recent"), [
+  const connection = useMemo(() => new Connection(endpoint, 'recent'), [
     endpoint,
   ]);
-  const sendConnection = useMemo(() => new Connection(endpoint, "recent"), [
+  const sendConnection = useMemo(() => new Connection(endpoint, 'recent'), [
     endpoint,
   ]);
 
@@ -57,7 +57,7 @@ export function ConnectionProvider({ children }) {
   useEffect(() => {
     const id = sendConnection.onAccountChange(
       new Account().publicKey,
-      () => {}
+      () => {},
     );
     return () => {
       sendConnection.removeAccountChangeListener(id);
@@ -90,7 +90,7 @@ export function ConnectionProvider({ children }) {
 export function useConnection() {
   const context = useContext(ConnectionContext);
   if (!context) {
-    throw new Error("Missing connection context");
+    throw new Error('Missing connection context');
   }
   return context.connection;
 }
@@ -98,7 +98,7 @@ export function useConnection() {
 export function useSendConnection() {
   const context = useContext(ConnectionContext);
   if (!context) {
-    throw new Error("Missing connection context");
+    throw new Error('Missing connection context');
   }
   return context.sendConnection;
 }
@@ -106,12 +106,12 @@ export function useSendConnection() {
 export function useConnectionConfig() {
   const context = useContext(ConnectionContext);
   if (!context) {
-    throw new Error("Missing connection context");
+    throw new Error('Missing connection context');
   }
   return {
     endpoint: context.endpoint,
     endpointInfo: context.availableEndpoints.find(
-      (info) => info.endpoint === context.endpoint
+      (info) => info.endpoint === context.endpoint,
     ),
     setEndpoint: context.setEndpoint,
     availableEndpoints: context.availableEndpoints,
@@ -120,14 +120,14 @@ export function useConnectionConfig() {
 }
 
 export function useAccountInfo(
-  publicKey: PublicKey | undefined | null
+  publicKey: PublicKey | undefined | null,
 ): [AccountInfo<Buffer> | null | undefined, boolean] {
   const connection = useConnection();
   const cacheKey = tuple(connection, publicKey?.toBase58());
   const [accountInfo, loaded] = useAsyncData<AccountInfo<Buffer> | null>(
     async () => (publicKey ? connection.getAccountInfo(publicKey) : null),
     cacheKey,
-    { refreshInterval: 60_000 }
+    { refreshInterval: 60_000 },
   );
   useEffect(() => {
     if (!publicKey) {

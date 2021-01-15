@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import { useSnackbar } from "notistack";
-import SnackbarUtils from "./utils/SnackbarUtils";
-import NavigationFrame from "./components/NavigationFrame";
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import { useSnackbar } from 'notistack';
+import SnackbarUtils from './utils/SnackbarUtils';
+import NavigationFrame from './components/NavigationFrame';
 
 export default function Routes() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();

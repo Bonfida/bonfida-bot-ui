@@ -34,7 +34,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "git pull --ff-only && yarn && yarn build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "lint": "npm run pretty && eslint .",
+    "lint:fix": "npm run pretty:fix && eslint . --fix",
+    "pretty": "prettier --check 'src/*.[jt]s'",
+    "pretty:fix": "prettier --write 'src/*.[jt]s'"
   },
   "eslintConfig": {
     "extends": [
@@ -66,8 +70,9 @@
   },
   "devDependencies": {
     "@types/bn.js": "^4.11.6",
-    "@types/react-router-dom": "^5.1.7"
-  },  
+    "@types/react-router-dom": "^5.1.7",
+    "prettier": "^2.2.1"
+  },
   "lint-staged": {
     "*.{js,jsx,css,md}": "prettier --write"
   }

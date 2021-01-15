@@ -1,6 +1,6 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import SnackbarUtils from "./SnackbarUtils";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import SnackbarUtils from './SnackbarUtils';
 
 export const notify = ({
   message,
@@ -32,13 +32,13 @@ export const notify = ({
   }
   _message = _message || message;
   switch (variant) {
-    case "success":
+    case 'success':
       return SnackbarUtils.success(_message);
-    case "warning":
+    case 'warning':
       return SnackbarUtils.warning(_message);
-    case "info":
+    case 'info':
       return SnackbarUtils.info(_message);
-    case "error":
+    case 'error':
       return SnackbarUtils.error(_message);
     default:
       return SnackbarUtils.info(_message);
@@ -61,7 +61,7 @@ const ViewTransactionOrAddressOnExplorerButton = ({
       component="a"
       target="_blank"
       rel="noopener"
-      href={`https://explorer.solana.com/${txid ? "tx" : "address"}/${
+      href={`https://explorer.solana.com/${txid ? 'tx' : 'address'}/${
         txid ? txid : address
       }`}
     >

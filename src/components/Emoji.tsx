@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface EmojiProps {
   emoji: string;
@@ -13,8 +13,8 @@ const Emoji = (props: EmojiProps) => {
       className={props.emoji}
       style={props.style}
       role="img"
-      aria-label={props.label ? props.label : ""}
-      aria-hidden={props.label ? "false" : "true"}
+      aria-label={props.label ? props.label : ''}
+      aria-hidden={props.label ? 'false' : 'true'}
     >
       {props.emoji}
     </span>

@@ -10,21 +10,21 @@ class SnackbarUtils {
   }
 
   success(msg, options = {}) {
-    return this.toast(msg, { ...options, variant: "success" });
+    return this.toast(msg, { ...options, variant: 'success' });
   }
   warning(msg, options = {}) {
-    return this.toast(msg, { ...options, variant: "warning" });
+    return this.toast(msg, { ...options, variant: 'warning' });
   }
   info(msg, options = {}) {
-    return this.toast(msg, { ...options, variant: "info" });
+    return this.toast(msg, { ...options, variant: 'info' });
   }
 
   error(msg, options = {}) {
-    return this.toast(msg, { ...options, variant: "error" });
+    return this.toast(msg, { ...options, variant: 'error' });
   }
   toast(msg, options = {}) {
     const finalOptions = {
-      variant: "default",
+      variant: 'default',
       ...options,
     };
     // @ts-ignore

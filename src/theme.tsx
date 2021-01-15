@@ -1,17 +1,17 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme } from '@material-ui/core/styles';
 export const theme = createMuiTheme({
   overrides: {
     MuiCardContent: {
       root: {
-        "&:last-child": {
-          paddingBottom: 0
-        }
-      }
+        '&:last-child': {
+          paddingBottom: 0,
+        },
+      },
     },
     MuiInputBase: {
       input: {
-        fontSize: "36px"
-      }
-    }
-  }
+        fontSize: '36px',
+      },
+    },
+  },
 });

@@ -1,28 +1,28 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import lock from "../assets/lock.svg";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import lock from '../assets/lock.svg';
 
 const useStyles = makeStyles({
   button: {
-    color: "white",
-    background: "#BA0202",
-    width: "auto",
-    borderRadius: "8px",
-    height: "50px",
-    "&:hover": {
-      background: "white",
-      color: "#BA0202",
+    color: 'white',
+    background: '#BA0202',
+    width: 'auto',
+    borderRadius: '8px',
+    height: '50px',
+    '&:hover': {
+      background: 'white',
+      color: '#BA0202',
     },
   },
   lock: {
-    marginRight: "10px",
+    marginRight: '10px',
   },
 });
 
 const onClick = () => {
-  console.log("Clicked");
+  console.log('Clicked');
 };
 
 const UnlockButton = () => {

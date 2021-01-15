@@ -1,10 +1,10 @@
-import React from "react";
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import { CssBaseline } from "@material-ui/core";
-import { theme } from "./theme";
-import { WalletProvider } from "./utils/wallet";
-import { ConnectionProvider } from "./utils/connection";
-import { SnackbarProvider } from "notistack";
+import React from 'react';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
+import { theme } from './theme';
+import { WalletProvider } from './utils/wallet';
+import { ConnectionProvider } from './utils/connection';
+import { SnackbarProvider } from 'notistack';
 
 const App = ({ children }: { children: React.ReactNode }) => {
   return (

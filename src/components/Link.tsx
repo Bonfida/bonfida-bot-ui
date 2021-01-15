@@ -1,5 +1,5 @@
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Link = ({ external = false, ...props }) => {
   let { to, children, ...rest } = props;

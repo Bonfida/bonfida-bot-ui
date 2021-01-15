@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Market } from "@project-serum/serum";
-import { PublicKey, Connection } from "@solana/web3.js";
-import BN from "bn.js";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Market } from '@project-serum/serum';
+import { PublicKey, Connection } from '@solana/web3.js';
+import BN from 'bn.js';
 
 export function isValidPublicKey(key) {
   if (!key) {
@@ -20,21 +20,21 @@ export async function sleep(ms: number) {
 }
 
 export const percentFormat = new Intl.NumberFormat(undefined, {
-  style: "percent",
+  style: 'percent',
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
 
 export function floorToDecimal(
   value: number,
-  decimals: number | undefined | null
+  decimals: number | undefined | null,
 ) {
   return decimals ? Math.floor(value * 10 ** decimals) / 10 ** decimals : value;
 }
 
 export function roundToDecimal(
   value: number,
-  decimals: number | undefined | null
+  decimals: number | undefined | null,
 ) {
   return decimals ? Math.round(value * 10 ** decimals) / 10 ** decimals : value;
 }
@@ -43,15 +43,15 @@ export function getDecimalCount(value): number {
   if (
     !isNaN(value) &&
     Math.floor(value) !== value &&
-    value.toString().includes(".")
+    value.toString().includes('.')
   )
-    return value.toString().split(".")[1].length || 0;
+    return value.toString().split('.')[1].length || 0;
   if (
     !isNaN(value) &&
     Math.floor(value) !== value &&
-    value.toString().includes("e")
+    value.toString().includes('e')
   )
-    return parseInt(value.toString().split("e-")[1] || "0");
+    return parseInt(value.toString().split('e-')[1] || '0');
   return 0;
 }
 
@@ -70,11 +70,11 @@ const localStorageListeners = {};
 
 export function useLocalStorageStringState(
   key: string,
-  defaultState: string | null = null
+  defaultState: string | null = null,
 ): [string | null, (newState: string | null) => void] {
   const state = localStorage.getItem(key) || defaultState;
 
-  const [, notify] = useState(key + "\n" + state);
+  const [, notify] = useState(key + '\n' + state);
 
   useEffect(() => {
     if (!localStorageListeners[key]) {
@@ -83,7 +83,7 @@ export function useLocalStorageStringState(
     localStorageListeners[key].push(notify);
     return () => {
       localStorageListeners[key] = localStorageListeners[key].filter(
-        (listener) => listener !== notify
+        (listener) => listener !== notify,
       );
       if (localStorageListeners[key].length === 0) {
         delete localStorageListeners[key];
@@ -104,10 +104,10 @@ export function useLocalStorageStringState(
         localStorage.setItem(key, newState);
       }
       localStorageListeners[key]?.forEach((listener) =>
-        listener(key + "\n" + newState)
+        listener(key + '\n' + newState),
       );
     },
-    [state, key]
+    [state, key],
   );
 
   return [state, setState];
@@ -115,11 +115,11 @@ export function useLocalStorageStringState(
 
 export function useLocalStorageState<T = any>(
   key: string,
-  defaultState: T | null = null
+  defaultState: T | null = null,
 ): [T, (newState: T) => void] {
   let [stringState, setStringState] = useLocalStorageStringState(
     key,
-    JSON.stringify(defaultState)
+    JSON.stringify(defaultState),
   );
   return [
     useMemo(() => stringState && JSON.parse(stringState), [stringState]),
@@ -145,7 +145,7 @@ export function useListener(emitter, eventName) {
 
 export function abbreviateAddress(address: PublicKey, size = 4) {
   const base58 = address.toBase58();
-  return base58.slice(0, size) + "…" + base58.slice(-size);
+  return base58.slice(0, size) + '…' + base58.slice(-size);
 }
 
 export function isEqual(obj1, obj2, keys) {
@@ -162,7 +162,7 @@ export function isEqual(obj1, obj2, keys) {
   return true;
 }
 
-export function flatten(obj, { prefix = "", restrictTo }) {
+export function flatten(obj, { prefix = '', restrictTo }) {
   let restrict = restrictTo;
   if (restrict) {
     restrict = restrict.filter((k) => obj.hasOwnProperty(k));
@@ -171,8 +171,8 @@ export function flatten(obj, { prefix = "", restrictTo }) {
   (function recurse(obj, current, keys) {
     (keys || Object.keys(obj)).forEach((key) => {
       const value = obj[key];
-      const newKey = current ? current + "." + key : key; // joined key with dot
-      if (value && typeof value === "object") {
+      const newKey = current ? current + '.' + key : key; // joined key with dot
+      if (value && typeof value === 'object') {
         // @ts-ignore
         recurse(value, newKey); // nested object
       } else {
@@ -186,7 +186,7 @@ export function flatten(obj, { prefix = "", restrictTo }) {
 export async function apiPost(url: string, body: any, headers: any) {
   try {
     let response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(body),
       headers: headers,
     });
@@ -203,22 +203,22 @@ export async function apiPost(url: string, body: any, headers: any) {
 
 export const getFeeRebate = async (walletPublicKey) => {
   await apiPost(
-    "https://wallet-api.bonfida.com/fee-rebate",
+    'https://wallet-api.bonfida.com/fee-rebate',
     {
       publicKey: walletPublicKey,
     },
-    { "Content-Type": "application/json" }
+    { 'Content-Type': 'application/json' },
   );
 };
 
 export const getBestBidsBestAsks = async (marketAddress: PublicKey) => {
-  const ENDPOINT = "https://solana-api.projectserum.com/";
+  const ENDPOINT = 'https://solana-api.projectserum.com/';
   const connection = new Connection(ENDPOINT);
   const market = await Market.load(
     connection,
     marketAddress,
     {},
-    new PublicKey("EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o")
+    new PublicKey('EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o'),
   );
 
   let bids = await market.loadBids(connection);
@@ -247,46 +247,46 @@ export async function apiGet(path) {
 }
 
 export const formatPercentage = (value) => {
-  return `${value > 0 ? "+" : ""}${(
+  return `${value > 0 ? '+' : ''}${(
     Math.round(value * 1e4) / 1e2
   ).toString()}%`;
 };
 
 export const formatUsd = (value) => {
   if (value < 1e3) {
-    return "$" + (Math.round(value * 1e2) / 1e2).toString();
+    return '$' + (Math.round(value * 1e2) / 1e2).toString();
   }
   if (1e3 <= value && value < 1e6) {
-    return "$" + (Math.round((value / 1e3) * 1e2) / 1e2).toString() + "K";
+    return '$' + (Math.round((value / 1e3) * 1e2) / 1e2).toString() + 'K';
   }
   if (1e6 <= value && value < 1e9) {
-    return "$" + (Math.round((value / 1e6) * 1e2) / 1e2).toString() + "M";
+    return '$' + (Math.round((value / 1e6) * 1e2) / 1e2).toString() + 'M';
   }
   if (1e9 <= value) {
-    return "$" + (Math.round((value / 1e9) * 1e2) / 1e2).toString() + "B";
+    return '$' + (Math.round((value / 1e9) * 1e2) / 1e2).toString() + 'B';
   }
 };
 
 export const getVariationsFromMarket = async (
-  market: string
+  market: string,
 ): Promise<string> => {
   const result = await apiGet(
-    `https://serum-api.bonfida.com/variations/${market}`
+    `https://serum-api.bonfida.com/variations/${market}`,
   );
   if (!result.success || !result.data) {
-    throw new Error("Error getting price variation");
+    throw new Error('Error getting price variation');
   }
   return result.data;
 };
 
 export const getVolumeFromMarket = async (
-  market: string
+  market: string,
 ): Promise<string | undefined> => {
   const result = await apiGet(
-    `https://serum-api.bonfida.com/volumes/${market}`
+    `https://serum-api.bonfida.com/volumes/${market}`,
   );
   if (!result.success || !result.data) {
-    throw new Error("Error getting volumes");
+    throw new Error('Error getting volumes');
   }
   return formatUsd(result.data[0].volumeUsd);
 };
@@ -296,7 +296,7 @@ export function format(value, precision) {
 }
 
 export const getMarketTableData = async () => {
-  const URL = "https://wallet-api.bonfida.com/cached/market-table";
+  const URL = 'https://wallet-api.bonfida.com/cached/market-table';
   const result = await apiGet(URL);
   if (result.success) {
     return result.data.sort((a, b) => {
