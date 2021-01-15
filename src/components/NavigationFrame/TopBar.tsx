@@ -58,8 +58,8 @@ const topBarElement = [
     href: '/trade',
   },
   {
-    name: 'about',
-    href: '/about',
+    name: 'faq',
+    href: '/faq',
   },
 ];
 
@@ -78,8 +78,8 @@ const TopBar = () => {
       setSelectedIndex('create');
     } else if (location.pathname.includes('trade')) {
       setSelectedIndex('trade');
-    } else if (location.pathname.includes('about')) {
-      setSelectedIndex('about');
+    } else if (location.pathname.includes('faq')) {
+      setSelectedIndex('faq');
     } else {
       setSelectedIndex('home');
     }
