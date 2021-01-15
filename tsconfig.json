@@ -18,6 +18,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "noImplicitAny": false,
+    "downlevelIteration": true,
     "jsx": "react-jsx"
   },
   "include": [

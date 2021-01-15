@@ -26,7 +26,13 @@ const onClick = () => {
   console.log("Clicked");
 };
 
-const CustomButton = ({ title }: { title: string }) => {
+const CustomButton = ({
+  title,
+  onClick,
+}: {
+  title: string;
+  onClick: () => void;
+}) => {
   const classes = useStyles();
   return (
     <Button variant="contained" className={classes.button} onClick={onClick}>

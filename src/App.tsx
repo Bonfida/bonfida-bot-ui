@@ -1,15 +1,23 @@
-import * as React from "react";
+import React from "react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
 import { theme } from "./theme";
-import NavigationFrame from "./components/NavigationFrame";
+import { WalletProvider } from "./utils/wallet";
+import { ConnectionProvider } from "./utils/connection";
+import { SnackbarProvider } from "notistack";
 
 const App = ({ children }: { children: React.ReactNode }) => {
   return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <NavigationFrame>{children}</NavigationFrame>
-    </MuiThemeProvider>
+    <ConnectionProvider>
+      <SnackbarProvider maxSnack={5} autoHideDuration={8000}>
+        <WalletProvider>
+          <MuiThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+          </MuiThemeProvider>
+        </WalletProvider>
+      </SnackbarProvider>
+    </ConnectionProvider>
   );
 };
 

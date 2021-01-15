@@ -4,6 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import CustomButton from "../components/CustomButton";
 import Grid from "@material-ui/core/Grid";
 import Emoji from "../components/Emoji";
+import StrategyCard from "../components/StrategyCard";
+import dca from "../assets/strategies/dca/dca.svg";
 
 const useStyles = makeStyles({
   root: {
@@ -55,11 +57,18 @@ const HomePage = () => {
           alignItems="center"
           spacing={5}
         >
-          <Grid item>Strategy 1</Grid>
-          <Grid item>Strategy 2</Grid>
+          <Grid item>
+            <StrategyCard name="DCA Strategy" description="Coucou" img={dca} />
+          </Grid>
+          <Grid item>
+            <StrategyCard name="DCA Strategy" description="Coucou" img={dca} />
+          </Grid>
         </Grid>
         <div className={classes.exploreContainer}>
-          <CustomButton title="Explore the strategies" />
+          <CustomButton
+            title="Explore"
+            onClick={() => console.log("Exploring")}
+          />
         </div>
       </div>
     </>

@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import useTheme from "@material-ui/core/styles/useTheme";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-import UnlockButton from "../UnlockButton";
+import { useHistory, useLocation } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Emoji from "../Emoji";
+import WalletConnect from "../WalletConnect";
 
 const useStyles = makeStyles({
   root: {
@@ -62,24 +63,26 @@ const topBarElement = [
 ];
 
 const TopBar = () => {
+  const history = useHistory();
+  const location = useLocation();
   const classes = useStyles();
   let theme = useTheme();
   let smallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [selectedIndex, setSelectedIndex] = React.useState<string | null>(null);
 
-  React.useEffect(() => {
-    if (window.location.href.includes("explore")) {
+  useEffect(() => {
+    if (location.pathname.includes("explore")) {
       setSelectedIndex("explore");
-    } else if (window.location.href.includes("account")) {
+    } else if (location.pathname.includes("account")) {
       setSelectedIndex("account");
-    } else if (window.location.href.includes("trade")) {
+    } else if (location.pathname.includes("trade")) {
       setSelectedIndex("trade");
-    } else if (window.location.href.includes("about")) {
+    } else if (location.pathname.includes("about")) {
       setSelectedIndex("about");
     } else {
       setSelectedIndex("home");
     }
-  }, []);
+  }, [location]);
 
   return (
     <div className={classes.root}>
@@ -101,9 +104,10 @@ const TopBar = () => {
               return (
                 <Button
                   className={classes.button}
-                  href={e.href}
+                  onClick={() => history.push(e.href)}
                   style={{
-                    color: selectedIndex === e.name ? "#BA0202" : "undefined",
+                    color:
+                      selectedIndex === e.name ? "#BA0202" : "rgb(132,132,132)",
                   }}
                 >
                   {e.name}
@@ -112,7 +116,7 @@ const TopBar = () => {
             })}
           </Grid>
           <Grid item className={classes.buttonContainer}>
-            <UnlockButton />
+            <WalletConnect />
           </Grid>
         </Grid>
       </AppBar>
