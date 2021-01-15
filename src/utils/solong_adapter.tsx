@@ -1,6 +1,6 @@
-import EventEmitter from "eventemitter3";
-import { PublicKey } from "@solana/web3.js";
-import { notify } from "./notifications";
+import EventEmitter from 'eventemitter3';
+import { PublicKey } from '@solana/web3.js';
+import { notify } from './notifications';
 
 export class SolongAdapter extends EventEmitter {
   _publicKey: any;
@@ -21,7 +21,7 @@ export class SolongAdapter extends EventEmitter {
     const trx = await (window as any).solong
       .signTransaction(transaction)
       .catch(() => {
-        throw { message: "Reject sign request!" };
+        throw { message: 'Reject sign request!' };
       });
     return trx;
   }
@@ -32,21 +32,21 @@ export class SolongAdapter extends EventEmitter {
     }
 
     if ((window as any).solong === undefined) {
-      console.log({
-        message: "Solong Error",
-        description: "Please install solong wallet from Chrome ",
+      notify({
+        message: 'Solong Error - Please install solong wallet from Chrome',
+        variant: 'error',
       });
       return;
     }
 
     this._onProcess = true;
-    console.log("solong helper select account");
+    console.log('solong helper select account');
     (window as any).solong
       .selectAccount()
       .then((account: any) => {
         this._publicKey = new PublicKey(account);
-        console.log("window solong select:", account, "this:", this);
-        this.emit("connect", this._publicKey);
+        console.log('window solong select:', account, 'this:', this);
+        this.emit('connect', this._publicKey);
       })
       .catch(() => {
         this.disconnect();
@@ -59,7 +59,7 @@ export class SolongAdapter extends EventEmitter {
   disconnect() {
     if (this._publicKey) {
       this._publicKey = null;
-      this.emit("disconnect");
+      this.emit('disconnect');
     }
   }
 }

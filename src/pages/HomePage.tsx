@@ -1,32 +1,32 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import CustomButton from "../components/CustomButton";
-import Grid from "@material-ui/core/Grid";
-import Emoji from "../components/Emoji";
-import StrategyCard from "../components/StrategyCard";
-import dca from "../assets/strategies/dca/dca.svg";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import CustomButton from '../components/CustomButton';
+import Grid from '@material-ui/core/Grid';
+import Emoji from '../components/Emoji';
+import StrategyCard from '../components/StrategyCard';
+import dca from '../assets/strategies/dca/dca.svg';
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bannerContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: "50px",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: '50px',
   },
   title: {
-    color: "#838383",
+    color: '#838383',
   },
   exploreContainer: {
-    paddingTop: "50px",
+    paddingTop: '50px',
   },
 });
 
@@ -65,10 +65,9 @@ const HomePage = () => {
           </Grid>
         </Grid>
         <div className={classes.exploreContainer}>
-          <CustomButton
-            title="Explore"
-            onClick={() => console.log("Exploring")}
-          />
+          <CustomButton onClick={() => console.log('Exploring')}>
+            Explore
+          </CustomButton>
         </div>
       </div>
     </>
