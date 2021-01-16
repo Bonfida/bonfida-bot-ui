@@ -1,7 +1,10 @@
 import React from 'react';
+import { poolTest } from '../utils/pools';
+import { PoolPanel } from '../components/Pool';
 
 const PoolPage = () => {
-  return null;
+  const pool = poolTest;
+  return <PoolPanel pool={pool} />;
 };
 
 export default PoolPage;

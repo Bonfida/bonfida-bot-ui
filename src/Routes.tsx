@@ -18,7 +18,9 @@ export default function Routes() {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/faq" component={FaqPage} />
-          <Route exact path="/pool/:poolAddress" component={PoolPage} />
+          <Route exact path="/pool/:poolAddress">
+            <PoolPage />
+          </Route>
         </Switch>
       </NavigationFrame>
     </BrowserRouter>
