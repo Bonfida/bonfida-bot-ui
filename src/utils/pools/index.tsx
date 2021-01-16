@@ -7,6 +7,7 @@ interface PoolI {
   poolBasket: PublicKey[];
   serumMarkets: PublicKey[];
   illustration?: Object;
+  keywords?: string[];
 }
 
 export class Pool {
@@ -16,6 +17,7 @@ export class Pool {
   poolBasket: PublicKey[];
   serumMarkets: PublicKey[];
   illustration?: Object;
+  keywords: string[];
   constructor(props: PoolI) {
     this.name = props.name;
     this.description = props.description;
@@ -23,6 +25,9 @@ export class Pool {
     this.poolBasket = props.poolBasket;
     this.serumMarkets = props.serumMarkets;
     this.illustration = props.illustration;
+    this.keywords = props.keywords
+      ? [...props.keywords, props.name]
+      : [props.name];
   }
 }
 

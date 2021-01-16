@@ -96,8 +96,7 @@ const TopBar = () => {
         >
           {!smallScreen && (
             <Grid item>
-              Bonfida Bot
-              <Emoji style={{ fontSize: 40 }} emoji="🤖" />
+              <Emoji style={{ fontSize: 40, marginLeft: 80 }} emoji="🤖" />
             </Grid>
           )}
           <Grid item>
