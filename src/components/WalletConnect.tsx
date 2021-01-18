@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 export default function WalletConnect() {
   const classes = useStyles();
   const { connected, wallet } = useWallet();
+
   return (
     <React.Fragment>
       <Button
