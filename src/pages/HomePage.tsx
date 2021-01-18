@@ -5,7 +5,7 @@ import CustomButton from '../components/CustomButton';
 import Grid from '@material-ui/core/Grid';
 import Emoji from '../components/Emoji';
 import StrategyCard from '../components/StrategyCard';
-import dca from '../assets/strategies/dca/dca.svg';
+import dca from '../assets/strategies/dca.svg';
 
 const useStyles = makeStyles({
   root: {

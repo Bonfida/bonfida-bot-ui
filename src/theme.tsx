@@ -13,5 +13,18 @@ export const theme = createMuiTheme({
         fontSize: '36px',
       },
     },
+    MuiTabs: {
+      indicator: {
+        backgroundColor: '#838383',
+      },
+    },
+    MuiTab: {
+      textColorPrimary: {
+        '&$selected': {
+          color: '#BA0202',
+          fontWeight: 700,
+        },
+      },
+    },
   },
 });

@@ -23,10 +23,6 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  dumpling: {
-    height: '30px',
-    margin: 10,
-  },
   name: {
     color: 'black',
     fontWeight: 'bold',
