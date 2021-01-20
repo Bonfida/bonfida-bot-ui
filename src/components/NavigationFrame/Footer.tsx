@@ -48,9 +48,14 @@ const Footer = () => {
     <>
       <footer className={classes.root}>
         <ul className={classes.list}>
-          {listElement.map((e) => {
+          {listElement.map((e, i) => {
             return (
-              <Link external to={e.link} style={{ textDecoration: 'none' }}>
+              <Link
+                key={`footer-${i}`}
+                external
+                to={e.link}
+                style={{ textDecoration: 'none' }}
+              >
                 <li className={classes.listItem}>{e.name}</li>
               </Link>
             );

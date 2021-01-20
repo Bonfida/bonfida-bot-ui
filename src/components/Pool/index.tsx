@@ -7,8 +7,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import Input from '@material-ui/core/Input';
 import { ExplorerLink } from '../Link';
 import getCoinIcon from '../../utils/icons';
 import FormControl from '@material-ui/core/FormControl';
@@ -19,6 +17,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import clsx from 'clsx';
 import CustomButton from '../CustomButton';
 import { Coin } from '../../utils/pools';
+import { TabPanel } from '../../utils/tabs';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,32 +58,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
-
-const TabPanel = (props: TabPanelProps) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`wrapped-tabpanel-${index}`}
-      aria-labelledby={`wrapped-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-};
 
 const CoinRow = ({ coin }: { coin: Coin }) => {
   const classes = useStyles();

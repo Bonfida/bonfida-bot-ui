@@ -1,5 +1,5 @@
-import { Connection } from '@solana/web3.js';
 import Wallet from '@project-serum/sol-wallet-adapter';
+import { AccountInfo, Connection, PublicKey } from '@solana/web3.js';
 
 export interface ConnectionContextValues {
   endpoint: string;
@@ -22,4 +22,14 @@ export interface EndpointInfo {
   name: string;
   endpoint: string;
   custom: boolean;
+}
+
+export interface SelectedTokenAccounts {
+  [tokenMint: string]: string;
+}
+
+export interface TokenAccount {
+  pubkey: PublicKey;
+  account: AccountInfo<Buffer> | null;
+  effectiveMint: PublicKey;
 }

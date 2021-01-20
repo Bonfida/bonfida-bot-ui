@@ -80,9 +80,13 @@ const Settings = (): JSX.Element => {
                   onChange={(v) => setProvider(v.target.value)}
                   className={classes.text}
                 >
-                  {WALLET_PROVIDERS.map((w) => {
+                  {WALLET_PROVIDERS.map((w, i) => {
                     return (
-                      <option selected={providerName === w.name} value={w.url}>
+                      <option
+                        key={`wallet-provider-${i}`}
+                        selected={providerName === w.name}
+                        value={w.url}
+                      >
                         {w.name}
                       </option>
                     );
@@ -95,12 +99,15 @@ const Settings = (): JSX.Element => {
                 Endpoint:{' '}
                 <select
                   name="endpoint"
-                  onChange={(v) => setEndpoint(v.target.value)}
+                  onChange={(v) => {
+                    setEndpoint(v.target.value);
+                  }}
                   className={classes.text}
                 >
-                  {availableEndpoints.map((w) => {
+                  {availableEndpoints.map((w, i) => {
                     return (
                       <option
+                        key={`available-endpoints-${i}`}
                         selected={providerName === w.name}
                         value={w.endpoint}
                       >

@@ -5,6 +5,8 @@ import { setCache, useAsyncData } from './fetch-loop';
 import tuple from 'immutable-tuple';
 import { ConnectionContextValues, EndpointInfo } from './types';
 
+export const MAINNET_ENDPOINT = 'https://solana-api.projectserum.com';
+
 export const ENDPOINTS: EndpointInfo[] = [
   {
     name: 'mainnet-beta',

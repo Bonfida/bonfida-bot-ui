@@ -54,6 +54,10 @@ const topBarElement = [
     href: '/create',
   },
   {
+    name: 'balances',
+    href: '/balances',
+  },
+  {
     name: 'trade',
     href: '/trade',
   },
@@ -80,6 +84,8 @@ const TopBar = () => {
       setSelectedIndex('trade');
     } else if (location.pathname.includes('faq')) {
       setSelectedIndex('faq');
+    } else if (location.pathname.includes('balances')) {
+      setSelectedIndex('balances');
     } else {
       setSelectedIndex('home');
     }
@@ -100,9 +106,10 @@ const TopBar = () => {
             </Grid>
           )}
           <Grid item>
-            {topBarElement.map((e) => {
+            {topBarElement.map((e, i) => {
               return (
                 <Button
+                  key={`top-bar-${i}`}
                   className={classes.button}
                   onClick={() => history.push(e.href)}
                   style={{

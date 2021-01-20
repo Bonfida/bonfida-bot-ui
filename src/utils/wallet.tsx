@@ -2,10 +2,14 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import Wallet from '@project-serum/sol-wallet-adapter';
 import { notify } from './notifications';
 import { useConnectionConfig } from './connection';
-import { useLocalStorageState } from './utils';
+import { rpcRequest, useLocalStorageState } from './utils';
 import { WalletContextValues } from './types';
 import { SolongAdapter } from './solong_adapter';
 import { getFeeRebate } from './utils';
+import { PublicKey, Connection } from '@solana/web3.js';
+import { useAsyncData } from './fetch-loop';
+import { useConnection } from './connection';
+import { MAINNET_ENDPOINT } from './connection';
 
 interface WallerProviderI {
   name: string;
@@ -100,3 +104,25 @@ export function useWallet() {
     providerName: context.providerName,
   };
 }
+
+export const getProgramAccounts = async (pubkey: PublicKey) => {
+  const params = [
+    'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+    {
+      encoding: 'jsonParsed',
+      filters: [
+        {
+          dataSize: 165,
+        },
+        {
+          memcmp: {
+            offset: 32,
+            bytes: pubkey?.toBase58(),
+          },
+        },
+      ],
+    },
+  ];
+  const result = await rpcRequest('getProgramAccounts', params);
+  return result;
+};

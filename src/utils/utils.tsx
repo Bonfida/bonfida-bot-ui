@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Market } from '@project-serum/serum';
+import { Market, TOKEN_MINTS } from '@project-serum/serum';
 import { PublicKey, Connection } from '@solana/web3.js';
 import BN from 'bn.js';
+import { MAINNET_ENDPOINT } from './connection';
+import { AWESOME_TOKENS } from '@dr497/awesome-serum-markets';
+
+const TOKENS = AWESOME_TOKENS.concat(TOKEN_MINTS);
 
 export function isValidPublicKey(key) {
   if (!key) {
@@ -308,4 +312,36 @@ export const getMarketTableData = async () => {
 
 export const numberWithCommas = (x) => {
   return x.toLocaleString();
+};
+
+export const rpcRequest = async (method: string, params: any) => {
+  try {
+    let response = await fetch(MAINNET_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 1,
+        method: method,
+        params: params,
+      }),
+    });
+    if (!response.ok) {
+      return [];
+    }
+    if (response.status !== 200 || !response.ok) {
+      throw new Error(`Error rpcRequest `);
+    }
+    let json = await response.json();
+    return json.result;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`Error rpcRequest = ${err}`);
+  }
+};
+
+export const findNameFromMint = (mint: string) => {
+  return TOKENS.find((token) => token.address.toBase58() === mint)?.name;
 };
