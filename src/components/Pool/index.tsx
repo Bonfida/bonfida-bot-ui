@@ -4,16 +4,13 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Pool } from '../../utils/pools';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { ExplorerLink } from '../Link';
 import getCoinIcon from '../../utils/icons';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import clsx from 'clsx';
 import CustomButton from '../CustomButton';
 import { Coin, Market } from '../../utils/pools';
@@ -68,6 +65,10 @@ const useStyles = makeStyles((theme: Theme) =>
         color: '#51d07b',
       },
     },
+    title: {
+      marginTop: 50,
+      marginLeft: 100,
+    },
   }),
 );
 
@@ -85,6 +86,7 @@ const CoinMarketRow = ({ coin, market }: { coin?: Coin; market?: Market }) => {
         <img
           src={getCoinIcon(coin ? coin?.name : market?.name.split('/')[0])}
           height="50px"
+          alt=""
         />
       </Grid>
       <Grid item>
@@ -296,7 +298,7 @@ const PoolDescription = ({ pool }: { pool: Pool }) => {
       className={classes.card}
     >
       <Grid item>
-        <img src={pool.illustration} className={classes.img} />
+        <img src={pool.illustration} className={classes.img} alt="" />
       </Grid>
       <Grid item className={classes.descriptionContainer}>
         <Typography variant="body1">
@@ -323,10 +325,13 @@ const PoolDescription = ({ pool }: { pool: Pool }) => {
 };
 
 export const PoolPanel = ({ pool }: { pool: Pool }) => {
+  const classes = useStyles();
   return (
     <>
       <Grid container direction="row" justify="flex-start" alignItems="center">
-        <Typography variant="h1">{pool.name}</Typography>
+        <Typography variant="h1" className={classes.title}>
+          {pool.name}
+        </Typography>
       </Grid>
       <Grid
         container
