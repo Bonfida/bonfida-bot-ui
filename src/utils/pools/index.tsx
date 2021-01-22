@@ -1,10 +1,30 @@
 import { PublicKey } from '@solana/web3.js';
 import dca from '../../assets/strategies/dca.svg';
+import { findMarketFromAddress, findNameFromMint } from '../utils';
 
 export interface Coin {
   name: string;
   mint: PublicKey;
 }
+
+export interface Market {
+  name: string;
+  address: PublicKey;
+}
+
+const createMarket = (address: string): Market => {
+  return {
+    address: new PublicKey(address),
+    name: findMarketFromAddress(address),
+  };
+};
+
+const createCoin = (mint: string): Coin => {
+  return {
+    mint: new PublicKey(mint),
+    name: findNameFromMint(mint),
+  };
+};
 
 interface PoolI {
   name: string;
@@ -12,7 +32,7 @@ interface PoolI {
   poolAddress: PublicKey;
   basket: Coin[];
   depositCoins: Coin[];
-  serumMarkets: PublicKey[];
+  serumMarkets: Market[];
   illustration?: string;
   keywords?: string[];
 }
@@ -23,7 +43,7 @@ export class Pool {
   poolAddress: PublicKey;
   basket: Coin[];
   depositCoins: Coin[];
-  serumMarkets: PublicKey[];
+  serumMarkets: Market[];
   illustration?: string;
   keywords: string[];
   constructor(props: PoolI) {
@@ -41,9 +61,9 @@ export class Pool {
 }
 
 export const poolTest = new Pool({
-  name: 'DCA',
+  name: 'DCA Strategy',
   description:
-    'img elements must have an alt prop, either with meaningful text, or an empty string for decorative images',
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni molestiae ab est nobis in rem sint. Distinctio autem reprehenderit qui tempora quisquam, atque incidunt tempore quasi perspiciatis dolore repellendus quidem.',
   poolAddress: new PublicKey('FBycjnjoUW9hZh6a4VzkLCoYzFgjQBjHgbBhNuxZv3WA'),
   basket: [
     {
@@ -57,13 +77,72 @@ export const poolTest = new Pool({
   ],
   depositCoins: [
     {
+      mint: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
+      name: 'USDC',
+    },
+    {
+      mint: new PublicKey('EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp'),
+      name: 'FIDA',
+    },
+  ],
+  serumMarkets: [
+    {
+      name: 'FIDA/USDC',
+      address: new PublicKey('CVfYa8RGXnuDBeGmniCcdkBwoLqVxh92xB1JqgRQx3F'),
+    },
+  ],
+  illustration: dca,
+});
+
+export const poolRsi = new Pool({
+  name: 'RSI Strategy',
+  description:
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni molestiae ab est nobis in rem sint. Distinctio autem reprehenderit qui tempora quisquam, atque incidunt tempore quasi perspiciatis dolore repellendus quidem.',
+  poolAddress: new PublicKey('EvXsVnNu9mxo63tPiGNbLy3mwb6Zy4qT59RR62Y2UJW1'),
+  basket: [
+    {
+      name: 'USDC',
+      mint: new PublicKey('FBycjnjoUW9hZh6a4VzkLCoYzFgjQBjHgbBhNuxZv3WA'),
+    },
+    {
       name: 'FIDA',
       mint: new PublicKey('FBycjnjoUW9hZh6a4VzkLCoYzFgjQBjHgbBhNuxZv3WA'),
     },
   ],
+  depositCoins: [
+    {
+      mint: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
+      name: 'USDC',
+    },
+    {
+      mint: new PublicKey('EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp'),
+      name: 'FIDA',
+    },
+  ],
   serumMarkets: [
-    new PublicKey('FBycjnjoUW9hZh6a4VzkLCoYzFgjQBjHgbBhNuxZv3WA'),
-    new PublicKey('FBycjnjoUW9hZh6a4VzkLCoYzFgjQBjHgbBhNuxZv3WA'),
+    {
+      name: 'FIDA/USDC',
+      address: new PublicKey('CVfYa8RGXnuDBeGmniCcdkBwoLqVxh92xB1JqgRQx3F'),
+    },
   ],
   illustration: dca,
 });
+
+export const USE_POOLS = [
+  poolTest,
+  poolRsi,
+  poolTest,
+  poolRsi,
+  poolTest,
+  poolRsi,
+  poolTest,
+  poolRsi,
+  poolTest,
+  poolRsi,
+  poolTest,
+  poolRsi,
+  poolTest,
+  poolRsi,
+  poolTest,
+  poolRsi,
+];
