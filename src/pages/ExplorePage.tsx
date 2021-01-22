@@ -34,11 +34,7 @@ const ExplorerPage = () => {
           {row.map((pool) => {
             return (
               <Grid item className={classes.item}>
-                <StrategyCard
-                  name={pool.name}
-                  description={pool.description}
-                  img={pool.illustration}
-                />
+                <StrategyCard pool={pool} />
               </Grid>
             );
           })}

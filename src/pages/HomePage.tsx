@@ -5,7 +5,7 @@ import CustomButton from '../components/CustomButton';
 import Grid from '@material-ui/core/Grid';
 import Emoji from '../components/Emoji';
 import StrategyCard from '../components/StrategyCard';
-import { poolTest } from '../utils/pools';
+import { poolTest, poolRsi } from '../utils/pools';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -60,18 +60,10 @@ const HomePage = () => {
           spacing={5}
         >
           <Grid item>
-            <StrategyCard
-              name={poolTest.name}
-              description={poolTest.description}
-              img={poolTest.illustration}
-            />
+            <StrategyCard pool={poolRsi} />
           </Grid>
           <Grid item>
-            <StrategyCard
-              name={poolTest.name}
-              description={poolTest.description}
-              img={poolTest.illustration}
-            />
+            <StrategyCard pool={poolTest} />
           </Grid>
         </Grid>
         <div className={classes.exploreContainer}>

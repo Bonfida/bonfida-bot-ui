@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CustomButton from './CustomButton';
+import { useHistory } from 'react-router-dom';
+import { Pool } from '../utils/pools';
 
 const useStyles = makeStyles({
   card: {
@@ -59,39 +61,37 @@ const useStyles = makeStyles({
   },
 });
 
-const StrategyCard = ({
-  name,
-  description,
-  img,
-}: {
-  name: string;
-  description?: string;
-  img?: any;
-}) => {
+const StrategyCard = ({ pool }: { pool: Pool }) => {
   const classes = useStyles();
+  const history = useHistory();
+  const onClick = () => {
+    history.push(`/pool/${pool.poolAddress}`);
+  };
   return (
     <Card className={classes.card} variant="outlined" elevation={0}>
       <CardContent className={classes.cardContent}>
         <div className={classes.textContainer}>
           <Typography variant="h1" className={classes.name}>
-            {name}
+            {pool.name}
           </Typography>
         </div>
       </CardContent>
-      {img && (
+      {pool?.illustration && (
         <div className={classes.imgContainer}>
-          <img src={img} className={classes.img} alt={name} />
+          <img
+            src={pool?.illustration}
+            className={classes.img}
+            alt={pool.name}
+          />
         </div>
       )}
-      {description && (
+      {pool.description && (
         <CardContent className={classes.balanceContainer}>
-          <Typography className={classes.text}>{description}</Typography>
+          <Typography className={classes.text}>{pool.description}</Typography>
         </CardContent>
       )}
       <div className={classes.center}>
-        <CustomButton onClick={() => console.log('Select')}>
-          {`Select ${name}`}
-        </CustomButton>
+        <CustomButton onClick={onClick}>{`Select ${pool.name}`}</CustomButton>
       </div>
     </Card>
   );

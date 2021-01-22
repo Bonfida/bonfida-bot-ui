@@ -15,6 +15,10 @@ import clsx from 'clsx';
 import CustomButton from '../CustomButton';
 import { Coin, Market } from '../../utils/pools';
 import { TabPanel } from '../../utils/tabs';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -269,19 +273,48 @@ const PoolBasketData = ({ pool }: { pool: Pool }) => {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Typography>The pool trades on the following Serum markets</Typography>
-        {pool.serumMarkets.map((m) => (
-          <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
-            spacing={5}
-          >
-            <Grid item>
-              <CoinMarketRow market={m} />
-            </Grid>
-          </Grid>
-        ))}
+
+        <Table aria-label="pool markets table">
+          <TableBody>
+            {pool.serumMarkets.map((m) => (
+              <>
+                <TableRow>
+                  <TableCell scope="row">
+                    <Grid
+                      container
+                      direction="row"
+                      justify="space-around"
+                      alignItems="center"
+                      spacing={5}
+                    >
+                      <Grid item>
+                        <img
+                          src={getCoinIcon(m.name.split('/')[0])}
+                          height="40px"
+                        />
+                      </Grid>
+                      <Grid>
+                        <Typography variant="body1" className={classes.text}>
+                          {m.name}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                  <TableCell scope="row">
+                    <CustomButton
+                      onClick={() =>
+                        (window.location.href = `https://bonfida.com/dex/#/market/${m.address.toBase58()}`)
+                      }
+                      className={classes.depositButton}
+                    >
+                      Trade
+                    </CustomButton>
+                  </TableCell>
+                </TableRow>
+              </>
+            ))}
+          </TableBody>
+        </Table>
       </TabPanel>
     </Card>
   );
