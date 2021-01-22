@@ -129,105 +129,97 @@ const PoolAction = ({ pool }: { pool: Pool }) => {
         <Tab label="withdraw" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        {pool.depositCoins.map((coin) => {
-          return (
-            <>
-              <Grid
-                container
-                direction="row"
-                justify="space-between"
-                alignItems="center"
-                spacing={5}
-              >
-                <Grid item>
-                  <CoinMarketRow coin={coin} />
-                </Grid>
-                <Grid item>
-                  <FormControl
-                    className={clsx(classes.margin, classes.textField)}
-                    variant="outlined"
-                  >
-                    <OutlinedInput
-                      id="outlined-adornment-weight"
-                      value={0}
-                      onChange={(e) => {
-                        console.log(e.target.value);
-                      }}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          {coin.name}
-                        </InputAdornment>
-                      }
-                      aria-describedby="outlined-weight-helper-text"
-                      inputProps={{
-                        'aria-label': `${coin.name}`,
-                      }}
-                      labelWidth={0}
-                      style={{ borderRadius: 15 }}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item>
-                  <CustomButton
-                    onClick={() => console.log('Depositing')}
-                    className={classes.depositButton}
-                  >
-                    Deposit
-                  </CustomButton>
-                </Grid>
-              </Grid>
-            </>
-          );
-        })}
+        <Table aria-label="withdraw pool table">
+          <TableBody>
+            {pool.depositCoins.map((coin) => {
+              return (
+                <TableRow>
+                  <TableCell scope="row">
+                    <CoinMarketRow coin={coin} />
+                  </TableCell>
+                  <TableCell scope="row">
+                    <FormControl
+                      className={clsx(classes.margin, classes.textField)}
+                      variant="outlined"
+                    >
+                      <OutlinedInput
+                        id="outlined-adornment-weight"
+                        value={0}
+                        onChange={(e) => {
+                          console.log(e.target.value);
+                        }}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            {coin.name}
+                          </InputAdornment>
+                        }
+                        aria-describedby="outlined-weight-helper-text"
+                        inputProps={{
+                          'aria-label': `${coin.name}`,
+                        }}
+                        labelWidth={0}
+                        style={{ borderRadius: 15 }}
+                      />
+                    </FormControl>
+                  </TableCell>
+                  <TableCell>
+                    <CustomButton
+                      onClick={() => console.log('Depositing')}
+                      className={classes.depositButton}
+                    >
+                      Deposit
+                    </CustomButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {pool.depositCoins.map((coin) => {
-          return (
-            <>
-              <Grid
-                container
-                direction="row"
-                justify="space-between"
-                alignItems="center"
-                spacing={5}
-              >
-                <Grid item>
-                  <CoinMarketRow coin={coin} />
-                </Grid>
-                <Grid item>
-                  <FormControl
-                    className={clsx(classes.margin, classes.textField)}
-                    variant="outlined"
-                  >
-                    <OutlinedInput
-                      id="outlined-adornment-weight"
-                      value={0}
-                      onChange={(e) => {
-                        console.log(e.target.value);
-                      }}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          {coin.name}
-                        </InputAdornment>
-                      }
-                      aria-describedby="outlined-weight-helper-text"
-                      inputProps={{
-                        'aria-label': `${coin.name}`,
-                      }}
-                      labelWidth={0}
-                      style={{ borderRadius: 15 }}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item>
-                  <CustomButton onClick={() => console.log('Depositing')}>
-                    Withdraw
-                  </CustomButton>
-                </Grid>
-              </Grid>
-            </>
-          );
-        })}
+        <Table aria-label="withdraw pool table">
+          <TableBody>
+            {pool.depositCoins.map((coin) => {
+              return (
+                <TableRow>
+                  <TableCell scope="row">
+                    <CoinMarketRow coin={coin} />
+                  </TableCell>
+                  <TableCell scope="row">
+                    <FormControl
+                      className={clsx(classes.margin, classes.textField)}
+                      variant="outlined"
+                    >
+                      <OutlinedInput
+                        id="outlined-adornment-weight"
+                        value={0}
+                        onChange={(e) => {
+                          console.log(e.target.value);
+                        }}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            {coin.name}
+                          </InputAdornment>
+                        }
+                        aria-describedby="outlined-weight-helper-text"
+                        inputProps={{
+                          'aria-label': `${coin.name}`,
+                        }}
+                        labelWidth={0}
+                        style={{ borderRadius: 15 }}
+                      />
+                    </FormControl>
+                  </TableCell>
+                  <TableCell>
+                    <CustomButton onClick={() => console.log('Depositing')}>
+                      Withdraw
+                    </CustomButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </TabPanel>
     </Card>
   );
