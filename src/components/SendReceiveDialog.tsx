@@ -79,7 +79,6 @@ const SendTab = ({ pubkey, mint }: { pubkey: string; mint: string }) => {
   const connection = useConnection();
 
   const destinationRef = useRef<HTMLInputElement | null>(null);
-  const savedContactRef = useRef<string | null>(null);
   const { wallet } = useWallet();
 
   const onFinish = async () => {

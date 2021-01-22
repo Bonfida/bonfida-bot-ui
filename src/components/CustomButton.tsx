@@ -25,13 +25,20 @@ const useStyles = makeStyles({
 const CustomButton = ({
   children,
   onClick,
+  disabled = false,
 }: {
   children: React.ReactNode;
   onClick: (props: any) => void;
+  disabled?: boolean;
 }) => {
   const classes = useStyles();
   return (
-    <Button variant="contained" className={classes.button} onClick={onClick}>
+    <Button
+      variant="contained"
+      className={classes.button}
+      onClick={onClick}
+      disabled={disabled}
+    >
       <Typography className={classes.text}>{children}</Typography>
     </Button>
   );
