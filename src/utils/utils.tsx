@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Market, TOKEN_MINTS } from '@project-serum/serum';
+import { Market, TOKEN_MINTS, MARKETS } from '@project-serum/serum';
 import { PublicKey, Connection } from '@solana/web3.js';
 import BN from 'bn.js';
 import { MAINNET_ENDPOINT } from './connection';
-import { AWESOME_TOKENS } from '@dr497/awesome-serum-markets';
+import { AWESOME_TOKENS, AWESOME_MARKETS } from '@dr497/awesome-serum-markets';
+import { USE_POOLS } from './pools';
+
+const USE_MARKETS = [...MARKETS, ...AWESOME_MARKETS];
 
 const TOKENS = AWESOME_TOKENS.concat(TOKEN_MINTS);
 
@@ -344,4 +347,18 @@ export const rpcRequest = async (method: string, params: any) => {
 
 export const findNameFromMint = (mint: string) => {
   return TOKENS.find((token) => token.address.toBase58() === mint)?.name;
+};
+
+export const findMarketFromAddress = (address: string | PublicKey) => {
+  if (typeof address !== 'string') {
+    address = address.toBase58();
+  }
+  return USE_MARKETS.find((m) => m.address.toBase58() === address);
+};
+
+export const isKnownPool = (poolAddress: string | PublicKey) => {
+  if (typeof poolAddress !== 'string') {
+    poolAddress = poolAddress.toBase58();
+  }
+  return !!USE_POOLS.find((p) => p.poolAddress.toBase58() === poolAddress);
 };
