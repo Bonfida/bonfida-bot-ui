@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     descriptionContainer: {
       maxWidth: 400,
+      width: 'auto',
     },
     depositButton: {
       color: 'white',
@@ -245,7 +246,6 @@ const PoolBasketData = ({ pool }: { pool: Pool }) => {
         <Tab label="Pool Markets" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Typography>The pool is made of</Typography>
         {pool.basket.map((c) => (
           <Grid
             container
@@ -264,8 +264,6 @@ const PoolBasketData = ({ pool }: { pool: Pool }) => {
         ))}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Typography>The pool trades on the following Serum markets</Typography>
-
         <Table aria-label="pool markets table">
           <TableBody>
             {pool.serumMarkets.map((m) => (
@@ -321,6 +319,7 @@ const PoolDescription = ({ pool }: { pool: Pool }) => {
       justify="space-between"
       alignItems="center"
       className={classes.card}
+      style={{ height: '800px' }}
     >
       <Grid item>
         <img src={pool.illustration} className={classes.img} alt="" />
@@ -364,15 +363,11 @@ export const PoolPanel = ({ pool }: { pool: Pool }) => {
         justify="space-around"
         alignItems="center"
       >
-        <Grid>
+        <Grid style={{ height: '100%' }}>
           <PoolDescription pool={pool} />
         </Grid>
         <Grid>
           <PoolBasketData pool={pool} />
-        </Grid>
-      </Grid>
-      <Grid container direction="row" justify="center" alignItems="center">
-        <Grid>
           <PoolAction pool={pool} />
         </Grid>
       </Grid>
