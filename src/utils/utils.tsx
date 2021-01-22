@@ -362,3 +362,10 @@ export const isKnownPool = (poolAddress: string | PublicKey) => {
   }
   return !!USE_POOLS.find((p) => p.poolAddress.toBase58() === poolAddress);
 };
+
+export const findPoolFromAddress = (poolAddress: string | PublicKey) => {
+  if (typeof poolAddress !== 'string') {
+    poolAddress = poolAddress.toBase58();
+  }
+  return USE_POOLS.find((p) => p.poolAddress.toBase58() === poolAddress);
+};

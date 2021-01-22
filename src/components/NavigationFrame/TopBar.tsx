@@ -50,16 +50,8 @@ const topBarElement = [
     href: '/explore',
   },
   {
-    name: 'create',
-    href: '/create',
-  },
-  {
     name: 'balances',
     href: '/balances',
-  },
-  {
-    name: 'trade',
-    href: '/trade',
   },
   {
     name: 'faq',
@@ -78,10 +70,6 @@ const TopBar = () => {
   useEffect(() => {
     if (location.pathname.includes('explore')) {
       setSelectedIndex('explore');
-    } else if (location.pathname.includes('create')) {
-      setSelectedIndex('create');
-    } else if (location.pathname.includes('trade')) {
-      setSelectedIndex('trade');
     } else if (location.pathname.includes('faq')) {
       setSelectedIndex('faq');
     } else if (location.pathname.includes('balances')) {

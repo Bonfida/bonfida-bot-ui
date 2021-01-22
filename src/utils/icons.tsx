@@ -1,4 +1,4 @@
-const getCoinIcon = (symbol: string) => {
+const getCoinIcon = (symbol: string | undefined) => {
   switch (symbol) {
     case 'BTC':
       return require('../assets/icons/crypto/btc.png').default;
@@ -132,6 +132,8 @@ const getCoinIcon = (symbol: string) => {
       return require('../assets/icons/crypto/omg.png').default;
     case 'FIDA':
       return require('../assets/icons/crypto/fida.svg').default;
+    case 'USDC':
+      return require('../assets/icons/crypto/usdc.png').default;
     default:
       return require('../assets/icons/crypto/other.png').default;
   }
