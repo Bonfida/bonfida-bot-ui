@@ -3,6 +3,9 @@ import StrategyCard from '../components/StrategyCard';
 import { USE_POOLS } from '../utils/pools';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import add from '../assets/add-pool/add.svg';
+import { Typography } from '@material-ui/core';
+import CustomButton from '../components/CustomButton';
 
 const useStyles = makeStyles({
   container: {
@@ -11,6 +14,19 @@ const useStyles = makeStyles({
   },
   item: {
     padding: 30,
+  },
+  addCustomPool: {
+    fontSize: 20,
+    marginRight: '25%',
+    marginTop: 40,
+  },
+  addCustomPoolButton: {
+    backgroundColor: '#2178f3',
+    color: 'white',
+    '&:hover': {
+      color: '#2178f3',
+      background: 'white',
+    },
   },
 });
 
@@ -22,6 +38,15 @@ const ExplorerPage = () => {
   );
   return (
     <>
+      <Typography className={classes.addCustomPool} variant="h1" align="right">
+        <CustomButton
+          className={classes.addCustomPoolButton}
+          onClick={() => console.log('Add custom pool')}
+        >
+          Add Custom Pool
+        </CustomButton>
+      </Typography>
+
       {productRows.map((row) => (
         <Grid
           className={classes.container}
