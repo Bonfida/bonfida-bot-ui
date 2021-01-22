@@ -22,22 +22,17 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomButton = ({
-  children,
-  onClick,
-  disabled = false,
-}: {
-  children: React.ReactNode;
-  onClick: (props: any) => void;
-  disabled?: boolean;
-}) => {
+const CustomButton = ({ children, onClick, ...rest }) => {
   const classes = useStyles();
+  const { disabled, style, className } = rest;
   return (
     <Button
       variant="contained"
-      className={classes.button}
+      className={className ? className : classes.button}
       onClick={onClick}
       disabled={disabled}
+      // @ts-ignore
+      style={{ ...style }}
     >
       <Typography className={classes.text}>{children}</Typography>
     </Button>
