@@ -1,5 +1,6 @@
 import { PublicKey } from '@solana/web3.js';
-import dca from '../../assets/strategies/dca.svg';
+import dca from '../../assets/icons/illustrations/control.svg';
+import rsi from '../../assets/icons/illustrations/line-chart.svg';
 import { findMarketFromAddress, findNameFromMint } from '../utils';
 
 export interface Coin {
@@ -63,7 +64,7 @@ export class Pool {
 export const poolTest = new Pool({
   name: 'DCA Strategy',
   description:
-    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni molestiae ab est nobis in rem sint. Distinctio autem reprehenderit qui tempora quisquam, atque incidunt tempore quasi perspiciatis dolore repellendus quidem.',
+    'Dollar cost average and reduce the impact of volatility of the market.',
   poolAddress: new PublicKey('FBycjnjoUW9hZh6a4VzkLCoYzFgjQBjHgbBhNuxZv3WA'),
   basket: [
     {
@@ -97,7 +98,7 @@ export const poolTest = new Pool({
 export const poolRsi = new Pool({
   name: 'RSI Strategy',
   description:
-    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni molestiae ab est nobis in rem sint. Distinctio autem reprehenderit qui tempora quisquam, atque incidunt tempore quasi perspiciatis dolore repellendus quidem.',
+    'This strategy follows overbought or oversold conditions in a market.',
   poolAddress: new PublicKey('EvXsVnNu9mxo63tPiGNbLy3mwb6Zy4qT59RR62Y2UJW1'),
   basket: [
     {
@@ -125,7 +126,7 @@ export const poolRsi = new Pool({
       address: new PublicKey('CVfYa8RGXnuDBeGmniCcdkBwoLqVxh92xB1JqgRQx3F'),
     },
   ],
-  illustration: dca,
+  illustration: rsi,
 });
 
 export const USE_POOLS = [

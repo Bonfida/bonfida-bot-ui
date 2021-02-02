@@ -63,9 +63,11 @@ const useStyles = makeStyles((theme: Theme) =>
       color: 'white',
       background: '#51d07b',
       width: 'auto',
-      borderRadius: '8px',
+      borderRadius: 0,
       height: '50px',
+      transitionDuration: '0s',
       '&:hover': {
+        transitionDuration: '0s',
         background: 'white',
         color: '#51d07b',
       },

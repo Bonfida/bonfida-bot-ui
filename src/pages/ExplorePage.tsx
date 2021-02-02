@@ -23,6 +23,7 @@ const useStyles = makeStyles({
   addCustomPoolButton: {
     backgroundColor: '#2178f3',
     color: 'white',
+    borderRadius: 0,
     '&:hover': {
       color: '#2178f3',
       background: 'white',
@@ -56,10 +57,10 @@ const ExplorerPage = () => {
           alignItems="center"
           spacing={10}
         >
-          {row.map((pool) => {
+          {row.map((pool, i) => {
             return (
               <Grid item className={classes.item}>
-                <StrategyCard pool={pool} />
+                <StrategyCard pool={pool} left={i % 2 == 0 ? true : false} />
               </Grid>
             );
           })}

@@ -6,9 +6,11 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import { useHistory, useLocation } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import Emoji from '../Emoji';
+// import Emoji from '../Emoji';
+import Typography from '@material-ui/core/Typography';
 import WalletConnect from '../WalletConnect';
 import Settings from '../Settings';
+import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
 
 const useStyles = makeStyles({
   root: {
@@ -25,7 +27,12 @@ const useStyles = makeStyles({
   buttonContainer: {
     paddingRight: '100px',
   },
-  text: { fontSize: '14px', fontWeight: 900, textTransform: 'capitalize' },
+  text: {
+    fontSize: '18px',
+    fontWeight: 900,
+    textTransform: 'capitalize',
+    color: '#393939',
+  },
   button: {
     color: '#838383',
     paddingLeft: '25px',
@@ -37,6 +44,11 @@ const useStyles = makeStyles({
       backgroundColor: 'unset',
       color: '#BA0202',
     },
+  },
+  bonfidaBot: {
+    color: '#393939',
+    fontSize: 20,
+    fontWeight: 500,
   },
 });
 
@@ -58,6 +70,32 @@ const topBarElement = [
     href: '/faq',
   },
 ];
+
+const Logo = () => {
+  const classes = useStyles();
+
+  return (
+    <>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+        spacing={5}
+      >
+        <Grid item>
+          <img
+            src={robot}
+            style={{ fontSize: 40, marginLeft: 80, height: 40 }}
+          />
+        </Grid>
+        <Grid item>
+          <Typography className={classes.bonfidaBot}>BonfidaBot</Typography>
+        </Grid>
+      </Grid>
+    </>
+  );
+};
 
 const TopBar = () => {
   const history = useHistory();
@@ -89,9 +127,11 @@ const TopBar = () => {
           alignItems="center"
         >
           {!smallScreen && (
-            <Grid item>
-              <Emoji style={{ fontSize: 40, marginLeft: 80 }} emoji="🤖" />
-            </Grid>
+            <>
+              <Grid item>
+                <Logo />
+              </Grid>
+            </>
           )}
           <Grid item>
             {topBarElement.map((e, i) => {
@@ -101,8 +141,7 @@ const TopBar = () => {
                   className={classes.button}
                   onClick={() => history.push(e.href)}
                   style={{
-                    color:
-                      selectedIndex === e.name ? '#BA0202' : 'rgb(132,132,132)',
+                    color: selectedIndex === e.name ? '#BA0202' : '#393939',
                   }}
                 >
                   {e.name}

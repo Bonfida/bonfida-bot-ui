@@ -8,9 +8,11 @@ const useStyles = makeStyles({
     color: 'white',
     background: '#BA0202',
     width: 'auto',
-    borderRadius: '8px',
+    borderRadius: 0,
     height: '50px',
+    transitionDuration: '0s',
     '&:hover': {
+      transitionDuration: '0s',
       background: 'white',
       color: '#BA0202',
     },

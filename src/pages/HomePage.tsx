@@ -7,6 +7,7 @@ import Emoji from '../components/Emoji';
 import StrategyCard from '../components/StrategyCard';
 import { poolTest, poolRsi } from '../utils/pools';
 import { useHistory } from 'react-router-dom';
+import robot from '../assets/icons/illustrations/robot-top-bar.svg';
 
 const useStyles = makeStyles({
   root: {
@@ -24,10 +25,25 @@ const useStyles = makeStyles({
     paddingBottom: '50px',
   },
   title: {
-    color: '#838383',
+    fontWeight: 500,
+    fontSize: 32,
+    color: '#393939',
+    marginLeft: 50,
   },
   exploreContainer: {
     paddingTop: '50px',
+  },
+  redShadowRight: {
+    boxShadow: '12px 12px 0px 1px #B80812',
+    background: '#F0E9E7',
+    border: '2px solid #B80812',
+    boxSizing: 'border-box',
+    width: '50vw',
+    height: 250,
+  },
+  subtitle: {
+    fontWeight: 500,
+    fontSize: 24,
   },
 });
 
@@ -45,25 +61,80 @@ const Banner = () => {
   );
 };
 
+const ExploreBanner = () => {
+  const classes = useStyles();
+  const history = useHistory();
+  return (
+    <div className={classes.redShadowRight}>
+      <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+        style={{ marginTop: 30 }}
+      >
+        <Grid item>
+          <Typography className={classes.title} variant="h1">
+            Create and automate your <br /> trading strategies on chain.
+          </Typography>
+        </Grid>
+        <Grid item>
+          <img src={robot} style={{ marginLeft: '80px', height: 100 }} />
+        </Grid>
+      </Grid>
+      <CustomButton
+        style={{ marginLeft: 50, marginTop: 40 }}
+        onClick={() => {
+          history.push('/explore');
+        }}
+      >
+        Explore strategy
+      </CustomButton>
+    </div>
+  );
+};
+
+const Subtitle = () => {
+  const classes = useStyles();
+  return (
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="center"
+      style={{ marginTop: 60 }}
+    >
+      <Typography className={classes.subtitle} variant="h2">
+        Featured strategies
+      </Typography>
+    </Grid>
+  );
+};
+
 const HomePage = () => {
   const classes = useStyles();
   const history = useHistory();
   return (
     <>
       <div className={classes.root}>
-        <Banner />
+        {/* <Banner />
+         */}
+        <ExploreBanner />
+        <Subtitle />
         <Grid
           container
           direction="row"
           justify="center"
           alignItems="center"
           spacing={5}
+          style={{ marginTop: 40 }}
         >
           <Grid item>
-            <StrategyCard pool={poolRsi} />
+            <StrategyCard pool={poolRsi} left={true} />
           </Grid>
+          <div style={{ width: '10vw' }} />
           <Grid item>
-            <StrategyCard pool={poolTest} />
+            <StrategyCard pool={poolTest} left={false} />
           </Grid>
         </Grid>
         <div className={classes.exploreContainer}>
