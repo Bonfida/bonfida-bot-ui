@@ -6,7 +6,6 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import { useHistory, useLocation } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-// import Emoji from '../Emoji';
 import Typography from '@material-ui/core/Typography';
 import WalletConnect from '../WalletConnect';
 import Settings from '../Settings';
