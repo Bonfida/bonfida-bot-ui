@@ -7,6 +7,8 @@ import Emoji from '../components/Emoji';
 import StrategyCard from '../components/StrategyCard';
 import { poolTest, poolRsi } from '../utils/pools';
 import { useHistory } from 'react-router-dom';
+import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
+import useTheme from '@material-ui/core/styles/useTheme';
 import robot from '../assets/icons/illustrations/robot-top-bar.svg';
 
 const useStyles = makeStyles({
@@ -64,12 +66,14 @@ const Banner = () => {
 const ExploreBanner = () => {
   const classes = useStyles();
   const history = useHistory();
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down('lg'));
   return (
     <div className={classes.redShadowRight}>
       <Grid
         container
         direction="row"
-        justify="flex-start"
+        justify="space-around"
         alignItems="center"
         style={{ marginTop: 30 }}
       >
@@ -77,19 +81,21 @@ const ExploreBanner = () => {
           <Typography className={classes.title} variant="h1">
             Create and automate your <br /> trading strategies on chain.
           </Typography>
+          <CustomButton
+            style={{ marginLeft: 50, marginTop: 40 }}
+            onClick={() => {
+              history.push('/explore');
+            }}
+          >
+            Explore strategy
+          </CustomButton>
         </Grid>
-        <Grid item>
-          <img src={robot} style={{ marginLeft: '80px', height: 100 }} />
-        </Grid>
+        {!smallScreen && (
+          <Grid item>
+            <img src={robot} style={{ height: 100 }} />
+          </Grid>
+        )}
       </Grid>
-      <CustomButton
-        style={{ marginLeft: 50, marginTop: 40 }}
-        onClick={() => {
-          history.push('/explore');
-        }}
-      >
-        Explore strategy
-      </CustomButton>
     </div>
   );
 };
