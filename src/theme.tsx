@@ -41,5 +41,10 @@ export const theme = createMuiTheme({
         },
       },
     },
+    MuiMenu: {
+      paper: {
+        background: 'rgb(0, 8, 41)',
+      },
+    },
   },
 });

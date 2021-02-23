@@ -5,6 +5,8 @@ import BN from 'bn.js';
 import { MAINNET_ENDPOINT } from './connection';
 import { AWESOME_TOKENS, AWESOME_MARKETS } from '@dr497/awesome-serum-markets';
 import { USE_POOLS } from './pools';
+import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
+import useTheme from '@material-ui/core/styles/useTheme';
 
 const USE_MARKETS = [...MARKETS, ...AWESOME_MARKETS];
 
@@ -369,3 +371,17 @@ export const findPoolFromAddress = (poolAddress: string | PublicKey) => {
   }
   return USE_POOLS.find((p) => p.poolAddress.toBase58() === poolAddress);
 };
+
+export const useSmallScreen = (breakpoint: string = 'sm') => {
+  const theme = useTheme();
+  // @ts-ignore
+  return useMediaQuery(theme.breakpoints.down(breakpoint));
+};
+
+// usePoolForOwner
+
+// usePoolForUser
+
+// usePoolMarkets
+
+// usePoolBalances
