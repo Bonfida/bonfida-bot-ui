@@ -1,7 +1,5 @@
-# Bonfida Bot UI
+TODO
 
-Start the local env
-
-```
-yarn start
-```
+- Page for wallet with balances + pools + admin pools
+- Create pool page
+- Add admin interface on the pool page

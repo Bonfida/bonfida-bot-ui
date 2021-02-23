@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
   input: {
     border: '2.5px solid',
-    borderRadius: '20px',
+    borderRadius: 0,
     height: '40px',
     textAlign: 'center',
     width: '100%',

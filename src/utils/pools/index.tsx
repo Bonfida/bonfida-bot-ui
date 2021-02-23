@@ -129,21 +129,4 @@ export const poolRsi = new Pool({
   illustration: rsi,
 });
 
-export const USE_POOLS = [
-  poolTest,
-  poolRsi,
-  poolTest,
-  poolRsi,
-  poolTest,
-  poolRsi,
-  poolTest,
-  poolRsi,
-  poolTest,
-  poolRsi,
-  poolTest,
-  poolRsi,
-  poolTest,
-  poolRsi,
-  poolTest,
-  poolRsi,
-];
+export const USE_POOLS = [poolTest, poolRsi];

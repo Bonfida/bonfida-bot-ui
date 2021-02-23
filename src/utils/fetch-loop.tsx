@@ -2,6 +2,8 @@ import { useEffect, useReducer } from 'react';
 
 import assert from 'assert';
 
+export const _FAST_REFRESH_INTERVAL = 1000;
+
 const pageLoadTime = new Date();
 
 const globalCache: Map<any, any> = new Map();

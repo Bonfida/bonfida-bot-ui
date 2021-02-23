@@ -19,6 +19,10 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Chip from '@material-ui/core/Chip';
+import DoneIcon from '@material-ui/icons/Done';
+import WarningIcon from '@material-ui/icons/Warning';
+import Badge from '@material-ui/core/Badge';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
     card: {
       background: '#f0e9e7',
       border: 'solid 1px',
-      borderRadius: '12px',
+      borderRadius: 0,
       padding: 40,
       margin: 40,
     },
@@ -67,9 +71,8 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '50px',
       transitionDuration: '0s',
       '&:hover': {
-        transitionDuration: '0s',
-        background: 'white',
-        color: '#51d07b',
+        color: 'white',
+        background: '#51d07b',
       },
     },
     title: {
@@ -125,7 +128,6 @@ const PoolAction = ({ pool }: { pool: Pool }) => {
         indicatorColor="primary"
         textColor="primary"
         onChange={handleChange}
-        aria-label="deposit-withdraw-tabs"
         centered
       >
         <Tab label="Deposit" />
@@ -161,7 +163,7 @@ const PoolAction = ({ pool }: { pool: Pool }) => {
                           'aria-label': `${coin.name}`,
                         }}
                         labelWidth={0}
-                        style={{ borderRadius: 15 }}
+                        style={{ borderRadius: 0 }}
                       />
                     </FormControl>
                   </TableCell>
@@ -209,7 +211,7 @@ const PoolAction = ({ pool }: { pool: Pool }) => {
                           'aria-label': `${coin.name}`,
                         }}
                         labelWidth={0}
-                        style={{ borderRadius: 15 }}
+                        style={{ borderRadius: 0 }}
                       />
                     </FormControl>
                   </TableCell>
@@ -350,14 +352,41 @@ const PoolDescription = ({ pool }: { pool: Pool }) => {
   );
 };
 
+const VerifiedPool = ({ isVerified }: { isVerified: boolean }) => {
+  if (isVerified) {
+    return (
+      <Chip
+        label="Verified Pool"
+        color="primary"
+        deleteIcon={<DoneIcon />}
+        style={{ backgroundColor: '#51d07b' }}
+      />
+    );
+  }
+  return (
+    <Chip
+      label="Unverified Pool"
+      color="primary"
+      deleteIcon={<WarningIcon />}
+      style={{ backgroundColor: '#BA0202' }}
+    />
+  );
+};
+
 export const PoolPanel = ({ pool }: { pool: Pool }) => {
   const classes = useStyles();
+  const isVerified = true;
   return (
     <>
       <Grid container direction="row" justify="flex-start" alignItems="center">
-        <Typography variant="h1" className={classes.title}>
-          {pool.name}
-        </Typography>
+        <Grid item>
+          <Typography variant="h1" className={classes.title}>
+            {pool.name}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <VerifiedPool isVerified={isVerified} />
+        </Grid>
       </Grid>
       <Grid
         container

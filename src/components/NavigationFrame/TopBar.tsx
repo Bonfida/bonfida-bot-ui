@@ -65,6 +65,10 @@ const topBarElement = [
     href: '/balances',
   },
   {
+    name: 'pools',
+    href: '/pools',
+  },
+  {
     name: 'faq',
     href: '/faq',
   },

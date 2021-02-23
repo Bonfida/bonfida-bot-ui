@@ -12,9 +12,8 @@ const useStyles = makeStyles({
     height: '50px',
     transitionDuration: '0s',
     '&:hover': {
-      transitionDuration: '0s',
-      background: 'white',
-      color: '#BA0202',
+      color: 'white',
+      background: '#BA0202',
     },
   },
   text: {
@@ -29,6 +28,7 @@ const CustomButton = ({ children, onClick, ...rest }) => {
   const { disabled, style, className } = rest;
   return (
     <Button
+      disableRipple
       variant="contained"
       className={className ? className : classes.button}
       onClick={onClick}

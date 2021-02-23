@@ -25,9 +25,10 @@ const useStyles = makeStyles({
     color: 'white',
     borderRadius: 0,
     '&:hover': {
-      color: '#2178f3',
-      background: 'white',
+      backgroundColor: '#2178f3',
+      color: 'white',
     },
+    margin: 10,
   },
 });
 
@@ -39,12 +40,18 @@ const ExplorerPage = () => {
   );
   return (
     <>
-      <Typography className={classes.addCustomPool} variant="h1" align="right">
+      <Typography className={classes.addCustomPool} variant="h1" align="center">
         <CustomButton
           className={classes.addCustomPoolButton}
           onClick={() => console.log('Add custom pool')}
         >
           Add Custom Pool
+        </CustomButton>
+        <CustomButton
+          className={classes.addCustomPoolButton}
+          onClick={() => console.log('Add custom pool')}
+        >
+          Create Custom Pool
         </CustomButton>
       </Typography>
 

@@ -12,9 +12,8 @@ const useStyles = makeStyles({
     height: '50px',
     transitionDuration: '0s',
     '&:hover': {
-      transitionDuration: '0s',
-      background: 'white',
-      color: '#BA0202',
+      color: 'white',
+      background: '#BA0202',
     },
   },
   lock: {
@@ -29,6 +28,7 @@ export default function WalletConnect() {
   return (
     <React.Fragment>
       <Button
+        disableRipple
         onClick={connected ? wallet.disconnect : wallet.connect}
         variant="contained"
         className={classes.button}

@@ -10,6 +10,7 @@ import { findNameFromMint, roundToDecimal } from '../utils/utils';
 import getCoinIcon from '../utils/icons';
 import { ExplorerLink } from './Link';
 import SendReceiveDialogButton from './SendReceiveDialog';
+import { useSolBalance, useTokenAccounts, USE_TOKENS } from '../utils/tokens';
 
 const useStyles = makeStyles({
   centeredContainer: {
@@ -17,8 +18,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // border: '1px solid',
-    // borderRadius: 30,
     marginRight: '10%',
     marginLeft: '10%',
     marginTop: '5%',
@@ -44,19 +43,13 @@ const useStyles = makeStyles({
 const BalancesTable = () => {
   const classes = useStyles();
   const { wallet, connected } = useWallet();
-  const [tokenAccounts, setTokenAccounts] = useState<null | any>(null);
+  const [solBalance] = useSolBalance();
+  const [tokenAccounts] = useTokenAccounts();
 
-  useEffect(() => {
-    const get = async () => {
-      const result = await getProgramAccounts(wallet?.publicKey);
-      setTokenAccounts(result);
-    };
-    get();
-  }, [connected]);
-
-  const rows = (tokenAccounts || [])
+  let rows = (tokenAccounts || [])
     .map((token) => {
       return {
+        name: findNameFromMint(token.account.data.parsed.info.mint),
         mint: token.account.data.parsed.info.mint,
         balance: roundToDecimal(
           token.account.data.parsed.info.tokenAmount.uiAmount,
@@ -67,6 +60,21 @@ const BalancesTable = () => {
     })
     .filter((row) => row.balance > Math.pow(10, -3)) // Remove dust
     .sort((a, b) => b.balance - a.balance);
+
+  const knownTokens = rows
+    .map((t) => {
+      if (USE_TOKENS.find((e) => e.address.toBase58() === t.mint)) {
+        return t;
+      }
+    })
+    .filter((e) => !!e)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const unknownTokens = rows.filter((e) => !knownTokens.includes(e));
+
+  knownTokens.push(...unknownTokens);
+
+  console.log(knownTokens);
 
   if (!connected) {
     return (
@@ -80,13 +88,12 @@ const BalancesTable = () => {
     <div className={classes.centeredContainer}>
       <Table className={classes.table} aria-label="balance table">
         <TableBody>
-          {rows.map((row, index) => {
-            const tokenName = findNameFromMint(row.mint);
+          {knownTokens.map((row, index) => {
             const length = row.mint.length;
             return (
               <TableRow key={`${index}-${row.mint}`}>
                 <TableCell scope="row">
-                  <img src={getCoinIcon(tokenName)} height="30px" alt="" />
+                  <img src={getCoinIcon(row.name)} height="30px" alt="" />
                 </TableCell>
 
                 <TableCell scope="row">
@@ -95,8 +102,8 @@ const BalancesTable = () => {
                     // @ts-ignore
                     className={classes.tableText}
                   >
-                    {tokenName
-                      ? tokenName
+                    {row.name
+                      ? row.name
                       : row.mint.slice(0, 5) +
                         '...' +
                         row.mint.slice(length - 5, length)}
