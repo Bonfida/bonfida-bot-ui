@@ -17,6 +17,7 @@ import {
   useTokenAccounts,
   useBalanceForMint,
 } from '../../utils/tokens';
+import Divider from '../Divider';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,7 +53,7 @@ const PoolTitle = ({ poolName }: { poolName: string }) => {
   return (
     <Grid container direction="column" justify="center" alignItems="center">
       <Grid item>
-        <img src={robot} style={{ height: 40 }} />
+        <img src={robot} style={{ height: 70 }} />
       </Grid>
       <Grid item>
         <Typography variant="h1" className={classes.poolTitle}>
@@ -81,6 +82,16 @@ export const PoolPanel = ({ pool }: { pool: Pool }) => {
         <VerifiedPool isVerified />
 
         <PoolTitle poolName={pool.name} />
+        <Divider
+          width="80%"
+          height="1px"
+          background="#B80812"
+          marginLeft="auto"
+          marginRight="auto"
+          opacity={0.5}
+          marginBottom="10px"
+          marginTop="10px"
+        />
         <Tabs
           value={tab}
           indicatorColor="primary"

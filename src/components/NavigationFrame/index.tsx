@@ -7,7 +7,8 @@ const styles = {
     display: 'flex',
     minHeight: '100vh',
     flexDirection: 'column',
-    overflow: 'hidden',
+    overflowY: 'scroll',
+    overflowX: 'hidden',
   } as React.CSSProperties,
 };
 
