@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pool } from '../../utils/pools';
 import FloatingCard from '../FloatingCard';
-import CoinInput from '../CoinInput';
+import CoinInput from '../CoinInputCreateRedeem';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';

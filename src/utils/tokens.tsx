@@ -29,6 +29,10 @@ export const tokenNameFromMint = (mint: string) => {
   return USE_TOKENS.find((t) => t.address.toBase58() === mint)?.name;
 };
 
+export const tokenMintFromName = (name: string) => {
+  return USE_TOKENS.find((t) => t.name === name)?.address.toBase58();
+};
+
 export const tokenInfoFromName = (name: string) => {
   return USE_TOKENS.filter((t) => t.name === name);
 };
@@ -39,7 +43,6 @@ export const tokenInfoFromMint = (mint: string) => {
 
 export const getProgramAccounts = async (pubkey: PublicKey) => {
   const params = [
-    // 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
     TOKEN_PROGRAM_ID.toBase58(),
     {
       encoding: 'jsonParsed',
@@ -273,4 +276,17 @@ export const useBalanceForMint = (
     (acc) => acc.account.data.parsed.info.mint === mint,
   )?.account.data.parsed.info.tokenAmount.uiAmount;
   return balance;
+};
+
+export const decimalsFromMint = async (
+  connection: Connection,
+  mint: PublicKey,
+) => {
+  const result = await connection.getParsedAccountInfo(mint);
+  // @ts-ignore
+  const decimals = result?.value?.data?.parsed?.info?.decimals;
+  if (!decimals) {
+    throw new Error('Invalid mint');
+  }
+  return decimals;
 };

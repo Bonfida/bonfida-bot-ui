@@ -48,21 +48,22 @@ const useStyles = makeStyles({
     height: 55,
   },
   inputAmount: {
-    color: '#F1F1F2',
+    color: 'black',
     fontWeight: 600,
   },
   inputLabel: {
-    color: '#F1F1F2',
+    color: 'black',
     opacity: 0.5,
   },
   textIcon: {
-    color: '#F1F1F2',
+    color: 'black',
     fontWeight: 600,
   },
   gridContainer: {
-    background: 'rgb(0, 8, 41)',
+    background: 'transparent',
     padding: 15,
     borderRadius: 0,
+    border: '1px solid #BA0202',
   },
 });
 
@@ -86,10 +87,6 @@ const RenderCoinRow = ({ name }: { name: string }) => {
       </Grid>
     </Grid>
   );
-};
-
-const CustomArrowDropDownIcon = () => {
-  return <ExpandMoreIcon style={{ color: 'white' }} />;
 };
 
 const CoinInput = ({
@@ -166,7 +163,7 @@ const CoinInput = ({
           <Select
             className={classes.select}
             onChange={(e) => setMint(e.target.value as string)}
-            IconComponent={CustomArrowDropDownIcon}
+            IconComponent={ExpandMoreIcon}
             value={mint}
           >
             {coinsList.map((t, i) => {
