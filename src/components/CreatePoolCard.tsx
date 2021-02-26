@@ -22,6 +22,7 @@ import { createPool, BONFIDABOT_PROGRAM_ID, Numberu16 } from 'bonfida-bot';
 import { SERUM_PROGRAM_ID } from '../utils/serum';
 import { notify } from '../utils/notifications';
 import { decimalsFromMint } from '../utils/tokens';
+import Spin from './Spin';
 
 const useStyles = makeStyles({
   img: {
@@ -49,6 +50,10 @@ const useStyles = makeStyles({
 
 const CreatePoolCard = () => {
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
+  const [createdPoolAddress, setCreatedPoolAddress] = useState<string | null>(
+    null,
+  );
   const connection = useConnection();
   const { wallet, connected } = useWallet();
   const [tokenAccounts] = useTokenAccounts();
@@ -95,6 +100,7 @@ const CreatePoolCard = () => {
 
   const onSubmit = async () => {
     try {
+      setLoading(true);
       notify({
         message: 'Creating pool',
         variant: 'info',
@@ -142,6 +148,11 @@ const CreatePoolCard = () => {
         connection: connection,
         sendingMessage: 'Sending create pool instruction...',
       });
+      const poolKey = await PublicKey.createProgramAddress(
+        [poolSeed],
+        BONFIDABOT_PROGRAM_ID,
+      );
+      setCreatedPoolAddress(poolKey.toBase58());
     } catch (err) {
       console.warn(`Error creating the pool ${err}`);
       notify({
@@ -149,6 +160,7 @@ const CreatePoolCard = () => {
         variant: 'error',
       });
     } finally {
+      setLoading(false);
     }
   };
 
@@ -191,7 +203,7 @@ const CreatePoolCard = () => {
                 <Grid
                   container
                   direction="row"
-                  justify="space-between"
+                  justify="center"
                   alignItems="center"
                 >
                   <Grid item>
@@ -212,7 +224,7 @@ const CreatePoolCard = () => {
             );
           })}
         </Grid>
-        <Grid container justify="center">
+        <Grid container justify="center" style={{ marginTop: 20 }}>
           <CustomButton
             onClick={() =>
               setMarketAddresses([
@@ -261,9 +273,27 @@ const CreatePoolCard = () => {
           marginBottom="20px"
         />
         <Grid container justify="center">
-          <CustomButton onClick={onSubmit}>Create</CustomButton>
+          <CustomButton onClick={onSubmit}>
+            {loading ? <Spin size={20} /> : 'Create'}
+          </CustomButton>
         </Grid>
       </form>
+      {createdPoolAddress && (
+        <>
+          <Divider
+            background="#BA0202"
+            width="80%"
+            opacity={0.7}
+            height="1px"
+            marginRight="auto"
+            marginLeft="auto"
+            marginTop="20px"
+            marginBottom="20px"
+          />
+          <Typography align="center">Created Pool Address:</Typography>
+          <Typography align="center">{createdPoolAddress}</Typography>
+        </>
+      )}
     </FloatingCard>
   );
 };

@@ -41,5 +41,10 @@ export const theme = createMuiTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      input: {
+        height: 20,
+      },
+    },
   },
 });

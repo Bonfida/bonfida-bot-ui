@@ -3,9 +3,9 @@ import StrategyCard from '../components/StrategyCard';
 import { USE_POOLS } from '../utils/pools';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import add from '../assets/add-pool/add.svg';
 import { Typography } from '@material-ui/core';
 import CustomButton from '../components/CustomButton';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   container: {
@@ -34,6 +34,7 @@ const useStyles = makeStyles({
 
 const ExplorerPage = () => {
   const classes = useStyles();
+  const history = useHistory();
   const rows = [...Array(Math.ceil(USE_POOLS.length / 2))];
   const productRows = rows.map((row, idx) =>
     USE_POOLS.slice(idx * 2, idx * 2 + 2),
@@ -49,7 +50,7 @@ const ExplorerPage = () => {
         </CustomButton>
         <CustomButton
           className={classes.addCustomPoolButton}
-          onClick={() => console.log('Add custom pool')}
+          onClick={() => history.push('/create')}
         >
           Create Custom Pool
         </CustomButton>

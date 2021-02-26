@@ -6,6 +6,7 @@ import { Typography } from '@material-ui/core';
 import { tokenNameFromMint, USE_TOKENS } from '../utils/tokens';
 import getCoinIcon from '../utils/icons';
 import { useBalanceForMint } from '../utils/tokens';
+import { notify } from '../utils/notifications';
 
 const useStyles = makeStyles({
   root: {
@@ -107,6 +108,12 @@ const CoinInput = ({
 
   const onChangeInput = (e) => {
     const parsed = parseFloat(e.target.value);
+    if (parsed > balance) {
+      notify({
+        message: 'Insufficient funds',
+        variant: 'error',
+      });
+    }
     let newAssets = assets.map((asset) => {
       return {
         name: asset.name,

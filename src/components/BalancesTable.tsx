@@ -108,7 +108,7 @@ const SearchBar = ({
           label="Search"
           variant="outlined"
           onChange={(e) => setSearch(e.target.value)}
-          style={{ height: 50, padding: 0, width: 300 }}
+          style={{ height: 30, padding: 0, width: 300 }}
         />
       </Grid>
     </Grid>
