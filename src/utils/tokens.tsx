@@ -25,6 +25,8 @@ export const ASSOCIATED_TOKEN_PROGRAM_ID: PublicKey = new PublicKey(
   'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
 );
 
+export const FIDA_MINT = 'FrDavxi4QawYnQY259PVfYUjUvuyPNfqSXbLBqMnbfWJ';
+
 export const tokenNameFromMint = (mint: string) => {
   return USE_TOKENS.find((t) => t.address.toBase58() === mint)?.name;
 };

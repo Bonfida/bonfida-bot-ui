@@ -43,7 +43,7 @@
     "lint:fix": "npm run pretty:fix",
     "pretty": "prettier --check '{,!(node_modules)/**/}*.[jt]sx'",
     "pretty:fix": "prettier --write '{,!(node_modules)/**/}*.[jt]sx'",
-    "postbuild": "rm -r ../bonfida-bot-build/* && mv -v build/* ../bonfida-bot-build/ && git add -A && git commit -m 'New build' && git push "
+    "postbuild": "rm -r ../bonfida-bot-build/* && mv -v build/* ../bonfida-bot-build/ && cd ../bonfida-bot-build && git add -A && git commit -m 'New build' && git push "
   },
   "eslintConfig": {
     "extends": [

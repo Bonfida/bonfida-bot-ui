@@ -21,7 +21,7 @@ import { Transaction, PublicKey } from '@solana/web3.js';
 import { createPool, BONFIDABOT_PROGRAM_ID, Numberu16 } from 'bonfida-bot';
 import { SERUM_PROGRAM_ID } from '../utils/serum';
 import { notify } from '../utils/notifications';
-import { decimalsFromMint } from '../utils/tokens';
+import { decimalsFromMint, FIDA_MINT } from '../utils/tokens';
 import Spin from './Spin';
 
 const useStyles = makeStyles({
@@ -57,9 +57,7 @@ const CreatePoolCard = () => {
   const connection = useConnection();
   const { wallet, connected } = useWallet();
   const [tokenAccounts] = useTokenAccounts();
-  const [marketAddresses, setMarketAddresses] = useState<string[]>([
-    'FrDavxi4QawYnQY259PVfYUjUvuyPNfqSXbLBqMnbfWJ',
-  ]);
+  const [marketAddresses, setMarketAddresses] = useState<string[]>([FIDA_MINT]);
 
   const [assets, setAssets] = useState(
     getAssetsFromMarkets(marketAddresses).map((e) => {
@@ -99,6 +97,15 @@ const CreatePoolCard = () => {
   };
 
   const onSubmit = async () => {
+    // Check if there is enough FIDA
+    const fida = assets.find((asset) => asset.mint === FIDA_MINT)?.amount;
+    if (!fida || isNaN(fida) || fida < 1) {
+      notify({
+        message: 'Pools need to contain at least 1 FIDA',
+        variant: 'error',
+      });
+      return;
+    }
     try {
       setLoading(true);
       notify({
@@ -156,7 +163,7 @@ const CreatePoolCard = () => {
     } catch (err) {
       console.warn(`Error creating the pool ${err}`);
       notify({
-        message: 'Error creating the pool',
+        message: `Error creating the pool ${err}`,
         variant: 'error',
       });
     } finally {
