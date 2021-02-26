@@ -129,4 +129,11 @@ export const poolRsi = new Pool({
   illustration: rsi,
 });
 
-export const USE_POOLS = [poolTest, poolRsi];
+export const USE_POOLS = [
+  {
+    name: 'RSI',
+    poolSeed: new PublicKey('5xK9ByTt1MXP6SfB9BXL16GLRdsCqNr8Xj1SToje12Sa'),
+  },
+];
+
+// export const USE_POOLS = [poolTest, poolRsi];

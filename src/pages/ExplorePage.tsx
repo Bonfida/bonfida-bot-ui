@@ -68,7 +68,7 @@ const ExplorerPage = () => {
           {row.map((pool, i) => {
             return (
               <Grid item className={classes.item}>
-                <StrategyCard pool={pool} left={i % 2 == 0 ? true : false} />
+                {/* <StrategyCard pool={pool} left={i % 2 == 0 ? true : false} /> */}
               </Grid>
             );
           })}

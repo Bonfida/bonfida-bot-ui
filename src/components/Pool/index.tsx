@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pool } from '../../utils/pools';
+import { Pool, USE_POOLS } from '../../utils/pools';
 import FloatingCard from '../FloatingCard';
 import CoinInput from '../CoinInputCreateRedeem';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
@@ -18,6 +18,7 @@ import {
   useBalanceForMint,
 } from '../../utils/tokens';
 import Divider from '../Divider';
+import { useLocalStorageState } from '../../utils/utils';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,7 +65,13 @@ const PoolTitle = ({ poolName }: { poolName: string }) => {
   );
 };
 
-export const PoolPanel = ({ pool }: { pool: Pool }) => {
+export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
+  // Different cases whether the pool is known or unknown
+
+  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+
+  // Check whether it's a custom pool in localStorage
+
   const [tab, setTab] = React.useState(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
@@ -81,7 +88,7 @@ export const PoolPanel = ({ pool }: { pool: Pool }) => {
       <FloatingCard>
         <VerifiedPool isVerified />
 
-        <PoolTitle poolName={pool.name} />
+        <PoolTitle poolName={pool?.name || ''} />
         <Divider
           width="80%"
           height="1px"

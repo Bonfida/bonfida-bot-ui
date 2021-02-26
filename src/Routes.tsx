@@ -24,7 +24,7 @@ export default function Routes() {
           <Route extact path="/balances" component={BalancesPage} />
           <Route extact path="/explore" component={ExplorePage} />
           <Route extact path="/create" component={CreatePoolPage} />
-          <Route exact path="/pool/:poolAddress">
+          <Route exact path="/pool/:poolSeed">
             <PoolPage />
           </Route>
         </Switch>

@@ -358,18 +358,18 @@ export const findMarketFromAddress = (address: string | PublicKey) => {
   return USE_MARKETS.find((m) => m.address.toBase58() === address);
 };
 
-export const isKnownPool = (poolAddress: string | PublicKey) => {
-  if (typeof poolAddress !== 'string') {
-    poolAddress = poolAddress.toBase58();
+export const isKnownPool = (poolSeed: string | PublicKey) => {
+  if (typeof poolSeed !== 'string') {
+    poolSeed = poolSeed.toBase58();
   }
-  return !!USE_POOLS.find((p) => p.poolAddress.toBase58() === poolAddress);
+  return !!USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
 };
 
-export const findPoolFromAddress = (poolAddress: string | PublicKey) => {
-  if (typeof poolAddress !== 'string') {
-    poolAddress = poolAddress.toBase58();
+export const findPoolFromAddress = (poolSeed: string | PublicKey) => {
+  if (typeof poolSeed !== 'string') {
+    poolSeed = poolSeed.toBase58();
   }
-  return USE_POOLS.find((p) => p.poolAddress.toBase58() === poolAddress);
+  return USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
 };
 
 export const useSmallScreen = (breakpoint: string = 'sm') => {
