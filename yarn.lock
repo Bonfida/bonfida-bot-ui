@@ -3122,25 +3122,10 @@ body-parser@1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bonfida-bot@^0.2.10:
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.2.10.tgz#d0311f8214c80eda654b72afeb7f455f17056855"
-  integrity sha512-ReOmRIoRFRZW49YwwEB3SncapJZ5+IiHl41wN78Ldr4VEWPZ7x38R5FkV56DGQsYszuBSA9xPblR8HmLywFbYQ==
-  dependencies:
-    "@project-serum/serum" "^0.13.23"
-    "@solana/spl-token" "0.0.13"
-    "@solana/web3.js" "^0.88.0"
-    bip32 "^2.0.6"
-    bn.js "^5.1.3"
-    bonfida-bot "^0.2.6"
-    bs58 "^4.0.1"
-    buffer-layout "^1.2.0"
-    tweetnacl "^1.0.3"
-
-bonfida-bot@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.2.6.tgz#7134968677cffb55aca0be72467d9edf8cc7a734"
-  integrity sha512-r6snqw06ouVDJ3cfZOeFvKKMH9B023Psa+RUJtffkGBAG00KXnuudgTSveQ85bHrjaL+uUFLOojpFPMksP/Zjg==
+bonfida-bot@^0.2.16:
+  version "0.2.16"
+  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.2.16.tgz#7c68eb42cc018d691f91545f5d0ff8952c4a4501"
+  integrity sha512-Yx9XP/bmSkK95lIu1GgdXM6JjEPGDHebwhNhP7HH28ruXDN4JAloTv3lNLIq2F/HTb8dmB0JmB4OykI+jg7/nQ==
   dependencies:
     "@project-serum/serum" "^0.13.23"
     "@solana/spl-token" "0.0.13"
@@ -11763,10 +11748,10 @@ typeforce@^1.11.5:
   resolved "https://registry.yarnpkg.com/typeforce/-/typeforce-1.18.0.tgz#d7416a2c5845e085034d70fcc5b6cc4a90edbfdc"
   integrity sha512-7uc1O8h1M1g0rArakJdf0uLRSSgFcYexrVoKo+bzJd32gd4gDy2L/Z+8/FjPnU9ydY3pEnVPtr9FyscYY60K1g==
 
-typescript@^4.0.3:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.3.tgz#519d582bd94cba0cf8934c7d8e8467e473f53bb7"
-  integrity sha512-B3ZIOf1IKeH2ixgHhj6la6xdwR9QrLC5d1VKeCSY4tvkqhF2eqd9O7txNlS0PO3GrBAFIdr3L1ndNwteUbZLYg==
+typescript@^4.1.3:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.2.tgz#1450f020618f872db0ea17317d16d8da8ddb8c4c"
+  integrity sha512-tbb+NVrLfnsJy3M59lsDgrzWIflR4d4TIUjz+heUnHZwdF7YsrMTKoRERiIvI2lvBG95dfpLxB21WZhys1bgaQ==
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"

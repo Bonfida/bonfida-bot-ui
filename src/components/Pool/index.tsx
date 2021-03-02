@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Pool, USE_POOLS } from '../../utils/pools';
+import { USE_POOLS } from '../../utils/pools';
 import FloatingCard from '../FloatingCard';
-import CoinInput from '../CoinInputCreateRedeem';
+import DepositInput from '../DepositInput';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -18,7 +18,28 @@ import {
   useBalanceForMint,
 } from '../../utils/tokens';
 import Divider from '../Divider';
-import { useLocalStorageState } from '../../utils/utils';
+import { useEffectAfterTimeout, useLocalStorageState } from '../../utils/utils';
+import { PublicKey } from '@solana/web3.js';
+import {
+  usePoolBalance,
+  usePoolInfo,
+  usePoolUsdBalance,
+} from '../../utils/pools';
+import bs58 from 'bs58';
+import { useConnection } from '../../utils/connection';
+import {
+  fetchPoolBalances,
+  BONFIDABOT_PROGRAM_ID,
+  fetchPoolInfo,
+} from 'bonfida-bot';
+import CustomButton from '../CustomButton';
+import InformationRow from '../InformationRow';
+import { roundToDecimal, abbreviateAddress } from '../../utils/utils';
+import Emoji from '../Emoji';
+import { ExplorerLink } from '../Link';
+import { notify } from '../../utils/notifications';
+import Spin from '../Spin';
+import { marketNameFromAddress } from '../../utils/markets';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,29 +86,189 @@ const PoolTitle = ({ poolName }: { poolName: string }) => {
   );
 };
 
-export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
-  // Different cases whether the pool is known or unknown
+const PoolInformation = ({
+  poolSeed,
+  tokenAccounts,
+}: {
+  poolSeed: PublicKey;
+  tokenAccounts: any;
+}) => {
+  // Tabs avec contenu de la pool + Description + Owner +  historical returns?
+  const [poolBalance] = usePoolBalance(poolSeed);
+  const [poolInfo] = usePoolInfo(poolSeed);
+  const pool = USE_POOLS.find(
+    (p) => p.poolSeed.toBase58() === poolSeed.toBase58(),
+  );
 
-  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  const userPoolTokenBalance = useBalanceForMint(
+    tokenAccounts,
+    poolInfo?.mintKey.toBase58(),
+  );
 
-  // Check whether it's a custom pool in localStorage
+  const poolMarkets = poolInfo?.authorizedMarkets;
+
+  let usdValue = usePoolUsdBalance(poolBalance ? poolBalance[1] : null);
 
   const [tab, setTab] = React.useState(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
   };
-  const [mint, setMint] = useState(
-    'EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp',
+  return (
+    <>
+      <Tabs
+        value={tab}
+        indicatorColor="primary"
+        textColor="primary"
+        onChange={handleTabChange}
+        centered
+      >
+        <Tab label="Pool Content" />
+        <Tab label="Pool Markets" />
+        <Tab label="Pool Information" />
+      </Tabs>
+      {/* Content of the pool */}
+      <TabPanel value={tab} index={0}>
+        <InformationRow
+          label="Pool Token Supply"
+          value={poolBalance ? poolBalance[0]?.uiAmount : 0}
+        />
+        <InformationRow
+          label="USD Value of the Pool"
+          value={`$${roundToDecimal(usdValue, 2)}`}
+        />
+        <Typography variant="body1">Tokens in the pool:</Typography>
+        {poolBalance &&
+          poolBalance[1]?.map((asset) => {
+            return (
+              <div style={{ marginLeft: 10 }}>
+                <InformationRow
+                  // Abbrev raw mint
+                  label={'- ' + tokenNameFromMint(asset.mint) || asset.mint}
+                  value={asset.tokenAmount.uiAmount}
+                />
+              </div>
+            );
+          })}
+        <InformationRow
+          label="Your Share of the Pool"
+          value={userPoolTokenBalance?.toLocaleString() || 0}
+        />
+      </TabPanel>
+      {/* Pool Markets */}
+      <TabPanel value={tab} index={1}>
+        <Typography variant="body1" style={{ marginBottom: 10 }}>
+          The pool can only trade on the following markets:
+        </Typography>
+        <div style={{ margin: 10 }}>
+          {poolMarkets?.map((m) => {
+            return (
+              <InformationRow
+                label={marketNameFromAddress(m)}
+                value={
+                  <ExplorerLink address={m.toBase58()}>
+                    {abbreviateAddress(m)}
+                  </ExplorerLink>
+                }
+              />
+            );
+          })}
+        </div>
+      </TabPanel>
+      {/* Pool Description if whitelisted */}
+      <TabPanel value={tab} index={2}>
+        {pool ? (
+          <>
+            <Typography variant="body1">{pool.description}</Typography>
+          </>
+        ) : (
+          <>
+            <Typography variant="body1">
+              <Emoji emoji="⚠️" />
+              This pool is unverified, use at your own risk
+            </Typography>
+          </>
+        )}
+        <Typography variant="body1" style={{ marginTop: 10 }}>
+          Pool Keys:
+        </Typography>
+        <InformationRow
+          label=" - Signal Provider:"
+          value={
+            <ExplorerLink address={poolInfo?.signalProvider.toBase58()}>
+              {abbreviateAddress(poolInfo?.signalProvider, 7)}
+            </ExplorerLink>
+          }
+        />
+        <InformationRow
+          label=" - Pool Address"
+          value={
+            <ExplorerLink address={poolInfo?.address.toBase58()}>
+              {abbreviateAddress(poolInfo?.address, 7)}
+            </ExplorerLink>
+          }
+        />
+        <InformationRow
+          label=" - Pool Token Mint"
+          value={
+            <ExplorerLink address={poolInfo?.mintKey.toBase58()}>
+              {abbreviateAddress(poolInfo?.mintKey, 7)}
+            </ExplorerLink>
+          }
+        />
+      </TabPanel>
+    </>
   );
+};
+
+export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
+  // TODO Different cases whether the pool is known or unknown
+  const connection = useConnection();
+
+  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
+
+  const [tab, setTab] = React.useState(0);
+  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setTab(newValue);
+  };
+  const [mint, setMint] = useState<undefined | string>('');
   const [amount, setAmount] = useState('0');
   const [tokenAccounts] = useTokenAccounts();
   const balance = useBalanceForMint(tokenAccounts, mint);
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (poolInfo) {
+      setMint(poolInfo.mintKey.toBase58());
+    }
+  }, [poolInfo]);
+
+  useEffect(() => {
+    // Recompute Deposit quote
+  }, []);
+
+  const onSubmit = async () => {
+    console.log('Trying to deposit');
+    // Checks enough in wallet, !isNaN amount
+    try {
+      setLoading(true);
+      notify({
+        message: 'Initiating the deposit',
+        variant: 'info',
+      });
+    } catch (err) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{ width: 700, padding: 20, margin: 20 }}>
       <FloatingCard>
+        {/* Header */}
         <VerifiedPool isVerified />
-
+        {/* Deposit/Withdraw tokens */}
         <PoolTitle poolName={pool?.name || ''} />
         <Divider
           width="80%"
@@ -109,14 +290,47 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
           <Tab label="Deposit" />
           <Tab label="withdraw" />
         </Tabs>
-        <CoinInput
-          amountLabel={tokenNameFromMint(mint) || ''}
+        <DepositInput
+          amountLabel="Pool Token"
           mint={mint}
           setMint={setMint}
           amount={amount}
           setAmount={setAmount}
           balance={balance}
         />
+        {/* Pool info */}
+        <Divider
+          width="80%"
+          height="1px"
+          background="#B80812"
+          marginLeft="auto"
+          marginRight="auto"
+          opacity={0.5}
+          marginBottom="10px"
+          marginTop="10px"
+        />
+
+        <PoolInformation
+          poolSeed={new PublicKey(poolSeed)}
+          tokenAccounts={tokenAccounts}
+        />
+        {/* Add pool markets */}
+        {/* Submit button */}
+        <Divider
+          width="80%"
+          height="1px"
+          background="#B80812"
+          marginLeft="auto"
+          marginRight="auto"
+          opacity={0.5}
+          marginBottom="10px"
+          marginTop="10px"
+        />
+        <Grid container justify="center">
+          <CustomButton onClick={onSubmit}>
+            {loading ? <Spin size={20} /> : tab === 0 ? 'Deposit' : 'Withdraw'}
+          </CustomButton>
+        </Grid>
       </FloatingCard>
     </div>
   );

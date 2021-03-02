@@ -1,8 +1,8 @@
 import React from 'react';
-import { poolTest } from '../utils/pools';
 import { PoolPanel } from '../components/Pool';
 import { useParams } from 'react-router-dom';
-import { findPoolFromAddress, isValidPublicKey } from '../utils/utils';
+import { isValidPublicKey } from '../utils/utils';
+import Grid from '@material-ui/core/Grid';
 
 const PoolPage = () => {
   // @ts-ignore
@@ -10,7 +10,11 @@ const PoolPage = () => {
   if (!isValidPublicKey(poolSeed)) {
     return <>Invalid poolSeed</>;
   }
-  return <PoolPanel poolSeed={poolSeed} />;
+  return (
+    <Grid container justify="center">
+      <PoolPanel poolSeed={poolSeed} />
+    </Grid>
+  );
 };
 
 export default PoolPage;

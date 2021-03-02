@@ -152,7 +152,10 @@ export function useListener(emitter, eventName) {
   }, [emitter, eventName]);
 }
 
-export function abbreviateAddress(address: PublicKey, size = 4) {
+export function abbreviateAddress(address: PublicKey | undefined, size = 4) {
+  if (!address) {
+    return null;
+  }
   const base58 = address.toBase58();
   return base58.slice(0, size) + '…' + base58.slice(-size);
 }

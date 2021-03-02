@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { USE_TOKENS } from '../utils/tokens';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import getCoinIcon from '../utils/icons';
+import Spin from './Spin';
 
 const useStyles = makeStyles({
   root: {
@@ -65,6 +66,9 @@ const useStyles = makeStyles({
     borderRadius: 0,
     border: '1px solid #BA0202',
   },
+  spinContainer: {
+    margin: 20,
+  },
 });
 
 const RenderCoinRow = ({ name }: { name: string }) => {
@@ -89,7 +93,7 @@ const RenderCoinRow = ({ name }: { name: string }) => {
   );
 };
 
-const DepositInput = ({
+const CoinInput = ({
   amountLabel,
   mint,
   setMint,
@@ -100,7 +104,7 @@ const DepositInput = ({
   disabled = false,
 }: {
   amountLabel: string;
-  mint: string;
+  mint: string | undefined;
   setMint: (arg: string) => void;
   amount: string;
   setAmount: any;
@@ -122,13 +126,20 @@ const DepositInput = ({
     );
   };
 
+  if (!mint) {
+    return (
+      <Grid container justify="center" className={classes.spinContainer}>
+        <Spin size={40} />
+      </Grid>
+    );
+  }
+
   return (
     <div className={classes.root}>
       <Grid
         container
         direction="row"
         justify="space-between"
-        alignItems="center"
         className={classes.gridContainer}
       >
         <Grid xs={7} item>
@@ -137,13 +148,7 @@ const DepositInput = ({
           </Typography>
           <TextField
             id={`amount-${mint}`}
-            className={
-              amount.length < 10
-                ? classes.textField1
-                : amount.length < 17
-                ? classes.textField2
-                : classes.textField3
-            }
+            className={classes.textField1}
             value={amount}
             onChange={onChangeInput}
             InputProps={{
@@ -158,29 +163,12 @@ const DepositInput = ({
             className={classes.inputLabel}
             onClick={() => setAmount(balance)}
           >
-            Balance: {balance?.toLocaleString()}
+            Balance: {balance?.toLocaleString() || 0}
           </Typography>
-          <Select
-            className={classes.select}
-            onChange={(e) => setMint(e.target.value as string)}
-            IconComponent={ExpandMoreIcon}
-            value={mint}
-          >
-            {coinsList.map((t, i) => {
-              return (
-                <MenuItem
-                  value={t.address.toBase58()}
-                  key={`menu-item-${i}-${t.name}`}
-                >
-                  <RenderCoinRow name={t.name} />
-                </MenuItem>
-              );
-            })}
-          </Select>
         </Grid>
       </Grid>
     </div>
   );
 };
 
-export default DepositInput;
+export default CoinInput;

@@ -52,7 +52,7 @@ const ExplorerPage = () => {
           className={classes.addCustomPoolButton}
           onClick={() => history.push('/create')}
         >
-          Create Custom Pool
+          Create Pool
         </CustomButton>
       </Typography>
 

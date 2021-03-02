@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CustomButton from './CustomButton';
 import { useHistory } from 'react-router-dom';
+import { PublicKey } from '@solana/web3.js';
 import { Pool } from '../utils/pools';
 
 const useStyles = makeStyles({
@@ -67,7 +68,7 @@ export const StrategyCard = ({ pool, left }: { pool: Pool; left: boolean }) => {
   const classes = useStyles();
   const history = useHistory();
   const onClick = () => {
-    history.push(`/pool/${pool.poolAddress}`);
+    history.push(`/pool/${pool.poolSeed.toBase58()}`);
   };
   return (
     <Card

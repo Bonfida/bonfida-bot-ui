@@ -23,26 +23,24 @@ export const ExplorerLink = ({
   address,
   tx,
   children,
-  ...props
 }: {
   address?: string;
   tx?: string;
   children: React.ReactNode;
 }) => {
-  const { ...rest } = props;
   if (address) {
     return (
       <Link
         external
         to={`https://explorer.solana.com/address/${address}`}
-        {...rest}
+        style={{ color: 'black' }}
       >
         {children}
       </Link>
     );
   }
   return (
-    <Link external to={`https://explorer.solana.com/tx/${tx}`} {...rest}>
+    <Link external to={`https://explorer.solana.com/tx/${tx}`}>
       {children}
     </Link>
   );

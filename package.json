@@ -15,12 +15,9 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
     "bn.js": "^5.1.3",
-    "bonfida-bot": "^0.2.10",
+    "bonfida-bot": "^0.2.16",
+    "bs58": "^4.0.1",
     "clsx": "^1.1.1",
     "gh-pages": "^3.1.0",
     "immutable-tuple": "^0.4.10",
@@ -29,7 +26,6 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
-    "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -75,7 +71,12 @@
   },
   "devDependencies": {
     "@types/bn.js": "^4.11.6",
-    "@types/react-router-dom": "^5.1.7"
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.7",
+    "typescript": "^4.1.3"
   },
   "lint-staged": {
     "*.{js,jsx,css,md}": "prettier --write"
