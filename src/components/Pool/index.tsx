@@ -289,7 +289,6 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         <DepositInput
           amountLabel="Pool Token"
           mint={mint}
-          setMint={setMint}
           amount={amount}
           setAmount={setAmount}
           balance={balance}

@@ -71,32 +71,9 @@ const useStyles = makeStyles({
   },
 });
 
-const RenderCoinRow = ({ name }: { name: string }) => {
-  const classes = useStyles();
-  return (
-    <Grid
-      container
-      direction="row"
-      justify="flex-start"
-      alignItems="center"
-      spacing={3}
-    >
-      <Grid item>
-        <img src={getCoinIcon(name)} height="25px" alt="" />
-      </Grid>
-      <Grid item>
-        <Typography className={classes.textIcon} variant="body1">
-          {name}
-        </Typography>
-      </Grid>
-    </Grid>
-  );
-};
-
 const CoinInput = ({
   amountLabel,
   mint,
-  setMint,
   amount,
   setAmount,
   balance,
@@ -105,7 +82,6 @@ const CoinInput = ({
 }: {
   amountLabel: string;
   mint: string | undefined;
-  setMint: (arg: string) => void;
   amount: string;
   setAmount: any;
   balance: number;
