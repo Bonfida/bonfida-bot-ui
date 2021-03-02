@@ -123,7 +123,6 @@ const PoolInformation = ({
         centered
       >
         <Tab label="Pool Content" />
-        <Tab label="Pool Markets" />
         <Tab label="Pool Information" />
       </Tabs>
       {/* Content of the pool */}
@@ -154,28 +153,8 @@ const PoolInformation = ({
           value={userPoolTokenBalance?.toLocaleString() || 0}
         />
       </TabPanel>
-      {/* Pool Markets */}
-      <TabPanel value={tab} index={1}>
-        <Typography variant="body1" style={{ marginBottom: 10 }}>
-          The pool can only trade on the following markets:
-        </Typography>
-        <div style={{ margin: 10 }}>
-          {poolMarkets?.map((m) => {
-            return (
-              <InformationRow
-                label={marketNameFromAddress(m)}
-                value={
-                  <ExplorerLink address={m.toBase58()}>
-                    {abbreviateAddress(m)}
-                  </ExplorerLink>
-                }
-              />
-            );
-          })}
-        </div>
-      </TabPanel>
       {/* Pool Description if whitelisted */}
-      <TabPanel value={tab} index={2}>
+      <TabPanel value={tab} index={1}>
         {pool ? (
           <>
             <Typography variant="body1">{pool.description}</Typography>
@@ -215,6 +194,23 @@ const PoolInformation = ({
             </ExplorerLink>
           }
         />
+        <Typography variant="body1" style={{ marginBottom: 10, marginTop: 10 }}>
+          The pool can only trade on the following markets:
+        </Typography>
+        <div style={{ margin: 10 }}>
+          {poolMarkets?.map((m) => {
+            return (
+              <InformationRow
+                label={marketNameFromAddress(m)}
+                value={
+                  <ExplorerLink address={m.toBase58()}>
+                    {abbreviateAddress(m, 7)}
+                  </ExplorerLink>
+                }
+              />
+            );
+          })}
+        </div>
       </TabPanel>
     </>
   );
