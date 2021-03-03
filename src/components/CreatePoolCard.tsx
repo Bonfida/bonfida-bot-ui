@@ -26,8 +26,13 @@ import {
 } from 'bonfida-bot';
 import { SERUM_PROGRAM_ID } from '../utils/serum';
 import { notify } from '../utils/notifications';
-import { decimalsFromMint, FIDA_MINT } from '../utils/tokens';
+import {
+  decimalsFromMint,
+  FIDA_USDC_MARKET_ADDRESS,
+  FIDA_MINT,
+} from '../utils/tokens';
 import Spin from './Spin';
+import bs58 from 'bs58';
 
 const useStyles = makeStyles({
   img: {
@@ -51,6 +56,9 @@ const useStyles = makeStyles({
   remove: {
     color: '#BA0202',
   },
+  gridContainer: {
+    border: '1px solid #BA0202',
+  },
 });
 
 const CreatePoolCard = () => {
@@ -59,10 +67,19 @@ const CreatePoolCard = () => {
   const [createdPoolAddress, setCreatedPoolAddress] = useState<string | null>(
     null,
   );
+  const [createdPoolSeed, setCreatedPoolSeed] = useState<string | null>(null);
   const connection = useConnection();
   const { wallet, connected } = useWallet();
   const [tokenAccounts] = useTokenAccounts();
-  const [marketAddresses, setMarketAddresses] = useState<string[]>([FIDA_MINT]);
+  const [marketAddresses, setMarketAddresses] = useState<string[]>([
+    FIDA_USDC_MARKET_ADDRESS,
+  ]);
+
+  // Fees
+  const [feeRatio, setFeeRatio] = useState<string | null>(null);
+  const [feeCollectionPeriod, setFeeCollectionPeriod] = useState<string | null>(
+    null,
+  );
 
   const [assets, setAssets] = useState(
     getAssetsFromMarkets(marketAddresses).map((e) => {
@@ -94,6 +111,8 @@ const CreatePoolCard = () => {
     );
   }
 
+  console.log('assets', assets);
+
   const removeMarket = (i: number) => {
     setMarketAddresses([
       ...marketAddresses.slice(0, i),
@@ -101,12 +120,46 @@ const CreatePoolCard = () => {
     ]);
   };
 
+  const onChangeFeeCollectionPeriod = (e) => {
+    const parsed = parseFloat(e.target.value);
+    if (isNaN(parsed) || parsed < 0) {
+      setFeeCollectionPeriod('');
+      return;
+    }
+    setFeeCollectionPeriod(
+      e.target.value[0] === '0' && e.target.value.length > 1
+        ? e.target.value.slice(1)
+        : e.target.value,
+    );
+  };
+
+  const onChangeFeeRatio = (e) => {
+    const parsed = parseFloat(e.target.value);
+    if (isNaN(parsed) || parsed < 0 || parsed > 100) {
+      setFeeRatio('');
+      return;
+    }
+    setFeeRatio(
+      e.target.value[0] === '0' && e.target.value.length > 1
+        ? e.target.value.slice(1)
+        : e.target.value,
+    );
+  };
+
   const onSubmit = async () => {
     // Check if there is enough FIDA
     const fida = assets.find((asset) => asset.mint === FIDA_MINT)?.amount;
+    console.log('fida', fida);
     if (!fida || isNaN(fida) || fida < 1) {
       notify({
         message: 'Pools need to contain at least 1 FIDA',
+        variant: 'error',
+      });
+      return;
+    }
+    if (!feeRatio || !feeCollectionPeriod) {
+      notify({
+        message: 'Invalid fees',
         variant: 'error',
       });
       return;
@@ -151,8 +204,8 @@ const CreatePoolCard = () => {
         new Numberu16(marketAddresses.length + 1),
         marketAddresses.map((m) => new PublicKey(m)),
         wallet?.publicKey,
-        new Numberu64(1000), // TODO Finish form
-        new Numberu16(marketAddresses.length + 1),
+        new Numberu64(parseFloat(feeCollectionPeriod)),
+        new Numberu16((Math.pow(2, 16) * parseFloat(feeRatio)) / 100),
       );
       const tx = new Transaction();
       tx.add(...transactionInstructions);
@@ -167,6 +220,7 @@ const CreatePoolCard = () => {
         BONFIDABOT_PROGRAM_ID,
       );
       setCreatedPoolAddress(poolKey.toBase58());
+      setCreatedPoolSeed(bs58.encode(poolSeed));
     } catch (err) {
       console.warn(`Error creating the pool ${err}`);
       notify({
@@ -275,6 +329,48 @@ const CreatePoolCard = () => {
             />
           );
         })}
+        {/* Select Fees schedule + period*/}
+        <Divider
+          background="#BA0202"
+          width="80%"
+          opacity={0.7}
+          height="1px"
+          marginRight="auto"
+          marginLeft="auto"
+          marginTop="20px"
+        />
+        <Typography align="center" className={classes.subsection}>
+          Fees
+        </Typography>
+        <Grid container justify="center">
+          <TextField
+            InputProps={{
+              classes: {
+                input: classes.input,
+              },
+            }}
+            className={classes.textField}
+            label="Fee Collection Period"
+            helperText="Must be in seconds"
+            value={feeCollectionPeriod}
+            onChange={onChangeFeeCollectionPeriod}
+          />
+        </Grid>
+        <Grid container justify="center">
+          <TextField
+            InputProps={{
+              classes: {
+                input: classes.input,
+              },
+            }}
+            className={classes.textField}
+            label="Fee Ratio (%)"
+            helperText="Percentage of the pool that will be deduced for fees each period"
+            value={feeRatio}
+            onChange={onChangeFeeRatio}
+          />
+        </Grid>
+
         {/* Create */}
         <Divider
           background="#BA0202"
@@ -292,7 +388,7 @@ const CreatePoolCard = () => {
           </CustomButton>
         </Grid>
       </form>
-      {createdPoolAddress && (
+      {createdPoolAddress && createdPoolSeed && (
         <>
           <Divider
             background="#BA0202"
@@ -306,6 +402,8 @@ const CreatePoolCard = () => {
           />
           <Typography align="center">Created Pool Address:</Typography>
           <Typography align="center">{createdPoolAddress}</Typography>
+          <Typography align="center">Created Pool Seed:</Typography>
+          <Typography align="center">{createdPoolSeed}</Typography>
         </>
       )}
     </FloatingCard>

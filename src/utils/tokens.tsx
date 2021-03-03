@@ -25,7 +25,10 @@ export const ASSOCIATED_TOKEN_PROGRAM_ID: PublicKey = new PublicKey(
   'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
 );
 
-export const FIDA_MINT = 'FrDavxi4QawYnQY259PVfYUjUvuyPNfqSXbLBqMnbfWJ';
+export const FIDA_USDC_MARKET_ADDRESS =
+  'FrDavxi4QawYnQY259PVfYUjUvuyPNfqSXbLBqMnbfWJ';
+
+export const FIDA_MINT = 'EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp';
 
 export const tokenNameFromMint = (mint: string | undefined | null) => {
   if (!mint) {

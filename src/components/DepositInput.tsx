@@ -92,8 +92,6 @@ const CoinInput = ({
 
   const onChangeInput = (e) => {
     const parsed = parseFloat(e.target.value);
-    console.log('input', parsed);
-    console.log('isNaN(parsed) || parsed < 0', isNaN(parsed) || parsed < 0);
     if (isNaN(parsed) || parsed < 0) {
       setAmount('');
       return;
