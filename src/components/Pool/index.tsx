@@ -246,10 +246,6 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState<string | null>(null);
 
-  console.log('poolInfo', poolInfo);
-
-  console.log(poolInfo?.mintKey.toBase58(), poolInfo?.assetMintkeys);
-
   useEffect(() => {
     if (poolInfo) {
       setMint(poolInfo.mintKey.toBase58());
@@ -346,17 +342,6 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         );
       } else if (tab === 1) {
         // Tab === 1 => Withdraw
-        const userPoolTokenAddress = findUserAccountsForMint(
-          tokenAccounts,
-          poolInfo.mintKey.toBase58(),
-        );
-        if (!userPoolTokenAddress) {
-          notify({
-            message: 'Error - token account does not exist',
-            variant: 'error',
-          });
-        }
-
         const sourcePoolTokenKey = await findAssociatedTokenAddress(
           wallet?.publicKey,
           poolInfo.mintKey,
