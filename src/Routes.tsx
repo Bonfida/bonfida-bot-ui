@@ -9,6 +9,7 @@ import FaqPage from './pages/FaqPage';
 import BalancesPage from './pages/BalancesPage';
 import ExplorePage from './pages/ExplorePage';
 import CreatePoolPage from './pages/CreatePoolPage';
+import SignalProviderPage from './pages/SignalProviderPage';
 
 export default function Routes() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -24,6 +25,11 @@ export default function Routes() {
           <Route extact path="/balances" component={BalancesPage} />
           <Route extact path="/explore" component={ExplorePage} />
           <Route extact path="/create" component={CreatePoolPage} />
+          <Route
+            extact
+            path="/signal-provider/:poolSeed"
+            component={SignalProviderPage}
+          />
           <Route exact path="/pool/:poolSeed">
             <PoolPage />
           </Route>

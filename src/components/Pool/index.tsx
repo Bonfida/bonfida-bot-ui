@@ -18,26 +18,16 @@ import {
   useBalanceForMint,
   createAssociatedTokenAccount,
   findAssociatedTokenAddress,
-  findUserAccountsForMint,
 } from '../../utils/tokens';
 import Divider from '../Divider';
-import { useEffectAfterTimeout, useLocalStorageState } from '../../utils/utils';
 import { PublicKey } from '@solana/web3.js';
 import {
   usePoolBalance,
   usePoolInfo,
   usePoolUsdBalance,
 } from '../../utils/pools';
-import bs58 from 'bs58';
 import { useConnection } from '../../utils/connection';
-import {
-  fetchPoolBalances,
-  BONFIDABOT_PROGRAM_ID,
-  fetchPoolInfo,
-  deposit,
-  Numberu64,
-  redeem,
-} from 'bonfida-bot';
+import { BONFIDABOT_PROGRAM_ID, deposit, Numberu64, redeem } from 'bonfida-bot';
 import CustomButton from '../CustomButton';
 import InformationRow from '../InformationRow';
 import { roundToDecimal, abbreviateAddress } from '../../utils/utils';
@@ -375,8 +365,6 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         signers,
         sendingMessage: `${tab === 0 ? 'Depositing' : 'Withdrawing'}...`,
       });
-
-      // Else invalid operation
     } catch (err) {
       console.warn(`Error ${tab === 0 ? 'Depositing' : 'Withdrawing'} ${err}`);
       notify({

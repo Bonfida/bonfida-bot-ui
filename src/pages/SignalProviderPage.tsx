@@ -1,19 +1,19 @@
 import React from 'react';
-import { PoolPanel } from '../components/Pool';
+import SignalProviderCard from '../components/SignalProviderCard';
 import { useParams } from 'react-router-dom';
 import { isValidPublicKey } from '../utils/utils';
 import Grid from '@material-ui/core/Grid';
 
-const PoolPage = () => {
+const SignalProviderPage = () => {
   const { poolSeed } = useParams<{ poolSeed: string }>();
   if (!isValidPublicKey(poolSeed)) {
     return <>Invalid poolSeed</>;
   }
   return (
     <Grid container justify="center">
-      <PoolPanel poolSeed={poolSeed} />
+      <SignalProviderCard poolSeed={poolSeed} />
     </Grid>
   );
 };
 
-export default PoolPage;
+export default SignalProviderPage;
