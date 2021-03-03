@@ -111,8 +111,6 @@ const CreatePoolCard = () => {
     );
   }
 
-  console.log('assets', assets);
-
   const removeMarket = (i: number) => {
     setMarketAddresses([
       ...marketAddresses.slice(0, i),
@@ -149,7 +147,7 @@ const CreatePoolCard = () => {
   const onSubmit = async () => {
     // Check if there is enough FIDA
     const fida = assets.find((asset) => asset.mint === FIDA_MINT)?.amount;
-    console.log('fida', fida);
+
     if (!fida || isNaN(fida) || fida < 1) {
       notify({
         message: 'Pools need to contain at least 1 FIDA',

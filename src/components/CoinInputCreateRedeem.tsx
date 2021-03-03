@@ -116,7 +116,6 @@ const DepositInput = ({
       setAmount('');
       return;
     }
-    console.log(e.target.value.substring(1), e.target.value);
     setAmount(
       e.target.value[0] === '0' ? e.target.value.slice(1) : e.target.value,
     );
