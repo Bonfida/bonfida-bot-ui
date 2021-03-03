@@ -191,9 +191,9 @@ export async function findAssociatedTokenAddress(
 }
 
 export const createAssociatedTokenAccount = async (
-  splTokenMintAddress: PublicKey,
-  wallet,
   connection,
+  wallet,
+  splTokenMintAddress: PublicKey,
 ): Promise<string> => {
   const associatedTokenAddress = await findAssociatedTokenAddress(
     wallet.publicKey,

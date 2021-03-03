@@ -1526,15 +1526,6 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@project-serum/serum@^0.13.18":
-  version "0.13.18"
-  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.18.tgz#66adf2cf00d54612b71ec7cff211658060a8d660"
-  integrity sha512-DpTMuidbLSMt9TQSIRhusLyt5TcGXaiTBH7IsowZQrexa4gXgKmSrpuSc7JLUs9V7t7ILta8KX5YHTFQuWJEZQ==
-  dependencies:
-    "@solana/web3.js" "0.86.1"
-    bn.js "^5.1.2"
-    buffer-layout "^1.2.0"
-
 "@project-serum/serum@^0.13.23":
   version "0.13.23"
   resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.23.tgz#70a4206e3fe926ef2f6e41da1b562399a20b3c9d"
@@ -1544,10 +1535,27 @@
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
+"@project-serum/serum@^0.13.25":
+  version "0.13.25"
+  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.25.tgz#40cbeaed03bb69e6a8c3e9117359b70ef155042e"
+  integrity sha512-IdK768TwM3tJHDPpt3iJ9AR7sMECrXD5B5i+oZhHR2+06Mun9djx/PtTTVYik161PjJXkuQozfWVk2a003s0CQ==
+  dependencies:
+    "@solana/web3.js" "^0.90.0"
+    bn.js "^5.1.2"
+    buffer-layout "^1.2.0"
+
 "@project-serum/sol-wallet-adapter@^0.1.4":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@project-serum/sol-wallet-adapter/-/sol-wallet-adapter-0.1.4.tgz#dfcc2339bdcc352b16deab5055d0b818b1da1e3e"
   integrity sha512-bjcBx2iEEqIZUNgOkfEpqgzsEha8lU0IbzWZWVkRdIpdZnTguomHmarZ7Z9zvZvjI2M9fZ8wA/0m/s2GXYoQVQ==
+  dependencies:
+    bs58 "^4.0.1"
+    eventemitter3 "^4.0.4"
+
+"@project-serum/sol-wallet-adapter@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@project-serum/sol-wallet-adapter/-/sol-wallet-adapter-0.1.5.tgz#b8376addcb5e364f0621be639692d1c3b6d28622"
+  integrity sha512-g2ugWI3mZu/+aXWA/hpDRly0lTwjfTeOQXUs5DNuZCbxXRdNXe1LLfjzzoZEMpURavqO725UwBkKxC5acvgoMw==
   dependencies:
     bs58 "^4.0.1"
     eventemitter3 "^4.0.4"
@@ -1679,6 +1687,29 @@
   version "0.88.0"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.88.0.tgz#319d24a03b0b65922338a482c5ba060a401b514f"
   integrity sha512-e3dvt+k6keooHuwRR7ZcQoiz0Emi/5fr5QsLBCJyM6WOtId5IYVXLl/3VRxLOBWWcvnhUrhejrOTrASEs1bEqA==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    bn.js "^5.0.0"
+    bs58 "^4.0.1"
+    buffer "^6.0.1"
+    buffer-layout "^1.2.0"
+    crypto-hash "^1.2.2"
+    esdoc-inject-style-plugin "^1.0.0"
+    jayson "^3.0.1"
+    keccak "^3.0.1"
+    mz "^2.7.0"
+    node-fetch "^2.2.0"
+    npm-run-all "^4.1.5"
+    rpc-websockets "^7.4.2"
+    secp256k1 "^4.0.2"
+    superstruct "^0.8.3"
+    tweetnacl "^1.0.0"
+    ws "^7.0.0"
+
+"@solana/web3.js@^0.90.0":
+  version "0.90.5"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.90.5.tgz#5be7d78a19f0b5e01bf82c52e3cbf0bb72a38cfd"
+  integrity sha512-2elnwfIkdtrUjLdTBKu7Rc3mTv95k2cn+JtNtmO2fY/PFRZm7mnGS/gk/wWzGCpBVLiqz2o6o21oONqyDtLG/w==
   dependencies:
     "@babel/runtime" "^7.3.1"
     bn.js "^5.0.0"
@@ -3122,12 +3153,13 @@ body-parser@1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bonfida-bot@^0.2.16:
-  version "0.2.16"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.2.16.tgz#7c68eb42cc018d691f91545f5d0ff8952c4a4501"
-  integrity sha512-Yx9XP/bmSkK95lIu1GgdXM6JjEPGDHebwhNhP7HH28ruXDN4JAloTv3lNLIq2F/HTb8dmB0JmB4OykI+jg7/nQ==
+bonfida-bot@^0.2.18:
+  version "0.2.18"
+  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.2.18.tgz#629a3246d6bb6fa15a11a2adb9a00ce66a78d7d7"
+  integrity sha512-nZyeXtg/750i7YlV1bRABoNZmqbNPUcimIZcXOn20TQnCukec2y58GwRK5AwdLwmkt4323tc8LC13bYxRMcgxw==
   dependencies:
     "@project-serum/serum" "^0.13.23"
+    "@project-serum/sol-wallet-adapter" "^0.1.5"
     "@solana/spl-token" "0.0.13"
     "@solana/web3.js" "^0.88.0"
     bip32 "^2.0.6"

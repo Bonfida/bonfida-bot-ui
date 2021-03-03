@@ -18,7 +18,12 @@ import { getAssetsFromMarkets } from '../utils/markets';
 import { useTokenAccounts } from '../utils/tokens';
 import CoinInput from './CoinInputCreatePool';
 import { Transaction, PublicKey } from '@solana/web3.js';
-import { createPool, BONFIDABOT_PROGRAM_ID, Numberu16 } from 'bonfida-bot';
+import {
+  createPool,
+  BONFIDABOT_PROGRAM_ID,
+  Numberu16,
+  Numberu64,
+} from 'bonfida-bot';
 import { SERUM_PROGRAM_ID } from '../utils/serum';
 import { notify } from '../utils/notifications';
 import { decimalsFromMint, FIDA_MINT } from '../utils/tokens';
@@ -146,6 +151,8 @@ const CreatePoolCard = () => {
         new Numberu16(marketAddresses.length + 1),
         marketAddresses.map((m) => new PublicKey(m)),
         wallet?.publicKey,
+        new Numberu64(1000), // TODO Finish form
+        new Numberu16(marketAddresses.length + 1),
       );
       const tx = new Transaction();
       tx.add(...transactionInstructions);

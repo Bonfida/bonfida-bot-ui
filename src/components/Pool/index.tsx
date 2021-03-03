@@ -16,6 +16,9 @@ import {
   tokenNameFromMint,
   useTokenAccounts,
   useBalanceForMint,
+  createAssociatedTokenAccount,
+  findAssociatedTokenAddress,
+  findUserAccountsForMint,
 } from '../../utils/tokens';
 import Divider from '../Divider';
 import { useEffectAfterTimeout, useLocalStorageState } from '../../utils/utils';
@@ -31,6 +34,9 @@ import {
   fetchPoolBalances,
   BONFIDABOT_PROGRAM_ID,
   fetchPoolInfo,
+  deposit,
+  Numberu64,
+  redeem,
 } from 'bonfida-bot';
 import CustomButton from '../CustomButton';
 import InformationRow from '../InformationRow';
@@ -40,6 +46,9 @@ import { ExplorerLink } from '../Link';
 import { notify } from '../../utils/notifications';
 import Spin from '../Spin';
 import { marketNameFromAddress } from '../../utils/markets';
+import { useWallet } from '../../utils/wallet';
+import { Transaction, Account, TransactionInstruction } from '@solana/web3.js';
+import { sendTransaction } from '../../utils/send';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -219,9 +228,11 @@ const PoolInformation = ({
 export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   // TODO Different cases whether the pool is known or unknown
   const connection = useConnection();
+  const { wallet, connected } = useWallet();
 
-  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  const www = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
   const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
+  const [poolBalance] = usePoolBalance(new PublicKey(poolSeed));
 
   const [tab, setTab] = React.useState(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -233,6 +244,11 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const balance = useBalanceForMint(tokenAccounts, mint);
 
   const [loading, setLoading] = useState(false);
+  const [quote, setQuote] = useState<string | null>(null);
+
+  console.log('poolInfo', poolInfo);
+
+  console.log(poolInfo?.mintKey.toBase58(), poolInfo?.assetMintkeys);
 
   useEffect(() => {
     if (poolInfo) {
@@ -242,18 +258,146 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
 
   useEffect(() => {
     // Recompute Deposit quote
-  }, []);
+    const parsedAmount = parseFloat(amount);
+    if (!poolBalance || isNaN(parsedAmount) || parsedAmount <= 0) {
+      setQuote(null);
+      return;
+    }
+    let newQuote = '';
+    newQuote += `${amount} Pool Token  = `;
+    const poolTokenSupply = poolBalance[0].uiAmount;
+    for (let i = 0; i < poolBalance[1].length; i++) {
+      let b = poolBalance[1][i];
+      newQuote += `${roundToDecimal(
+        (b.tokenAmount.uiAmount / poolTokenSupply) * parseFloat(amount),
+        3,
+      )} ${tokenNameFromMint(b.mint)}`;
+      if (i != poolBalance.length - 1) {
+        newQuote += ' + ';
+      }
+    }
+    setQuote(newQuote);
+  }, [amount, poolBalance]);
 
   const onSubmit = async () => {
-    console.log('Trying to deposit');
+    if (!connected) {
+      notify({
+        message: 'Please connect your wallet',
+        variant: 'info',
+      });
+    }
     // Checks enough in wallet, !isNaN amount
+    if (!poolInfo || !tokenAccounts || !poolBalance) {
+      notify({
+        message: 'Try again',
+        variant: 'error',
+      });
+      return;
+    }
+    const parsedAmount = parseFloat(amount);
+    if (!parsedAmount || isNaN(parsedAmount) || parsedAmount <= 0) {
+      notify({
+        message: 'Invalid amount',
+        variant: 'error',
+      });
+      return;
+    }
     try {
       setLoading(true);
       notify({
         message: 'Initiating the deposit',
         variant: 'info',
       });
+
+      let sourceAssetKeys: PublicKey[] = [];
+      const poolAssetsMints = poolInfo.assetMintkeys.map((a) => a.toBase58());
+
+      for (let mint of poolAssetsMints) {
+        const account = tokenAccounts.find(
+          (acc) => acc.account.data.parsed.info.mint === mint,
+        );
+        if (!account) {
+          // Create associated token accounts
+          const createdAccount = await createAssociatedTokenAccount(
+            connection,
+            wallet,
+            new PublicKey(mint),
+          );
+          const associatedTokenAccount = await findAssociatedTokenAddress(
+            wallet.publicKey,
+            new PublicKey(mint),
+          );
+          sourceAssetKeys.push(associatedTokenAccount);
+        } else {
+          sourceAssetKeys.push(new PublicKey(account.pubkey));
+        }
+      }
+      let instructions: TransactionInstruction[] = [];
+      if (tab === 0) {
+        // Tab === 0 => Deposit
+        instructions = await deposit(
+          connection,
+          BONFIDABOT_PROGRAM_ID,
+          wallet.publicKey,
+          sourceAssetKeys,
+          new Numberu64(parsedAmount * Math.pow(10, poolBalance[0].decimals)),
+          [new PublicKey(poolSeed).toBuffer()],
+          wallet.publicKey,
+        );
+      } else if (tab === 1) {
+        // Tab === 1 => Withdraw
+        const userPoolTokenAddress = findUserAccountsForMint(
+          tokenAccounts,
+          poolInfo.mintKey.toBase58(),
+        );
+        if (!userPoolTokenAddress) {
+          notify({
+            message: 'Error - token account does not exist',
+            variant: 'error',
+          });
+        }
+
+        const sourcePoolTokenKey = await findAssociatedTokenAddress(
+          wallet?.publicKey,
+          poolInfo.mintKey,
+        );
+
+        instructions = await redeem(
+          connection,
+          BONFIDABOT_PROGRAM_ID,
+          wallet?.publicKey,
+          sourcePoolTokenKey,
+          sourceAssetKeys,
+          [new PublicKey(poolSeed).toBuffer()],
+          new Numberu64(parsedAmount * Math.pow(10, poolBalance[0].decimals)),
+        );
+      } else {
+        notify({
+          message: 'Error',
+          variant: 'error',
+        });
+      }
+
+      const tx = new Transaction();
+      const signers: Account[] = [];
+
+      tx.add(...instructions);
+
+      const result = await sendTransaction({
+        transaction: tx,
+        wallet,
+        connection,
+        signers,
+        sendingMessage: `${tab === 0 ? 'Depositing' : 'Withdrawing'}...`,
+      });
+
+      // Else invalid operation
     } catch (err) {
+      console.warn(`Error ${tab === 0 ? 'Depositing' : 'Withdrawing'} ${err}`);
+      notify({
+        message: `Error ${tab === 0 ? 'Depositing' : 'Withdrawing'} ${err}`,
+        variant: 'error',
+      });
     } finally {
       setLoading(false);
     }
@@ -265,7 +409,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         {/* Header */}
         <VerifiedPool isVerified />
         {/* Deposit/Withdraw tokens */}
-        <PoolTitle poolName={pool?.name || ''} />
+        <PoolTitle poolName={www?.name || ''} />
         <Divider
           width="80%"
           height="1px"
@@ -293,6 +437,14 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
           setAmount={setAmount}
           balance={balance}
         />
+        {/* Show something like 1 Pool Token = x FIDA + y USDC + ... */}
+        {poolBalance && quote && (
+          <>
+            <Typography variant="body1" align="center">
+              {quote}
+            </Typography>
+          </>
+        )}
         {/* Pool info */}
         <Divider
           width="80%"
@@ -309,7 +461,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
           poolSeed={new PublicKey(poolSeed)}
           tokenAccounts={tokenAccounts}
         />
-        {/* Add pool markets */}
+        {/* Add www markets */}
         {/* Submit button */}
         <Divider
           width="80%"

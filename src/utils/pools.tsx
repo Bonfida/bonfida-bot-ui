@@ -25,14 +25,14 @@ export interface Pool {
 export const USE_POOLS: Pool[] = [
   {
     name: 'RSI',
-    poolSeed: new PublicKey('5xK9ByTt1MXP6SfB9BXL16GLRdsCqNr8Xj1SToje12Sa'),
+    poolSeed: new PublicKey('HFhJ3k84H3K3iCNHbkTZ657r9fwQGux7czUZavhm4ebV'),
     illustration: rsi,
     description:
       'This strategy follows overbought or oversold conditions in a market.',
   },
   {
     name: 'DCA',
-    poolSeed: new PublicKey('5xK9ByTt1MXP6SfB9BXL16GLRdsCqNr8Xj1SToje12Sa'),
+    poolSeed: new PublicKey('HFhJ3k84H3K3iCNHbkTZ657r9fwQGux7czUZavhm4ebV'),
     illustration: dca,
     description:
       'Dollar cost average and reduce the impact of volatility of the market.',
