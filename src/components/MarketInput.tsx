@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { USE_TOKENS } from '../utils/tokens';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import getCoinIcon from '../utils/icons';
 import { USE_MARKETS } from '../utils/markets';
@@ -98,16 +96,17 @@ const RenderMarketRow = ({ name }: { name: string }) => {
 const MarketInput = ({
   marketAddresses,
   setMarketAddresses,
-  index,
+  index = 0,
   disabled = false,
+  marketsList = USE_MARKETS,
 }: {
   marketAddresses: string[];
   setMarketAddresses: (arg: any) => void;
-  index: number;
+  index?: number;
   disabled?: boolean;
+  marketsList?: any;
 }) => {
   const classes = useStyles();
-  const [display, setDisplay] = useState(marketAddresses[index]);
 
   const onChange = (e) => {
     const old = [...marketAddresses];
@@ -131,7 +130,7 @@ const MarketInput = ({
           IconComponent={ExpandMoreIcon}
           value={marketAddresses[index]}
         >
-          {USE_MARKETS.map((m, i) => {
+          {marketsList.map((m, i) => {
             return (
               <MenuItem
                 value={m.address.toBase58()}

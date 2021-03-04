@@ -16,7 +16,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "bn.js": "^5.1.3",
-    "bonfida-bot": "^0.2.19",
+    "bonfida-bot": "^0.2.24",
     "bs58": "^4.0.1",
     "clsx": "^1.1.1",
     "gh-pages": "^3.1.0",

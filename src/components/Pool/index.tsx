@@ -220,7 +220,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const connection = useConnection();
   const { wallet, connected } = useWallet();
 
-  const www = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
   const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
   const [poolBalance] = usePoolBalance(new PublicKey(poolSeed));
 
@@ -271,6 +271,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         message: 'Please connect your wallet',
         variant: 'info',
       });
+      return;
     }
     // Checks enough in wallet, !isNaN amount
     if (!poolInfo || !tokenAccounts || !poolBalance) {
@@ -291,7 +292,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
     try {
       setLoading(true);
       notify({
-        message: 'Initiating the deposit',
+        message: `Initiating the ${tab === 0 ? 'deposit' : 'withdrawal'}`,
         variant: 'info',
       });
 
@@ -304,7 +305,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         );
         if (!account) {
           // Create associated token accounts
-          const createdAccount = await createAssociatedTokenAccount(
+          await createAssociatedTokenAccount(
             connection,
             wallet,
             new PublicKey(mint),
@@ -340,7 +341,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         instructions = await redeem(
           connection,
           BONFIDABOT_PROGRAM_ID,
-          wallet?.publicKey,
+          wallet.publicKey,
           sourcePoolTokenKey,
           sourceAssetKeys,
           [new PublicKey(poolSeed).toBuffer()],
@@ -380,9 +381,9 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
     <div style={{ width: 700, padding: 20, margin: 20 }}>
       <FloatingCard>
         {/* Header */}
-        <VerifiedPool isVerified />
+        <VerifiedPool isVerified={!!pool} />
         {/* Deposit/Withdraw tokens */}
-        <PoolTitle poolName={www?.name || ''} />
+        <PoolTitle poolName={pool?.name || ''} />
         <Divider
           width="80%"
           height="1px"
@@ -434,7 +435,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
           poolSeed={new PublicKey(poolSeed)}
           tokenAccounts={tokenAccounts}
         />
-        {/* Add www markets */}
+        {/* Add pool markets */}
         {/* Submit button */}
         <Divider
           width="80%"

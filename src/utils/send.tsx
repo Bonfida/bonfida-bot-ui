@@ -516,7 +516,7 @@ export const getUnixTs = () => {
   return new Date().getTime() / 1000;
 };
 
-const DEFAULT_TIMEOUT = 15000;
+const DEFAULT_TIMEOUT = 15000 * 3;
 
 export async function sendTransaction({
   transaction,

@@ -1526,15 +1526,6 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@project-serum/serum@^0.13.23":
-  version "0.13.23"
-  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.23.tgz#70a4206e3fe926ef2f6e41da1b562399a20b3c9d"
-  integrity sha512-Atg2sSdQLEp4JIg4jp3vy1T9u9O5wObVTcGe0hX7e7zDmDc4zxBbTJXxdvMRxaz4pfrETyithX//zIMyIHMA8Q==
-  dependencies:
-    "@solana/web3.js" "0.86.1"
-    bn.js "^5.1.2"
-    buffer-layout "^1.2.0"
-
 "@project-serum/serum@^0.13.25":
   version "0.13.25"
   resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.25.tgz#40cbeaed03bb69e6a8c3e9117359b70ef155042e"
@@ -1613,29 +1604,6 @@
     buffer-layout "^1.2.0"
     dotenv "8.2.0"
     mkdirp "1.0.4"
-
-"@solana/web3.js@0.86.1":
-  version "0.86.1"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.86.1.tgz#034a2cef742569f74dfc9960dfbcabc92e674b08"
-  integrity sha512-9mjWs17ym7PIm7bHA37wnnYyD7rIVHwkx1RI6BzGhMO5h8E+HlZM8ISLgOx+NItg8XRCfFhlrVgJTzK4om1s0g==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    bn.js "^5.0.0"
-    bs58 "^4.0.1"
-    buffer "^5.4.3"
-    buffer-layout "^1.2.0"
-    crypto-hash "^1.2.2"
-    esdoc-inject-style-plugin "^1.0.0"
-    jayson "^3.0.1"
-    keccak "^3.0.1"
-    mz "^2.7.0"
-    node-fetch "^2.2.0"
-    npm-run-all "^4.1.5"
-    rpc-websockets "^7.4.2"
-    secp256k1 "^4.0.2"
-    superstruct "^0.8.3"
-    tweetnacl "^1.0.0"
-    ws "^7.0.0"
 
 "@solana/web3.js@^0.86.1":
   version "0.86.4"
@@ -3153,12 +3121,12 @@ body-parser@1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bonfida-bot@^0.2.19:
-  version "0.2.19"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.2.19.tgz#51ce805900c6cc4d8d1162d95975822ce5174f3a"
-  integrity sha512-RhKhP1Wsf1HhD5hELsunXPB0DdH0Vdqy6wVe2c9pus3Abwlst4iPCeLOvSR2srJWmzwhVF5I96LBHS92g/5CIQ==
+bonfida-bot@^0.2.24:
+  version "0.2.24"
+  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.2.24.tgz#140cf8785b009ada76379be2a15e3600c47b1b10"
+  integrity sha512-3/nlGEIWpP8iaAqFoUYa5JxU9dUfkux6BrSOy3tNpBFcxNFq/bP8GtQDnoyV91Iy1UcGMwOTkDfUdUWG3LlcVw==
   dependencies:
-    "@project-serum/serum" "^0.13.23"
+    "@project-serum/serum" "^0.13.25"
     "@project-serum/sol-wallet-adapter" "^0.1.5"
     "@solana/spl-token" "0.0.13"
     "@solana/web3.js" "^0.88.0"
