@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { usePoolInfo } from '../utils/pools';
 import { PublicKey, Transaction, Account } from '@solana/web3.js';
 import { useWallet } from '../utils/wallet';
 import Grid from '@material-ui/core/Grid';
@@ -33,7 +32,20 @@ import TextField from '@material-ui/core/TextField';
 import MarketInput from './MarketInput';
 import { USE_MARKETS } from '../utils/markets';
 import { Market } from '@project-serum/serum';
-import { getDecimalCount, roundToDecimal } from '../utils/utils';
+import {
+  getDecimalCount,
+  roundToDecimal,
+  abbreviateAddress,
+} from '../utils/utils';
+import {
+  useTokenAccounts,
+  useBalanceForMint,
+  tokenNameFromMint,
+} from '../utils/tokens';
+import InformationRow from './InformationRow';
+import { ExplorerLink } from './Link';
+import { usePoolBalance, usePoolInfo, usePoolUsdBalance } from '../utils/pools';
+import { marketNameFromAddress } from '../utils/markets';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,15 +62,33 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 300,
       margin: 10,
     },
+    tradeButtonContainer: {
+      marginTop: 20,
+    },
+    feesButtonContainer: {
+      marginTop: 20,
+    },
   }),
 );
 
 // Order, collect fees
 
 const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
+  const classes = useStyles();
   const connection = useConnection();
   const { wallet } = useWallet();
   const [loading, setLoading] = useState(false);
+  const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
+  console.log('poolInfo', poolInfo);
+  console.log('poolInfo?.feePeriod.toNumber()', poolInfo?.feePeriod.toNumber());
+
+  // Format feePeriod in hh:mm:
+  let date = new Date(0);
+  date.setSeconds(poolInfo?.feePeriod.toNumber() || 0);
+  let feePeriod = date.toISOString().substr(11, 8);
+
+  console.log(poolInfo?.feeRatio);
+
   const onSubmit = async () => {
     try {
       setLoading(true);
@@ -95,7 +125,27 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
     }
   };
   return (
-    <Grid container direction="column" justify="center" alignItems="center">
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      className={classes.feesButtonContainer}
+    >
+      {poolInfo && (
+        <>
+          <InformationRow label="Fee Period (HH:MM:SS)" value={feePeriod} />
+          <InformationRow
+            label="Fee Ratio"
+            value={
+              roundToDecimal(
+                (poolInfo?.feeRatio.toNumber() * 100) / Math.pow(2, 16),
+                3,
+              ).toString() + ' %'
+            }
+          />
+        </>
+      )}
       <CustomButton onClick={onSubmit}>
         {loading ? <Spin size={20} /> : 'Collect Fees'}
       </CustomButton>
@@ -119,11 +169,6 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
   const [size, setSize] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
 
-  console.log('poolInfo', poolInfo?.authorizedMarkets[0].toBase58());
-  console.log('markets[0]', markets ? markets[0] : 'wait');
-  console.log(
-    USE_MARKETS.filter((e) => e.name === 'FIDA/USDT')[0]?.address.toBase58(),
-  );
   useEffect(() => {
     if (markets) {
       setMarketAddress([markets[0]]);
@@ -157,7 +202,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       });
       return;
     }
-    console.log('marketAddress[0]', marketAddress[0]);
+
     const market = await Market.load(
       connection,
       new PublicKey(marketAddress[0]),
@@ -285,7 +330,13 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
           onChange={onChangePrice}
         />
       </Grid>
-      <Grid container direction="column" justify="center" alignItems="center">
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        className={classes.tradeButtonContainer}
+      >
         <CustomButton onClick={onSubmit}>
           {loading ? <Spin size={20} /> : 'Place Order'}
         </CustomButton>
@@ -294,7 +345,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
   );
 };
 
-const PoolTitle = ({ poolName }: { poolName: string }) => {
+const PoolTitle = ({ poolName }: { poolName: string | undefined }) => {
   const classes = useStyles(0);
   return (
     <Grid container direction="column" justify="center" alignItems="center">
@@ -303,10 +354,99 @@ const PoolTitle = ({ poolName }: { poolName: string }) => {
       </Grid>
       <Grid item>
         <Typography variant="h1" className={classes.poolTitle}>
-          {poolName}
+          {poolName || 'Unknown Pool'}
         </Typography>
       </Grid>
     </Grid>
+  );
+};
+
+const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
+  const [tokenAccounts] = useTokenAccounts();
+  const [poolBalance] = usePoolBalance(poolSeed);
+  const [poolInfo] = usePoolInfo(poolSeed);
+  const pool = USE_POOLS.find(
+    (p) => p.poolSeed.toBase58() === poolSeed.toBase58(),
+  );
+
+  const userPoolTokenBalance = useBalanceForMint(
+    tokenAccounts,
+    poolInfo?.mintKey.toBase58(),
+  );
+
+  const poolMarkets = poolInfo?.authorizedMarkets;
+
+  let usdValue = usePoolUsdBalance(poolBalance ? poolBalance[1] : null);
+
+  return (
+    <>
+      <InformationRow
+        label="Pool Address"
+        value={
+          <ExplorerLink address={poolInfo?.address.toBase58()}>
+            {abbreviateAddress(poolInfo?.address, 7)}
+          </ExplorerLink>
+        }
+      />
+      <InformationRow
+        label="Pool Token Mint"
+        value={
+          <ExplorerLink address={poolInfo?.mintKey.toBase58()}>
+            {abbreviateAddress(poolInfo?.mintKey, 7)}
+          </ExplorerLink>
+        }
+      />
+      <InformationRow
+        label="Pool Token Supply"
+        value={poolBalance ? poolBalance[0]?.uiAmount : 0}
+      />
+      <InformationRow
+        label="USD Value of the Pool"
+        value={`$${roundToDecimal(usdValue, 2)}`}
+      />
+      <Typography variant="body1">Tokens in the pool:</Typography>
+      {poolBalance &&
+        poolBalance[1]?.map((asset) => {
+          return (
+            <div style={{ marginLeft: 10 }}>
+              <InformationRow
+                // Abbrev raw mint
+                label={'- ' + tokenNameFromMint(asset.mint) || asset.mint}
+                value={asset.tokenAmount.uiAmount}
+              />
+            </div>
+          );
+        })}
+      <Typography variant="body1" style={{ marginBottom: 10, marginTop: 10 }}>
+        The pool can only trade on the following markets:
+      </Typography>
+      <div style={{ margin: 10 }}>
+        {poolMarkets?.map((m) => {
+          return (
+            <InformationRow
+              label={marketNameFromAddress(m)}
+              value={
+                <ExplorerLink address={m.toBase58()}>
+                  {abbreviateAddress(m, 7)}
+                </ExplorerLink>
+              }
+            />
+          );
+        })}
+      </div>
+      <InformationRow
+        label="Your Share of the Pool"
+        value={
+          poolBalance
+            ? roundToDecimal(
+                (100 * userPoolTokenBalance?.toLocaleString()) /
+                  poolBalance[0]?.uiAmount,
+                2,
+              ).toString() + '%'
+            : 0
+        }
+      />
+    </>
   );
 };
 
@@ -314,8 +454,11 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
   const classes = useStyles();
   const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
   const { connected, wallet } = useWallet();
-
   const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  const [tab, setTab] = React.useState(0);
+  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setTab(newValue);
+  };
 
   if (!connected) {
     return (
@@ -337,11 +480,30 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
     <>
       <FloatingCard>
         <div className={classes.cardContainer}>
-          <PoolTitle poolName={pool?.name || 'Unknown Pool'} />
-
-          <TradePanel poolSeed={poolSeed} />
-          <div style={{ marginBottom: 40 }} />
-          <CollectFeesButton poolSeed={poolSeed} />
+          <PoolTitle poolName={pool?.name} />
+          <Tabs
+            value={tab}
+            indicatorColor="primary"
+            textColor="primary"
+            onChange={handleTabChange}
+            centered
+          >
+            <Tab label="Trade" />
+            <Tab label="Fees" />
+            <Tab label="Information" />
+          </Tabs>
+          <TabPanel index={0} value={tab}>
+            <TradePanel poolSeed={poolSeed} />
+          </TabPanel>
+          <TabPanel index={1} value={tab}>
+            <Typography align="center" variant="body1">
+              Collect your fees
+            </Typography>
+            <CollectFeesButton poolSeed={poolSeed} />
+          </TabPanel>
+          <TabPanel index={2} value={tab}>
+            <PoolInformation poolSeed={new PublicKey(poolSeed)} />
+          </TabPanel>
         </div>
       </FloatingCard>
     </>

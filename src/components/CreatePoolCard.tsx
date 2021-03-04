@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import FloatingCard from './FloatingCard';
 import Grid from '@material-ui/core/Grid';
 import createPoolIcon from '../assets/create/create_robot.svg';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import { useWallet } from '../utils/wallet';
 import { Typography } from '@material-ui/core';
@@ -33,6 +32,8 @@ import {
 } from '../utils/tokens';
 import Spin from './Spin';
 import bs58 from 'bs58';
+
+// TODO Add all markets checkbox
 
 const useStyles = makeStyles({
   img: {
