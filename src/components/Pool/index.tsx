@@ -39,6 +39,7 @@ import { marketNameFromAddress } from '../../utils/markets';
 import { useWallet } from '../../utils/wallet';
 import { Transaction, Account, TransactionInstruction } from '@solana/web3.js';
 import { sendTransaction } from '../../utils/send';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -92,7 +93,6 @@ const PoolInformation = ({
   poolSeed: PublicKey;
   tokenAccounts: any;
 }) => {
-  // Tabs avec contenu de la pool + Description + Owner +  historical returns?
   const [poolBalance] = usePoolBalance(poolSeed);
   const [poolInfo] = usePoolInfo(poolSeed);
   const pool = USE_POOLS.find(
@@ -112,6 +112,12 @@ const PoolInformation = ({
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
   };
+
+  // Fee Info
+  let date = new Date(0);
+  date.setSeconds(poolInfo?.feePeriod.toNumber() || 0);
+  let feePeriod = date.toISOString().substr(11, 8);
+
   return (
     <>
       <Tabs
@@ -123,6 +129,7 @@ const PoolInformation = ({
       >
         <Tab label="Pool Content" />
         <Tab label="Pool Information" />
+        <Tab label="Fee Schedule" />
       </Tabs>
       {/* Content of the pool */}
       <TabPanel value={tab} index={0}>
@@ -133,6 +140,14 @@ const PoolInformation = ({
         <InformationRow
           label="USD Value of the Pool"
           value={`$${roundToDecimal(usdValue, 2)}`}
+        />
+        <InformationRow
+          label="Pool Token Value"
+          value={`$${
+            poolBalance
+              ? roundToDecimal(usdValue / poolBalance[0]?.uiAmount, 3)
+              : 0
+          }`}
         />
         <Typography variant="body1">Tokens in the pool:</Typography>
         {poolBalance &&
@@ -211,6 +226,22 @@ const PoolInformation = ({
           })}
         </div>
       </TabPanel>
+      <TabPanel value={tab} index={2}>
+        {poolInfo && (
+          <>
+            <InformationRow label="Fee Period (HH:MM:SS)" value={feePeriod} />
+            <InformationRow
+              label="Fee Ratio"
+              value={
+                roundToDecimal(
+                  (poolInfo?.feeRatio.toNumber() * 100) / Math.pow(2, 16),
+                  3,
+                ).toString() + ' %'
+              }
+            />
+          </>
+        )}
+      </TabPanel>
     </>
   );
 };
@@ -235,6 +266,10 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
 
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState<string | null>(null);
+
+  const isAdmin =
+    poolInfo?.signalProvider.toBase58() === wallet?.publicKey.toBase58();
+  const history = useHistory();
 
   useEffect(() => {
     if (poolInfo) {
@@ -450,6 +485,28 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         <Grid container justify="center">
           <CustomButton onClick={onSubmit}>
             {loading ? <Spin size={20} /> : tab === 0 ? 'Deposit' : 'Withdraw'}
+          </CustomButton>
+        </Grid>
+
+        {/* Admin Page */}
+        <Divider
+          width="80%"
+          height="1px"
+          background="#B80812"
+          marginLeft="auto"
+          marginRight="auto"
+          opacity={0.5}
+          marginBottom="10px"
+          marginTop="10px"
+        />
+        <Typography align="center" variant="body1">
+          It looks like you own this pool
+        </Typography>
+        <Grid container justify="center" style={{ marginTop: 10 }}>
+          <CustomButton
+            onClick={() => history.push(`/signal-provider/${poolSeed}`)}
+          >
+            Admin Page
           </CustomButton>
         </Grid>
       </FloatingCard>

@@ -79,15 +79,11 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
   const { wallet } = useWallet();
   const [loading, setLoading] = useState(false);
   const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
-  console.log('poolInfo', poolInfo);
-  console.log('poolInfo?.feePeriod.toNumber()', poolInfo?.feePeriod.toNumber());
 
   // Format feePeriod in hh:mm:
   let date = new Date(0);
   date.setSeconds(poolInfo?.feePeriod.toNumber() || 0);
   let feePeriod = date.toISOString().substr(11, 8);
-
-  console.log(poolInfo?.feeRatio);
 
   const onSubmit = async () => {
     try {
