@@ -10,6 +10,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import useTheme from '@material-ui/core/styles/useTheme';
 import robot from '../assets/icons/illustrations/robot-top-bar.svg';
 import { USE_POOLS } from '../utils/pools';
+import FloatingCard from '../components/FloatingCard';
+import { useSmallScreen } from '../utils/utils';
 
 const useStyles = makeStyles({
   root: {
@@ -47,6 +49,9 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 24,
   },
+  exploreBanner: {
+    width: '50vw',
+  },
 });
 
 const Banner = () => {
@@ -66,37 +71,38 @@ const Banner = () => {
 const ExploreBanner = () => {
   const classes = useStyles();
   const history = useHistory();
-  const theme = useTheme();
-  const smallScreen = useMediaQuery(theme.breakpoints.down('lg'));
+  const smallScreen = useSmallScreen('lg');
   return (
-    <div className={classes.redShadowRight}>
-      <Grid
-        container
-        direction="row"
-        justify="space-around"
-        alignItems="center"
-        style={{ marginTop: 30 }}
-      >
-        <Grid item>
-          <Typography className={classes.title} variant="h1">
-            Create and automate your <br /> trading strategies on chain.
-          </Typography>
-          <CustomButton
-            style={{ marginLeft: 50, marginTop: 40 }}
-            onClick={() => {
-              history.push('/explore');
-            }}
-          >
-            Explore strategy
-          </CustomButton>
-        </Grid>
-        {!smallScreen && (
+    <FloatingCard>
+      <div className={classes.exploreBanner}>
+        <Grid
+          container
+          direction="row"
+          justify="space-around"
+          alignItems="center"
+          style={{ marginTop: 30 }}
+        >
           <Grid item>
-            <img src={robot} style={{ height: 100 }} />
+            <Typography className={classes.title} variant="h1">
+              Create and automate your <br /> trading strategies on chain.
+            </Typography>
+            <CustomButton
+              style={{ marginLeft: 50, marginTop: 40 }}
+              onClick={() => {
+                history.push('/explore');
+              }}
+            >
+              Explore strategy
+            </CustomButton>
           </Grid>
-        )}
-      </Grid>
-    </div>
+          {!smallScreen && (
+            <Grid item>
+              <img src={robot} style={{ height: 100 }} />
+            </Grid>
+          )}
+        </Grid>
+      </div>
+    </FloatingCard>
   );
 };
 
@@ -120,16 +126,15 @@ const Subtitle = () => {
 const HomePage = () => {
   const classes = useStyles();
   const history = useHistory();
+  const smallScreen = useSmallScreen('md');
   return (
     <>
       <div className={classes.root}>
-        {/* <Banner />
-         */}
         <ExploreBanner />
         <Subtitle />
         <Grid
           container
-          direction="row"
+          direction={smallScreen ? 'column' : 'row'}
           justify="center"
           alignItems="center"
           spacing={5}

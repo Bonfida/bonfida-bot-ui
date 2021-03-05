@@ -381,11 +381,3 @@ export const useSmallScreen = (breakpoint: string = 'sm') => {
   // @ts-ignore
   return useMediaQuery(theme.breakpoints.down(breakpoint));
 };
-
-// usePoolForOwner
-
-// usePoolForUser
-
-// usePoolMarkets
-
-// usePoolBalances

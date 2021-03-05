@@ -10,9 +10,9 @@ export const MAINNET_ENDPOINT = 'https://solana-api.projectserum.com';
 export const ENDPOINTS: EndpointInfo[] = [
   {
     name: 'mainnet-beta',
-    // endpoint: 'https://solana-api.projectserum.com',
-    endpoint:
-      'http://ec2-52-194-187-6.ap-northeast-1.compute.amazonaws.com:8899/',
+    endpoint: 'https://solana-api.projectserum.com',
+    // endpoint:
+    //   'http://ec2-52-194-187-6.ap-northeast-1.compute.amazonaws.com:8899/',
     custom: false,
   },
   { name: 'localnet', endpoint: 'http://127.0.0.1:8899', custom: false },
