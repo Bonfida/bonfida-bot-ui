@@ -6,6 +6,7 @@ import { Typography } from '@material-ui/core';
 import CustomButton from '../components/CustomButton';
 import { useHistory } from 'react-router-dom';
 import { notify } from '../utils/notifications';
+import StrategyCard from '../components/StrategyCard';
 
 const useStyles = makeStyles({
   container: {
@@ -68,7 +69,7 @@ const ExplorerPage = () => {
           {row.map((pool, i) => {
             return (
               <Grid item className={classes.item}>
-                {/* <StrategyCard pool={pool} left={i % 2 == 0 ? true : false} /> */}
+                <StrategyCard pool={pool} left={i % 2 == 0 ? true : false} />
               </Grid>
             );
           })}
