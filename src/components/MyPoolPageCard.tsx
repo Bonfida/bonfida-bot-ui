@@ -18,6 +18,7 @@ import { PublicKey } from '@solana/web3.js';
 import CustomButton from './CustomButton';
 import Chip from '@material-ui/core/Chip';
 import DoneIcon from '@material-ui/icons/Done';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   table: {
@@ -60,17 +61,24 @@ const PoolTableRow = ({
 }) => {
   const classes = useStyles();
   const [mint, setMint] = useState<string | null>(null);
+  const history = useHistory();
 
   return (
     <TableRow>
       <TableCell>{owned ? <OwnerTag /> : null}</TableCell>
       <TableCell>{poolNameFromSeed(poolSeed)}</TableCell>
       <TableCell>
-        <CustomButton onClick={() => console.log()}>Pool Page</CustomButton>
+        <CustomButton onClick={() => history.push(`/pool/${poolSeed}`)}>
+          Pool Page
+        </CustomButton>
       </TableCell>
       {owned && (
         <TableCell>
-          <CustomButton onClick={() => console.log()}>Admin Page</CustomButton>
+          <CustomButton
+            onClick={() => history.push(`/signal-provider/${poolSeed}`)}
+          >
+            Admin Page
+          </CustomButton>
         </TableCell>
       )}
     </TableRow>

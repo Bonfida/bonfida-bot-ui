@@ -3121,10 +3121,10 @@ body-parser@1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bonfida-bot@^0.2.24:
-  version "0.2.24"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.2.24.tgz#140cf8785b009ada76379be2a15e3600c47b1b10"
-  integrity sha512-3/nlGEIWpP8iaAqFoUYa5JxU9dUfkux6BrSOy3tNpBFcxNFq/bP8GtQDnoyV91Iy1UcGMwOTkDfUdUWG3LlcVw==
+bonfida-bot@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.3.0.tgz#72ada52a978e9960a6a172445f04cba9a1289d2c"
+  integrity sha512-me8KcpbXyLmR2QiKwTUgrSrsGPt0TFy+PSq0TXXrTv9inXKxFtG/d6srxmMIy6LPxLWokEIArMHPhV4xCGchiQ==
   dependencies:
     "@project-serum/serum" "^0.13.25"
     "@project-serum/sol-wallet-adapter" "^0.1.5"
@@ -4679,7 +4679,7 @@ dotenv-expand@5.1.0:
   resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-5.1.0.tgz#3fbaf020bfd794884072ea26b1e9791d45a629f0"
   integrity sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==
 
-dotenv@8.2.0:
+dotenv@8.2.0, dotenv@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==

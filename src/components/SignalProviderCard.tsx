@@ -31,7 +31,7 @@ import { USE_POOLS } from '../utils/pools';
 import TextField from '@material-ui/core/TextField';
 import MarketInput from './MarketInput';
 import { USE_MARKETS } from '../utils/markets';
-import { Market } from '@project-serum/serum';
+import { Market, TOKEN_MINTS } from '@project-serum/serum';
 import {
   getDecimalCount,
   roundToDecimal,
@@ -83,6 +83,7 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
   // Format feePeriod in hh:mm:
   let date = new Date(0);
   date.setSeconds(poolInfo?.feePeriod.toNumber() || 0);
+  console.log(' date.toISOString()', date.toISOString());
   let feePeriod = date.toISOString().substr(11, 8);
 
   const onSubmit = async () => {
@@ -208,10 +209,36 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
     const parsedSize = parseFloat(size || '');
     const parsedPrice = parseFloat(price || '');
 
-    let sizeDecimalCount =
+    const sizeDecimalCount =
       market?.minOrderSize && getDecimalCount(market.minOrderSize);
-    let priceDecimalCount =
+    const priceDecimalCount =
       market?.tickSize && getDecimalCount(market.tickSize);
+    const side = tab === 0 ? OrderSide.Bid : OrderSide.Ask;
+
+    let referrerQuoteWallet: PublicKey | null = null;
+    const usdc = TOKEN_MINTS.find(({ name }) => name === 'USDC');
+    const usdt = TOKEN_MINTS.find(({ name }) => name === 'USDT');
+
+    if (market.supportsReferralFees) {
+      if (
+        process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS &&
+        usdt &&
+        market.quoteMintAddress.equals(usdt?.address)
+      ) {
+        let referrerQuoteWallet = new PublicKey(
+          process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS,
+        );
+      }
+      if (
+        process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS &&
+        usdc &&
+        market.quoteMintAddress.equals(usdc?.address)
+      ) {
+        let referrerQuoteWallet = new PublicKey(
+          process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS,
+        );
+      }
+    }
 
     if (
       !size ||
@@ -234,6 +261,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       });
       return;
     }
+    console.log('marketAddress[0]', marketAddress[0]);
     try {
       setLoading(true);
       const [openOrderAccount, instructions] = await createOrder(
@@ -242,13 +270,13 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         SERUM_PROGRAM_ID,
         new PublicKey(poolSeed).toBuffer(),
         new PublicKey(marketAddress[0]),
-        tab === 0 ? OrderSide.Bid : OrderSide.Ask,
+        side,
         new Numberu64(roundToDecimal(parsedPrice, priceDecimalCount)),
         new Numberu16(roundToDecimal(parsedSize, sizeDecimalCount)),
         OrderType.ImmediateOrCancel,
         new Numberu64(0),
         SelfTradeBehavior.DecrementTake,
-        null,
+        referrerQuoteWallet,
         wallet.publicKey,
       );
 

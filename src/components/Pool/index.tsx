@@ -247,7 +247,6 @@ const PoolInformation = ({
 };
 
 export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
-  // TODO Different cases whether the pool is known or unknown
   const connection = useConnection();
   const { wallet, connected } = useWallet();
 
@@ -268,6 +267,8 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const [quote, setQuote] = useState<string | null>(null);
 
   const isAdmin =
+    wallet &&
+    connected &&
     poolInfo?.signalProvider.toBase58() === wallet?.publicKey?.toBase58();
   const history = useHistory();
 
@@ -499,16 +500,20 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
           marginBottom="10px"
           marginTop="10px"
         />
-        <Typography align="center" variant="body1">
-          It looks like you own this pool
-        </Typography>
-        <Grid container justify="center" style={{ marginTop: 10 }}>
-          <CustomButton
-            onClick={() => history.push(`/signal-provider/${poolSeed}`)}
-          >
-            Admin Page
-          </CustomButton>
-        </Grid>
+        {isAdmin && (
+          <>
+            <Typography align="center" variant="body1">
+              It looks like you own this pool
+            </Typography>
+            <Grid container justify="center" style={{ marginTop: 10 }}>
+              <CustomButton
+                onClick={() => history.push(`/signal-provider/${poolSeed}`)}
+              >
+                Admin Page
+              </CustomButton>
+            </Grid>
+          </>
+        )}
       </FloatingCard>
     </div>
   );
