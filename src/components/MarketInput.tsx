@@ -64,6 +64,7 @@ const useStyles = makeStyles({
     padding: 15,
     borderRadius: 0,
     border: '1px solid #BA0202',
+    width: 300,
   },
 });
 
@@ -127,7 +128,11 @@ const MarketInput = ({
           disabled={disabled}
           className={classes.select}
           onChange={onChange}
-          IconComponent={ExpandMoreIcon}
+          IconComponent={() => (
+            <div style={{ marginBottom: 10 }}>
+              <ExpandMoreIcon />
+            </div>
+          )}
           value={marketAddresses[index]}
         >
           {marketsList.map((m, i) => {
