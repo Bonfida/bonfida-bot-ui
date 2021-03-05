@@ -10,6 +10,7 @@ import BalancesPage from './pages/BalancesPage';
 import ExplorePage from './pages/ExplorePage';
 import CreatePoolPage from './pages/CreatePoolPage';
 import SignalProviderPage from './pages/SignalProviderPage';
+import MyPoolPage from './pages/MyPoolPage';
 
 export default function Routes() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -30,6 +31,7 @@ export default function Routes() {
             path="/signal-provider/:poolSeed"
             component={SignalProviderPage}
           />
+          <Route extact path="/my-pools" component={MyPoolPage} />
           <Route exact path="/pool/:poolSeed">
             <PoolPage />
           </Route>

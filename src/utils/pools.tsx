@@ -5,6 +5,8 @@ import {
   BONFIDABOT_PROGRAM_ID,
   fetchPoolBalances,
   PoolAssetBalance,
+  getPoolsSeedsBySigProvider,
+  getPoolTokenMintFromSeed,
 } from 'bonfida-bot';
 import { useConnection } from './connection';
 import tuple from 'immutable-tuple';
@@ -14,12 +16,15 @@ import bs58 from 'bs58';
 import { getMidPrice } from './markets';
 import { Connection } from '@solana/web3.js';
 import { useEffect, useState } from 'react';
+import { useWallet } from './wallet';
+import { useTokenAccounts } from './tokens';
 
 export interface Pool {
   name: string;
   poolSeed: PublicKey;
   illustration: string;
   description: string;
+  mintAddress: PublicKey;
 }
 
 export const USE_POOLS: Pool[] = [
@@ -29,6 +34,7 @@ export const USE_POOLS: Pool[] = [
     illustration: rsi,
     description:
       'This strategy follows overbought or oversold conditions in a market.',
+    mintAddress: new PublicKey('HFhJ3k84H3K3iCNHbkTZ657r9fwQGux7czUZavhm4ebV'),
   },
   {
     name: 'DCA',
@@ -36,6 +42,7 @@ export const USE_POOLS: Pool[] = [
     illustration: dca,
     description:
       'Dollar cost average and reduce the impact of volatility of the market.',
+    mintAddress: new PublicKey('HFhJ3k84H3K3iCNHbkTZ657r9fwQGux7czUZavhm4ebV'),
   },
 ];
 
@@ -108,4 +115,72 @@ export const usePoolUsdBalance = (
   }, [connection, poolBalance]);
 
   return usdValue;
+};
+
+export const usePoolSeedsBySigProvider = (): [string[] | null, boolean] => {
+  const connection = useConnection();
+  const { connected, wallet } = useWallet();
+  const [poolSeeds, setPoolSeeds] = useState<string[] | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const get = async () => {
+      if (!connection || !wallet || !connected) {
+        return null;
+      }
+      const _poolSeeds = await getPoolsSeedsBySigProvider(
+        connection,
+        BONFIDABOT_PROGRAM_ID,
+        wallet?.publicKey,
+      );
+      setPoolSeeds(_poolSeeds.map((e) => bs58.encode(e)));
+      setLoaded(true);
+    };
+    get();
+  }, [connection, wallet, connected]);
+  return [poolSeeds, loaded];
+};
+
+export const usePoolSeedsForUser = (): [string[] | null, boolean] => {
+  const connection = useConnection();
+  const { wallet, connected } = useWallet();
+  const [tokenAccounts, tokenAccountsLoaded] = useTokenAccounts();
+  const [poolSeeds, setPoolSeeds] = useState<string[] | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const get = async () => {
+      if (!connection || !wallet || !connected || !tokenAccounts) {
+        return null;
+      }
+      const _poolSeeds: string[] = [];
+      const _allPoolSeeds = await getPoolsSeedsBySigProvider(
+        connection,
+        BONFIDABOT_PROGRAM_ID,
+      );
+      for (let seed of _allPoolSeeds) {
+        const mint = await getPoolTokenMintFromSeed(
+          seed,
+          BONFIDABOT_PROGRAM_ID,
+        );
+        const hasPoolToken = tokenAccounts.find(
+          (acc) => acc.account.data.parsed.info.mint === mint.toBase58(),
+        );
+        if (!!hasPoolToken) {
+          _poolSeeds.push(mint.toBase58());
+        }
+      }
+      setPoolSeeds(_poolSeeds);
+      setLoaded(true);
+    };
+    get();
+  }, [connection, connected, wallet, tokenAccountsLoaded]);
+  return [poolSeeds, loaded];
+};
+
+export const poolNameFromSeed = (poolSeed: string) => {
+  const knowPool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  if (!knowPool) {
+    const size = 7;
+    return poolSeed.slice(0, size) + '...' + poolSeed.slice(-size);
+  }
+  return knowPool.name;
 };

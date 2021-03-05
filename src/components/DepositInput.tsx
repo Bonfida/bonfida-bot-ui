@@ -3,11 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import { USE_TOKENS } from '../utils/tokens';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import getCoinIcon from '../utils/icons';
 import Spin from './Spin';
 
 const useStyles = makeStyles({

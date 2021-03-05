@@ -7,6 +7,7 @@ import { AWESOME_TOKENS, AWESOME_MARKETS } from '@dr497/awesome-serum-markets';
 import { USE_POOLS } from './pools';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import useTheme from '@material-ui/core/styles/useTheme';
+import { SERUM_PROGRAM_ID } from 'bonfida-bot';
 
 const USE_MARKETS = [...MARKETS, ...AWESOME_MARKETS];
 
@@ -230,7 +231,7 @@ export const getBestBidsBestAsks = async (marketAddress: PublicKey) => {
     connection,
     marketAddress,
     {},
-    new PublicKey('EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o'),
+    SERUM_PROGRAM_ID,
   );
 
   let bids = await market.loadBids(connection);

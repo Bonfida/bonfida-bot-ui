@@ -66,7 +66,7 @@ const topBarElement = [
   },
   {
     name: 'pools',
-    href: '/pools',
+    href: '/my-pools',
   },
   {
     name: 'create',
@@ -121,6 +121,8 @@ const TopBar = () => {
       setSelectedIndex('balances');
     } else if (location.pathname.includes('create')) {
       setSelectedIndex('create');
+    } else if (location.pathname.includes('pools')) {
+      setSelectedIndex('pools');
     } else {
       setSelectedIndex('home');
     }
