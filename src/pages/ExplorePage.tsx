@@ -1,11 +1,11 @@
 import React from 'react';
-import StrategyCard from '../components/StrategyCard';
 import { USE_POOLS } from '../utils/pools';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import CustomButton from '../components/CustomButton';
 import { useHistory } from 'react-router-dom';
+import { notify } from '../utils/notifications';
 
 const useStyles = makeStyles({
   container: {
@@ -44,7 +44,7 @@ const ExplorerPage = () => {
       <Typography className={classes.addCustomPool} variant="h1" align="center">
         <CustomButton
           className={classes.addCustomPoolButton}
-          onClick={() => console.log('Add custom pool')}
+          onClick={() => notify({ message: 'Coming soon...', variant: 'info' })}
         >
           Add Custom Pool
         </CustomButton>
