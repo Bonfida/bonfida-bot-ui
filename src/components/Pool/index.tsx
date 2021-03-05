@@ -268,7 +268,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const [quote, setQuote] = useState<string | null>(null);
 
   const isAdmin =
-    poolInfo?.signalProvider.toBase58() === wallet?.publicKey.toBase58();
+    poolInfo?.signalProvider.toBase58() === wallet?.publicKey?.toBase58();
   const history = useHistory();
 
   useEffect(() => {
