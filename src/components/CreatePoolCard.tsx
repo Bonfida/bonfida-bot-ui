@@ -146,19 +146,16 @@ const CreatePoolCard = () => {
   };
 
   const onSubmit = async () => {
-    // Check if there is enough FIDA
-    const fida = assets.find((asset) => asset.mint === FIDA_MINT)?.amount;
-
-    if (!fida || isNaN(fida) || fida < 1) {
+    if (!feeRatio || !feeCollectionPeriod) {
       notify({
-        message: 'Pools need to contain at least 1 FIDA',
+        message: 'Invalid fees',
         variant: 'error',
       });
       return;
     }
-    if (!feeRatio || !feeCollectionPeriod) {
+    if (parseFloat(feeCollectionPeriod) < 604800) {
       notify({
-        message: 'Invalid fees',
+        message: 'Fee period need to be greater than 7 days (604,800s)',
         variant: 'error',
       });
       return;

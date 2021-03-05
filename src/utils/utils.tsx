@@ -381,3 +381,26 @@ export const useSmallScreen = (breakpoint: string = 'sm') => {
   // @ts-ignore
   return useMediaQuery(theme.breakpoints.down(breakpoint));
 };
+
+export const formatSeconds = (sec: number): string => {
+  let min;
+  let s;
+  let hour;
+  let day;
+  switch (true) {
+    case sec < 60:
+      return `${sec} s`;
+    case sec < 60 * 60:
+      min = Math.floor(sec / 60);
+      s = sec % 60;
+      return `${min} min ${s} s`;
+    case sec < 24 * 60 * 60:
+      hour = Math.floor(sec / (60 * 60));
+      min = sec % (60 * 60);
+      return `${hour} h ${min} min`;
+    default:
+      day = Math.floor(sec / (24 * 60 * 60));
+      hour = sec % (24 * 60 * 60);
+      return `${day} day ${hour}h`;
+  }
+};

@@ -82,9 +82,7 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
   const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
 
   // Format feePeriod in hh:mm:
-  let date = new Date(0);
-  date.setSeconds(poolInfo?.feePeriod.toNumber() || 0);
-  let feePeriod = date.toISOString().substr(11, 8);
+  const feePeriod = formatSeconds(poolInfo?.feePeriod.toNumber() || 0);
 
   const onSubmit = async () => {
     try {
@@ -131,7 +129,7 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
     >
       {poolInfo && (
         <>
-          <InformationRow label="Fee Period (HH:MM:SS)" value={feePeriod} />
+          <InformationRow label="Fee Period" value={feePeriod} />
           <InformationRow
             label="Fee Ratio"
             value={
@@ -261,22 +259,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       });
       return;
     }
-    console.log('BONFIDABOT_PROGRAM_ID', BONFIDABOT_PROGRAM_ID.toBase58());
-    console.log('SERUM_PROGRAM_ID', SERUM_PROGRAM_ID.toBase58());
-    console.log('poolSeed', poolSeed);
-    console.log('marketAddress[0]', marketAddress[0]);
-    console.log('side', side);
-    console.log(
-      'roundToDecimal(parsedPrice, priceDecimalCount)',
-      roundToDecimal(parsedPrice, priceDecimalCount),
-    );
-    console.log(
-      'roundToDecimal(parsedSize, sizeDecimalCount)',
-      roundToDecimal(parsedSize, sizeDecimalCount),
-    );
-    // @ts-ignore
-    console.log('referrerQuoteWallet', referrerQuoteWallet?.toBase58());
-    console.log('wallet.publicKey', wallet.publicKey.toBase58());
+
     try {
       setLoading(true);
       const [openOrderAccount, instructions] = await createOrder(

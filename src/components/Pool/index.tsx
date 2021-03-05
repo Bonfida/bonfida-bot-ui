@@ -30,7 +30,11 @@ import { useConnection } from '../../utils/connection';
 import { BONFIDABOT_PROGRAM_ID, deposit, Numberu64, redeem } from 'bonfida-bot';
 import CustomButton from '../CustomButton';
 import InformationRow from '../InformationRow';
-import { roundToDecimal, abbreviateAddress } from '../../utils/utils';
+import {
+  roundToDecimal,
+  abbreviateAddress,
+  formatSeconds,
+} from '../../utils/utils';
 import Emoji from '../Emoji';
 import { ExplorerLink } from '../Link';
 import { notify } from '../../utils/notifications';
@@ -114,9 +118,7 @@ const PoolInformation = ({
   };
 
   // Fee Info
-  let date = new Date(0);
-  date.setSeconds(poolInfo?.feePeriod.toNumber() || 0);
-  let feePeriod = date.toISOString().substr(11, 8);
+  let feePeriod = formatSeconds(poolInfo?.feePeriod.toNumber() || 0);
 
   return (
     <>
@@ -229,7 +231,7 @@ const PoolInformation = ({
       <TabPanel value={tab} index={2}>
         {poolInfo && (
           <>
-            <InformationRow label="Fee Period (HH:MM:SS)" value={feePeriod} />
+            <InformationRow label="Fee Period" value={feePeriod} />
             <InformationRow
               label="Fee Ratio"
               value={
