@@ -36,6 +36,7 @@ import {
   getDecimalCount,
   roundToDecimal,
   abbreviateAddress,
+  formatSeconds,
 } from '../utils/utils';
 import {
   useTokenAccounts,
@@ -83,7 +84,6 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
   // Format feePeriod in hh:mm:
   let date = new Date(0);
   date.setSeconds(poolInfo?.feePeriod.toNumber() || 0);
-  console.log(' date.toISOString()', date.toISOString());
   let feePeriod = date.toISOString().substr(11, 8);
 
   const onSubmit = async () => {
@@ -225,7 +225,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         usdt &&
         market.quoteMintAddress.equals(usdt?.address)
       ) {
-        let referrerQuoteWallet = new PublicKey(
+        referrerQuoteWallet = new PublicKey(
           process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS,
         );
       }
@@ -234,7 +234,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         usdc &&
         market.quoteMintAddress.equals(usdc?.address)
       ) {
-        let referrerQuoteWallet = new PublicKey(
+        referrerQuoteWallet = new PublicKey(
           process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS,
         );
       }
@@ -261,7 +261,22 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       });
       return;
     }
+    console.log('BONFIDABOT_PROGRAM_ID', BONFIDABOT_PROGRAM_ID.toBase58());
+    console.log('SERUM_PROGRAM_ID', SERUM_PROGRAM_ID.toBase58());
+    console.log('poolSeed', poolSeed);
     console.log('marketAddress[0]', marketAddress[0]);
+    console.log('side', side);
+    console.log(
+      'roundToDecimal(parsedPrice, priceDecimalCount)',
+      roundToDecimal(parsedPrice, priceDecimalCount),
+    );
+    console.log(
+      'roundToDecimal(parsedSize, sizeDecimalCount)',
+      roundToDecimal(parsedSize, sizeDecimalCount),
+    );
+    // @ts-ignore
+    console.log('referrerQuoteWallet', referrerQuoteWallet?.toBase58());
+    console.log('wallet.publicKey', wallet.publicKey.toBase58());
     try {
       setLoading(true);
       const [openOrderAccount, instructions] = await createOrder(
