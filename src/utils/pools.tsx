@@ -30,19 +30,19 @@ export interface Pool {
 export const USE_POOLS: Pool[] = [
   {
     name: 'RSI',
-    poolSeed: new PublicKey('HFhJ3k84H3K3iCNHbkTZ657r9fwQGux7czUZavhm4ebV'),
+    poolSeed: new PublicKey('GKs4eHGj68AXDvBqeKjeFkhaqkcdfUhnyjtg2HtEq82S'),
     illustration: rsi,
     description:
       'This strategy follows overbought or oversold conditions in a market.',
-    mintAddress: new PublicKey('HFhJ3k84H3K3iCNHbkTZ657r9fwQGux7czUZavhm4ebV'),
+    mintAddress: new PublicKey('GKs4eHGj68AXDvBqeKjeFkhaqkcdfUhnyjtg2HtEq82S'),
   },
   {
     name: 'DCA',
-    poolSeed: new PublicKey('HFhJ3k84H3K3iCNHbkTZ657r9fwQGux7czUZavhm4ebV'),
+    poolSeed: new PublicKey('GKs4eHGj68AXDvBqeKjeFkhaqkcdfUhnyjtg2HtEq82S'),
     illustration: dca,
     description:
       'Dollar cost average and reduce the impact of volatility of the market.',
-    mintAddress: new PublicKey('HFhJ3k84H3K3iCNHbkTZ657r9fwQGux7czUZavhm4ebV'),
+    mintAddress: new PublicKey('GKs4eHGj68AXDvBqeKjeFkhaqkcdfUhnyjtg2HtEq82S'),
   },
 ];
 
