@@ -106,7 +106,7 @@ export const usePoolUsdBalance = (
       }
       let _usdValue = 0;
       for (let balance of poolBalance) {
-        const price = await getMidPrice(connection, balance.mint);
+        const price = await getMidPrice(balance.mint);
         _usdValue += price * balance.tokenAmount.uiAmount;
       }
       setUsdValue(_usdValue);
@@ -158,7 +158,7 @@ export const usePoolSeedsForUser = (): [string[] | null, boolean] => {
       );
       for (let seed of _allPoolSeeds) {
         try {
-            const mint = await getPoolTokenMintFromSeed(
+          const mint = await getPoolTokenMintFromSeed(
             seed,
             BONFIDABOT_PROGRAM_ID,
           );

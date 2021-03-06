@@ -197,7 +197,6 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       });
       return;
     }
-
     const market = await Market.load(
       connection,
       new PublicKey(marketAddress[0]),
@@ -274,7 +273,8 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         OrderType.ImmediateOrCancel,
         new Numberu64(0),
         SelfTradeBehavior.DecrementTake,
-        referrerQuoteWallet,
+        // wallet.publicKey,
+        null,
         wallet.publicKey,
       );
 

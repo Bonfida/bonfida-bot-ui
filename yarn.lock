@@ -1157,10 +1157,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@dr497/awesome-serum-markets@^1.0.31":
-  version "1.0.31"
-  resolved "https://registry.yarnpkg.com/@dr497/awesome-serum-markets/-/awesome-serum-markets-1.0.31.tgz#c9e8461da83cde961663388339292380596167c8"
-  integrity sha512-lPlVkr1UBS3zTOZ7BTDI5pVqF4a83ZeB8zcH3bZp7DfLheFcgYTWRLUdpcL9GzGXjZtMT/mbJdrDC6AC9ttRvg==
+"@dr497/awesome-serum-markets@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@dr497/awesome-serum-markets/-/awesome-serum-markets-1.1.6.tgz#9d7813460971568be9b5719745ab710cdf154141"
+  integrity sha512-e2+QGdTQFt0OAidRLFLN9qtaIMFFHPndzmixwZ+DYiiT3o983t+EMUBufwmeUrfeoX+dE6fqt8PgJxjoOqHblw==
   dependencies:
     "@solana/web3.js" "^0.87.1"
 
@@ -1696,6 +1696,25 @@
     superstruct "^0.8.3"
     tweetnacl "^1.0.0"
     ws "^7.0.0"
+
+"@solana/web3.js@^0.94.2":
+  version "0.94.2"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.94.2.tgz#5e8a873a6041af2c6a2751bd9a5f5b861ab469a2"
+  integrity sha512-enJZ9eVJMvNtpuXdygAZHBlPC+2Q3paLY+KforFhVUpi/bkBADDKJWd90RICyu3sPKiVt8YLAs9cIxriQpQqng==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    bn.js "^5.0.0"
+    bs58 "^4.0.1"
+    buffer "6.0.1"
+    buffer-layout "^1.2.0"
+    crypto-hash "^1.2.2"
+    jayson "^3.4.4"
+    js-sha3 "^0.8.0"
+    node-fetch "^2.6.1"
+    rpc-websockets "^7.4.2"
+    secp256k1 "^4.0.2"
+    superstruct "^0.14.2"
+    tweetnacl "^1.0.0"
 
 "@surma/rollup-plugin-off-main-thread@^1.1.1":
   version "1.4.2"
@@ -3121,10 +3140,10 @@ body-parser@1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bonfida-bot@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.3.0.tgz#72ada52a978e9960a6a172445f04cba9a1289d2c"
-  integrity sha512-me8KcpbXyLmR2QiKwTUgrSrsGPt0TFy+PSq0TXXrTv9inXKxFtG/d6srxmMIy6LPxLWokEIArMHPhV4xCGchiQ==
+bonfida-bot@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.3.1.tgz#8131f784ed71e05a05573e840f1cfff04b8fb34d"
+  integrity sha512-sUT/wGt9KCIGGkMJZ4Bgikm4/Zyc1WJGp9U22TE7+WfHKnmduAlogl9TOUJHWEJsz9920unsjV5vVtADa3FfrQ==
   dependencies:
     "@project-serum/serum" "^0.13.25"
     "@project-serum/sol-wallet-adapter" "^0.1.5"
@@ -3318,6 +3337,14 @@ buffer-xor@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/buffer-xor/-/buffer-xor-1.0.3.tgz#26e61ed1422fb70dd42e6e36729ed51d855fe8d9"
   integrity sha1-JuYe0UIvtw3ULm42cp7VHYVf6Nk=
+
+buffer@6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-6.0.1.tgz#3cbea8c1463e5a0779e30b66d4c88c6ffa182ac2"
+  integrity sha512-rVAXBwEcEoYtxnHSO5iWyhzV/O1WMtkUYWlfdLS7FjU4PnSJJHEfHXi/uHPI5EwltmOA794gN3bm3/pzuctWjQ==
+  dependencies:
+    base64-js "^1.3.1"
+    ieee754 "^1.2.1"
 
 buffer@^4.3.0:
   version "4.9.2"
@@ -6830,7 +6857,7 @@ istanbul-reports@^3.0.2:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-jayson@^3.0.1:
+jayson@^3.0.1, jayson@^3.4.4:
   version "3.4.4"
   resolved "https://registry.yarnpkg.com/jayson/-/jayson-3.4.4.tgz#dcedffba0c02785c4aa22dbff8c28966cae59773"
   integrity sha512-fgQflh+Qnhdv9fjxTnpTsa2WUG/dgyeKQzIh5MJ77Qv2sqFyyAZn7mTUYgPjJMFjsKfb4HNsSBh6ktJeeQiAGQ==
@@ -7281,6 +7308,11 @@ jest@26.6.0:
     "@jest/core" "^26.6.0"
     import-local "^3.0.2"
     jest-cli "^26.6.0"
+
+js-sha3@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
+  integrity sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -8239,7 +8271,7 @@ node-addon-api@^2.0.0:
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-2.0.2.tgz#432cfa82962ce494b132e9d72a15b29f71ff5d32"
   integrity sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==
 
-node-fetch@^2.2.0:
+node-fetch@^2.2.0, node-fetch@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
@@ -11279,6 +11311,11 @@ stylehacks@^4.0.0:
     browserslist "^4.0.0"
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
+
+superstruct@^0.14.2:
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.14.2.tgz#0dbcdf3d83676588828f1cf5ed35cda02f59025b"
+  integrity sha512-nPewA6m9mR3d6k7WkZ8N8zpTWfenFH3q9pA2PkuiZxINr9DKB2+40wEQf0ixn8VaGuJ78AB6iWOtStI+/4FKZQ==
 
 superstruct@^0.8.3:
   version "0.8.4"

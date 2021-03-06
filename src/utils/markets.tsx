@@ -2,11 +2,13 @@ import { MARKETS, TOKEN_MINTS, Market } from '@project-serum/serum';
 import { AWESOME_MARKETS } from '@dr497/awesome-serum-markets';
 import { tokenMintFromName } from './tokens';
 import { Connection, PublicKey } from '@solana/web3.js';
-import { USE_TOKENS } from './tokens';
+import { SERUM_PROGRAM_ID } from 'bonfida-bot';
+import { apiGet } from './utils';
+
 import { abbreviateAddress } from './utils';
 
-export let USE_MARKETS = MARKETS.filter((e) => !e.deprecated).concat(
-  AWESOME_MARKETS,
+export let USE_MARKETS = MARKETS.concat(AWESOME_MARKETS).filter(
+  (e) => !e.deprecated,
 );
 
 export const getAssetsFromMarkets = (marketAddresses: string[]) => {
@@ -28,10 +30,7 @@ export const getAssetsFromMarkets = (marketAddresses: string[]) => {
     .filter((e) => e);
 };
 
-export const getMidPrice = async (
-  connection: Connection,
-  mintAddress: string,
-) => {
+export const getMidPrice = async (mintAddress: string) => {
   const token = TOKEN_MINTS.find((a) => a.address.toBase58() === mintAddress);
 
   if (!token) {
@@ -42,26 +41,20 @@ export const getMidPrice = async (
     return 1.0;
   }
 
-  const market = USE_MARKETS.find((m) => m.name === `${token?.name}/USDC`);
-
-  if (!market) {
-    return 0;
-  }
-
   try {
-    const marketTest = await Market.load(
-      connection,
-      market.address,
-      {},
-      new PublicKey('EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o'),
+    const result = await apiGet(
+      `https://serum-api.bonfida.com/orderbooks/${token.name}USDC`,
     );
-
-    let bids = await marketTest.loadBids(connection);
-    let asks = await marketTest.loadAsks(connection);
-
-    return (bids.getL2(1)[0][0] + asks.getL2(1)[0][0]) / 2;
+    if (!result.success) {
+      return 0;
+    }
+    const { bids, asks } = result.data;
+    if (!bids || !asks) {
+      return 0;
+    }
+    return (bids[0].price + asks[0].price) / 2;
   } catch (err) {
-    console.log(`Error getting midPrice for ${market.name}`);
+    console.log(`Error getting midPrice err`);
     return 0;
   }
 };
