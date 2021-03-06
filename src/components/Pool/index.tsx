@@ -147,7 +147,7 @@ const PoolInformation = ({
           label="Pool Token Value"
           value={`$${
             poolBalance
-              ? roundToDecimal(usdValue / poolBalance[0]?.uiAmount, 3)
+              ? roundToDecimal(usdValue / poolBalance[0]?.uiAmount, 2)
               : 0
           }`}
         />
