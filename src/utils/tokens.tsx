@@ -26,7 +26,7 @@ export const ASSOCIATED_TOKEN_PROGRAM_ID: PublicKey = new PublicKey(
 );
 
 export const FIDA_USDC_MARKET_ADDRESS =
-  'FrDavxi4QawYnQY259PVfYUjUvuyPNfqSXbLBqMnbfWJ';
+  'E14BKBhDWD4EuTkWj1ooZezesGxMW8LPCps4W5PuzZJo';
 
 export const FIDA_MINT = 'EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp';
 

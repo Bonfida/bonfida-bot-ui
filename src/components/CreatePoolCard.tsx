@@ -22,14 +22,10 @@ import {
   BONFIDABOT_PROGRAM_ID,
   Numberu16,
   Numberu64,
+  SERUM_PROGRAM_ID,
 } from 'bonfida-bot';
-import { SERUM_PROGRAM_ID } from '../utils/serum';
 import { notify } from '../utils/notifications';
-import {
-  decimalsFromMint,
-  FIDA_USDC_MARKET_ADDRESS,
-  FIDA_MINT,
-} from '../utils/tokens';
+import { decimalsFromMint, FIDA_USDC_MARKET_ADDRESS } from '../utils/tokens';
 import Spin from './Spin';
 import bs58 from 'bs58';
 
