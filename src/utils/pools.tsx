@@ -157,15 +157,19 @@ export const usePoolSeedsForUser = (): [string[] | null, boolean] => {
         BONFIDABOT_PROGRAM_ID,
       );
       for (let seed of _allPoolSeeds) {
-        const mint = await getPoolTokenMintFromSeed(
-          seed,
-          BONFIDABOT_PROGRAM_ID,
-        );
-        const hasPoolToken = tokenAccounts.find(
-          (acc) => acc.account.data.parsed.info.mint === mint.toBase58(),
-        );
-        if (!!hasPoolToken) {
-          _poolSeeds.push(mint.toBase58());
+        try {
+            const mint = await getPoolTokenMintFromSeed(
+            seed,
+            BONFIDABOT_PROGRAM_ID,
+          );
+          const hasPoolToken = tokenAccounts.find(
+            (acc) => acc.account.data.parsed.info.mint === mint.toBase58(),
+          );
+          if (!!hasPoolToken) {
+            _poolSeeds.push(mint.toBase58());
+          }
+        } catch {
+          continue;
         }
       }
       setPoolSeeds(_poolSeeds);
