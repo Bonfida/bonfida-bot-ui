@@ -185,19 +185,17 @@ const CreatePoolCard = () => {
 
       const [poolSeed, transactionInstructions] = await createPool(
         connection,
-        BONFIDABOT_PROGRAM_ID,
-        SERUM_PROGRAM_ID,
         wallet?.publicKey,
         // @ts-ignore
         sourceAssetsKeys,
         wallet?.publicKey,
         amounts,
         2 * marketAddresses.length,
-        new Numberu16(marketAddresses.length + 1),
         marketAddresses.map((m) => new PublicKey(m)),
         wallet?.publicKey,
         new Numberu64(parseFloat(feeCollectionPeriod)),
-        new Numberu16((Math.pow(2, 16) * parseFloat(feeRatio)) / 100),
+        // new Numberu16((Math.pow(2, 16) * parseFloat(feeRatio)) / 100),
+        parseFloat(feeRatio),
       );
       const tx = new Transaction();
       tx.add(...transactionInstructions);

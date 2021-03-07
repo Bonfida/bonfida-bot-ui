@@ -362,7 +362,6 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         // Tab === 0 => Deposit
         instructions = await deposit(
           connection,
-          BONFIDABOT_PROGRAM_ID,
           wallet.publicKey,
           sourceAssetKeys,
           new Numberu64(parsedAmount * Math.pow(10, poolBalance[0].decimals)),
@@ -378,7 +377,6 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
 
         instructions = await redeem(
           connection,
-          BONFIDABOT_PROGRAM_ID,
           wallet.publicKey,
           sourcePoolTokenKey,
           sourceAssetKeys,

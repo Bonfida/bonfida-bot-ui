@@ -51,7 +51,6 @@ export const usePoolInfo = (poolSeed: PublicKey) => {
   const get = async () => {
     const poolInfo = await fetchPoolInfo(
       connection,
-      BONFIDABOT_PROGRAM_ID,
       new Uint8Array(poolSeed.toBuffer()),
     );
     return poolInfo;
@@ -67,7 +66,6 @@ export const usePoolBalance = (poolSeed: PublicKey) => {
   const get = async () => {
     const poolBalance = await fetchPoolBalances(
       connection,
-      BONFIDABOT_PROGRAM_ID,
       bs58.decode(poolSeed.toBase58()),
     );
     return poolBalance;
@@ -83,7 +81,6 @@ export const usePoolTokenSupply = (poolSeed: PublicKey) => {
   const get = async () => {
     const poolBalance = await fetchPoolBalances(
       connection,
-      BONFIDABOT_PROGRAM_ID,
       bs58.decode(poolSeed.toBase58()),
     );
     return poolBalance[0]?.uiAmount;
@@ -129,7 +126,6 @@ export const usePoolSeedsBySigProvider = (): [string[] | null, boolean] => {
       }
       const _poolSeeds = await getPoolsSeedsBySigProvider(
         connection,
-        BONFIDABOT_PROGRAM_ID,
         wallet?.publicKey,
       );
       setPoolSeeds(_poolSeeds.map((e) => bs58.encode(e)));
@@ -158,10 +154,7 @@ export const usePoolSeedsForUser = (): [string[] | null, boolean] => {
       );
       for (let seed of _allPoolSeeds) {
         try {
-          const mint = await getPoolTokenMintFromSeed(
-            seed,
-            BONFIDABOT_PROGRAM_ID,
-          );
+          const mint = await getPoolTokenMintFromSeed(seed);
           const hasPoolToken = tokenAccounts.find(
             (acc) => acc.account.data.parsed.info.mint === mint.toBase58(),
           );

@@ -47,6 +47,7 @@ import InformationRow from './InformationRow';
 import { ExplorerLink } from './Link';
 import { usePoolBalance, usePoolInfo, usePoolUsdBalance } from '../utils/pools';
 import { marketNameFromAddress } from '../utils/markets';
+import { marketAssetsFromAddress, useExpectedSlippage } from '../utils/markets';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -88,11 +89,9 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
     try {
       setLoading(true);
 
-      const instructions = await collectFees(
-        connection,
-        BONFIDABOT_PROGRAM_ID,
-        [new PublicKey(poolSeed).toBuffer()],
-      );
+      const instructions = await collectFees(connection, [
+        new PublicKey(poolSeed).toBuffer(),
+      ]);
       const tx = new Transaction();
       const signers: Account[] = [];
 
@@ -164,18 +163,35 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
   const [size, setSize] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
 
+  const [poolBalance] = usePoolBalance(new PublicKey(poolSeed));
+
+  let [base, quote] = marketAssetsFromAddress(
+    marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
+  );
+  const slippage = useExpectedSlippage(
+    marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
+    2000,
+    tab === 0 ? 'buy' : 'sell',
+  );
+
+  console.log('slippage', slippage);
+  console.log(base, quote);
+  console.log('poolBalance', poolBalance);
+
   useEffect(() => {
     if (markets) {
       setMarketAddress([markets[0]]);
     }
   }, [poolInfoLoaded]);
-  // Side, size, market, price
-  // Disclaimer it's IOC
 
   const onChangeSize = (e) => {
     const parsed = parseFloat(e.target.value);
+    console.log('Parsed', parsed);
     if (isNaN(parsed) || parsed < 0) {
       setSize('');
+      return;
+    }
+    if (parsed > 100) {
       return;
     }
     setSize(e.target.value);
@@ -263,13 +279,11 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       setLoading(true);
       const [openOrderAccount, instructions] = await createOrder(
         connection,
-        BONFIDABOT_PROGRAM_ID,
-        SERUM_PROGRAM_ID,
         new PublicKey(poolSeed).toBuffer(),
         new PublicKey(marketAddress[0]),
         side,
         new Numberu64(roundToDecimal(parsedPrice, priceDecimalCount)),
-        new Numberu16(roundToDecimal(parsedSize, sizeDecimalCount)),
+        roundToDecimal(parsedSize, sizeDecimalCount),
         OrderType.ImmediateOrCancel,
         new Numberu64(0),
         SelfTradeBehavior.DecrementTake,
@@ -318,6 +332,21 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
           )}
         />
       </Grid>
+      {poolBalance && (
+        <Typography variant="body1">Tokens in the pool:</Typography>
+      )}
+      {poolBalance &&
+        poolBalance[1]?.map((asset) => {
+          return (
+            <div style={{ marginLeft: 10 }}>
+              <InformationRow
+                // Abbrev raw mint
+                label={'- ' + tokenNameFromMint(asset.mint) || asset.mint}
+                value={asset.tokenAmount.uiAmount}
+              />
+            </div>
+          );
+        })}
       <Grid container direction="column" justify="center" alignItems="center">
         <Tabs
           value={tab}
@@ -336,7 +365,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
             },
           }}
           className={classes.textField}
-          label="Order Size"
+          label="Order Size (%)"
           value={size}
           onChange={onChangeSize}
         />

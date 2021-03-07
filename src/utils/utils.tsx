@@ -13,6 +13,8 @@ const USE_MARKETS = [...MARKETS, ...AWESOME_MARKETS];
 
 const TOKENS = AWESOME_TOKENS.concat(TOKEN_MINTS);
 
+export const BONFIDA_API_URL = 'https://serum-api.bonfida.com/';
+
 export function isValidPublicKey(key) {
   if (!key) {
     return false;
