@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import { Typography, TextField } from '@material-ui/core';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import getCoinIcon from '../utils/icons';
+import { TextField } from '@material-ui/core';
 import { USE_MARKETS } from '../utils/markets';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
@@ -68,32 +63,6 @@ const useStyles = makeStyles({
     width: 300,
   },
 });
-
-const RenderMarketRow = ({ name }: { name: string }) => {
-  const classes = useStyles();
-  const base = name?.split('/')[0];
-  const quote = name?.split('/')[1];
-
-  return (
-    <Grid
-      container
-      direction="row"
-      justify="flex-start"
-      alignItems="center"
-      spacing={3}
-    >
-      <Grid item>
-        <img src={getCoinIcon(base)} height="25px" alt="" />
-        <img src={getCoinIcon(quote)} height="25px" alt="" />
-      </Grid>
-      <Grid item>
-        <Typography className={classes.textIcon} variant="body1">
-          {name}
-        </Typography>
-      </Grid>
-    </Grid>
-  );
-};
 
 const MarketInput = ({
   marketAddresses,

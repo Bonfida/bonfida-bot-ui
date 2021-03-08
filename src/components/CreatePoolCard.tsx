@@ -23,7 +23,6 @@ import { decimalsFromMint } from '../utils/tokens';
 import { FIDA_USDC_MARKET_ADDRESS } from '../utils/markets';
 import Spin from './Spin';
 import bs58 from 'bs58';
-import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles({
   img: {

@@ -27,7 +27,7 @@ import {
   usePoolUsdBalance,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
-import { BONFIDABOT_PROGRAM_ID, deposit, Numberu64, redeem } from 'bonfida-bot';
+import { deposit, Numberu64, redeem } from 'bonfida-bot';
 import CustomButton from '../CustomButton';
 import InformationRow from '../InformationRow';
 import {

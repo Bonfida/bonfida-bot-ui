@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
-import { tokenNameFromMint, USE_TOKENS } from '../utils/tokens';
+import { tokenNameFromMint } from '../utils/tokens';
 import getCoinIcon from '../utils/icons';
 import { useBalanceForMint } from '../utils/tokens';
 import { notify } from '../utils/notifications';

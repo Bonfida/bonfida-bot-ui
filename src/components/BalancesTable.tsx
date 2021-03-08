@@ -12,7 +12,6 @@ import { ExplorerLink } from './Link';
 import SendReceiveDialogButton from './SendReceiveDialog';
 import {
   tokenNameFromMint,
-  useSolBalance,
   useTokenAccounts,
   USE_TOKENS,
 } from '../utils/tokens';
@@ -118,8 +117,7 @@ const SearchBar = ({
 
 const BalancesTable = () => {
   const classes = useStyles();
-  const { wallet, connected } = useWallet();
-  const [solBalance] = useSolBalance();
+  const { connected } = useWallet();
   const [tokenAccounts] = useTokenAccounts();
   const [hideZeroBalances, setZeroBalances] = useState(true);
   const [search, setSearch] = useState<string | null>(null);

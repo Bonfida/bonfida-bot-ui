@@ -6,8 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Emoji from '../components/Emoji';
 import StrategyCard from '../components/StrategyCard';
 import { useHistory } from 'react-router-dom';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import useTheme from '@material-ui/core/styles/useTheme';
 import robot from '../assets/icons/illustrations/robot-top-bar.svg';
 import { USE_POOLS } from '../utils/pools';
 import FloatingCard from '../components/FloatingCard';
@@ -53,20 +51,6 @@ const useStyles = makeStyles({
     width: '50vw',
   },
 });
-
-const Banner = () => {
-  const classes = useStyles();
-  return (
-    <div className={classes.bannerContainer}>
-      <Emoji style={{ fontSize: 200 }} emoji="🤖" />
-      <div>
-        <Typography className={classes.title} align="center">
-          Create and automate your very own trading strategies on chain
-        </Typography>
-      </div>
-    </div>
-  );
-};
 
 const ExploreBanner = () => {
   const classes = useStyles();
