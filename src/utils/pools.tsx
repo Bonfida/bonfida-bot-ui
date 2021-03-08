@@ -13,7 +13,7 @@ import tuple from 'immutable-tuple';
 import dca from '../assets/icons/illustrations/control.svg';
 import rsi from '../assets/icons/illustrations/line-chart.svg';
 import bs58 from 'bs58';
-import { getMidPrice } from './markets';
+import { getTokenPrice } from './markets';
 import { Connection } from '@solana/web3.js';
 import { useEffect, useState } from 'react';
 import { useWallet } from './wallet';
@@ -103,7 +103,7 @@ export const usePoolUsdBalance = (
       }
       let _usdValue = 0;
       for (let balance of poolBalance) {
-        const price = await getMidPrice(balance.mint);
+        const price = await getTokenPrice(balance.mint);
         _usdValue += price * balance.tokenAmount.uiAmount;
       }
       setUsdValue(_usdValue);

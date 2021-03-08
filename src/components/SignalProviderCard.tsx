@@ -10,14 +10,13 @@ import { useConnection } from '../utils/connection';
 import CustomButton from './CustomButton';
 import {
   collectFees,
-  BONFIDABOT_PROGRAM_ID,
   SERUM_PROGRAM_ID,
   OrderSide,
   createOrder,
   Numberu64,
-  Numberu16,
   OrderType,
   SelfTradeBehavior,
+  settleFunds,
 } from 'bonfida-bot';
 import { notify } from '../utils/notifications';
 import Spin from './Spin';
@@ -42,12 +41,17 @@ import {
   useTokenAccounts,
   useBalanceForMint,
   tokenNameFromMint,
+  tokenMintFromName,
 } from '../utils/tokens';
 import InformationRow from './InformationRow';
 import { ExplorerLink } from './Link';
 import { usePoolBalance, usePoolInfo, usePoolUsdBalance } from '../utils/pools';
 import { marketNameFromAddress } from '../utils/markets';
-import { marketAssetsFromAddress, useExpectedSlippage } from '../utils/markets';
+import {
+  marketAssetsFromAddress,
+  useExpectedSlippage,
+  useMarketPrice,
+} from '../utils/markets';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -168,15 +172,27 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
   let [base, quote] = marketAssetsFromAddress(
     marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
   );
-  const slippage = useExpectedSlippage(
+  const poolBalanceQuote =
+    (poolBalance &&
+      poolBalance[1].find((e) => e.mint === tokenMintFromName(quote || ''))
+        ?.tokenAmount.uiAmount) ||
+    0;
+  const poolBalanceBase =
+    (poolBalance &&
+      poolBalance[1].find((e) => e.mint === tokenMintFromName(base || ''))
+        ?.tokenAmount.uiAmount) ||
+    0;
+
+  const [slippage] = useExpectedSlippage(
     marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
-    2000,
+    ((tab === 0 ? poolBalanceQuote : poolBalanceBase) *
+      parseFloat(size ? size : '0')) /
+      100,
     tab === 0 ? 'buy' : 'sell',
   );
-
-  console.log('slippage', slippage);
-  console.log(base, quote);
-  console.log('poolBalance', poolBalance);
+  const [marketPrice] = useMarketPrice(
+    marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
+  );
 
   useEffect(() => {
     if (markets) {
@@ -186,7 +202,6 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
 
   const onChangeSize = (e) => {
     const parsed = parseFloat(e.target.value);
-    console.log('Parsed', parsed);
     if (isNaN(parsed) || parsed < 0) {
       setSize('');
       return;
@@ -203,6 +218,90 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       return;
     }
     setPrice(e.target.value);
+  };
+
+  const onSubmitSettle = async () => {
+    if (!marketAddress || !marketAddress[0] || !poolInfo?.address) {
+      notify({
+        message: 'Nothing to settle',
+        variant: 'error',
+      });
+      return;
+    }
+    try {
+      notify({
+        message: 'Settling funds',
+      });
+
+      const market = await Market.load(
+        connection,
+        new PublicKey(marketAddress[0]),
+        {},
+        SERUM_PROGRAM_ID,
+      );
+
+      const openOrdersAccounts = await market.findOpenOrdersAccountsForOwner(
+        connection,
+        poolInfo?.address,
+      );
+
+      let referrerQuoteWallet: PublicKey | null = null;
+      const usdc = TOKEN_MINTS.find(({ name }) => name === 'USDC');
+      const usdt = TOKEN_MINTS.find(({ name }) => name === 'USDT');
+
+      if (market.supportsReferralFees) {
+        if (
+          process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS &&
+          usdt &&
+          market.quoteMintAddress.equals(usdt?.address)
+        ) {
+          referrerQuoteWallet = new PublicKey(
+            process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS,
+          );
+        }
+        if (
+          process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS &&
+          usdc &&
+          market.quoteMintAddress.equals(usdc?.address)
+        ) {
+          referrerQuoteWallet = new PublicKey(
+            process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS,
+          );
+        }
+      }
+
+      for (let acc of openOrdersAccounts) {
+        const instructions = await settleFunds(
+          connection,
+          new PublicKey(poolSeed).toBuffer(),
+          new PublicKey(marketAddress[0]),
+          acc.address,
+          referrerQuoteWallet,
+        );
+        const tx = new Transaction();
+        const signers: Account[] = [];
+        tx.add(...instructions);
+
+        await sendTransaction({
+          transaction: tx,
+          wallet,
+          connection,
+          signers,
+          sendingMessage: `Settling funds...`,
+        });
+      }
+
+      notify({
+        message: 'Funds settled',
+        variant: 'success',
+      });
+    } catch (err) {
+      console.warn(`Error settling funds ${err}`);
+      notify({
+        message: 'Error settling funds',
+        variant: 'error',
+      });
+    }
   };
 
   const onSubmit = async () => {
@@ -287,7 +386,6 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         OrderType.ImmediateOrCancel,
         new Numberu64(0),
         SelfTradeBehavior.DecrementTake,
-        // wallet.publicKey,
         null,
         wallet.publicKey,
       );
@@ -297,7 +395,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
 
       tx.add(...instructions);
 
-      const result = await sendTransaction({
+      await sendTransaction({
         transaction: tx,
         wallet,
         connection,
@@ -306,6 +404,35 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       });
       notify({
         message: 'Order placed',
+        variant: 'success',
+      });
+      notify({
+        message: 'Settling funds...',
+      });
+      // Settle funds
+      const settleInstructions = await settleFunds(
+        connection,
+        new PublicKey(poolSeed).toBuffer(),
+        new PublicKey(marketAddress[0]),
+        openOrderAccount.publicKey,
+        referrerQuoteWallet,
+      );
+
+      const txSettle = new Transaction();
+      const signersSettle: Account[] = [];
+
+      txSettle.add(...settleInstructions);
+
+      await sendTransaction({
+        transaction: txSettle,
+        wallet,
+        connection,
+        signers: signersSettle,
+        sendingMessage: `Settling funds...`,
+      });
+
+      notify({
+        message: 'Funds settled',
         variant: 'success',
       });
     } catch (err) {
@@ -381,16 +508,38 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
           onChange={onChangePrice}
         />
       </Grid>
+
+      <InformationRow
+        label="Expected slippage"
+        value={roundToDecimal((slippage || 0) * 100, 3)}
+      />
+      <InformationRow
+        label="Size in tokens"
+        value={roundToDecimal(
+          ((tab === 0 ? poolBalanceQuote : poolBalanceBase) *
+            parseFloat(size ? size : '0')) /
+            100,
+          3,
+        )}
+      />
+      <InformationRow label="Size in % of the pool" value={size} />
+
       <Grid
         container
-        direction="column"
+        direction="row"
         justify="center"
         alignItems="center"
         className={classes.tradeButtonContainer}
+        spacing={5}
       >
-        <CustomButton onClick={onSubmit}>
-          {loading ? <Spin size={20} /> : 'Place Order'}
-        </CustomButton>
+        <Grid item>
+          <CustomButton onClick={onSubmit}>
+            {loading ? <Spin size={20} /> : 'Place Order'}
+          </CustomButton>
+        </Grid>
+        <Grid item>
+          <CustomButton onClick={onSubmitSettle}>Settle funds</CustomButton>
+        </Grid>
       </Grid>
     </>
   );

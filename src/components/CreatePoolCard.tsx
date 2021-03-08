@@ -17,13 +17,7 @@ import { getAssetsFromMarkets } from '../utils/markets';
 import { useTokenAccounts } from '../utils/tokens';
 import CoinInput from './CoinInputCreatePool';
 import { Transaction, PublicKey } from '@solana/web3.js';
-import {
-  createPool,
-  BONFIDABOT_PROGRAM_ID,
-  Numberu16,
-  Numberu64,
-  SERUM_PROGRAM_ID,
-} from 'bonfida-bot';
+import { createPool, BONFIDABOT_PROGRAM_ID, Numberu64 } from 'bonfida-bot';
 import { notify } from '../utils/notifications';
 import { decimalsFromMint, FIDA_USDC_MARKET_ADDRESS } from '../utils/tokens';
 import Spin from './Spin';
@@ -194,7 +188,6 @@ const CreatePoolCard = () => {
         marketAddresses.map((m) => new PublicKey(m)),
         wallet?.publicKey,
         new Numberu64(parseFloat(feeCollectionPeriod)),
-        // new Numberu16((Math.pow(2, 16) * parseFloat(feeRatio)) / 100),
         parseFloat(feeRatio),
       );
       const tx = new Transaction();

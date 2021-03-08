@@ -1,15 +1,11 @@
-import { MARKETS, TOKEN_MINTS, Market, Orderbook } from '@project-serum/serum';
+import { MARKETS, TOKEN_MINTS } from '@project-serum/serum';
 import { AWESOME_MARKETS } from '@dr497/awesome-serum-markets';
 import { tokenMintFromName } from './tokens';
-import { Connection, PublicKey } from '@solana/web3.js';
-import { SERUM_PROGRAM_ID } from 'bonfida-bot';
+import { PublicKey } from '@solana/web3.js';
 import { apiGet } from './utils';
-import { useConnection } from './connection';
 import { useAsyncData } from './fetch-loop';
 import tuple from 'immutable-tuple';
 import { abbreviateAddress, BONFIDA_API_URL } from './utils';
-import { connect } from 'http2';
-import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 
 export let USE_MARKETS = MARKETS.concat(AWESOME_MARKETS).filter(
   (e) => !e.deprecated,
@@ -34,7 +30,7 @@ export const getAssetsFromMarkets = (marketAddresses: string[]) => {
     .filter((e) => e);
 };
 
-export const getMidPrice = async (mintAddress: string) => {
+export const getTokenPrice = async (mintAddress: string) => {
   const token = TOKEN_MINTS.find((a) => a.address.toBase58() === mintAddress);
 
   if (!token) {
@@ -88,12 +84,12 @@ export const marketAssetsFromAddress = (
 };
 
 export const useExpectedSlippage = (
-  marketAddress: string | null,
-  orderSize: number,
+  marketAddress: string | null | undefined,
+  orderSize: number | null | undefined,
   side: string,
 ) => {
   const get = async () => {
-    if (!marketAddress) {
+    if (!marketAddress || !orderSize) {
       return null;
     }
     let marketName = marketNameFromAddress(new PublicKey(marketAddress));
@@ -144,4 +140,32 @@ export const useExpectedSlippage = (
     get,
     tuple('useExpectedSlippage', marketAddress, orderSize, side),
   );
+};
+
+export const useMarketPrice = (marketAddress: string | null) => {
+  const get = async () => {
+    if (!marketAddress) {
+      return null;
+    }
+    let marketName = marketNameFromAddress(new PublicKey(marketAddress));
+    if (!marketName) {
+      return null;
+    }
+    marketName = marketName?.split('/')[0] + marketName?.split('/')[1];
+    try {
+      const result = await apiGet(`${BONFIDA_API_URL}orderbooks/${marketName}`);
+      if (!result.success) {
+        return null;
+      }
+      const { bids, asks } = result.data;
+      if (!bids || !asks) {
+        return null;
+      }
+      return (bids[0].price + asks[0].price) / 2;
+    } catch (err) {
+      console.warn(`Error useMarketPrice ${err}`);
+      return null;
+    }
+  };
+  return useAsyncData(get, tuple('useMarketPrice', marketAddress));
 };

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { Typography } from '@material-ui/core';
+import { Typography, TextField } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import getCoinIcon from '../utils/icons';
 import { USE_MARKETS } from '../utils/markets';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles({
   root: {
@@ -44,7 +45,7 @@ const useStyles = makeStyles({
       fontSize: 14,
     },
   },
-  select: {
+  autoComplete: {
     height: 55,
   },
   inputAmount: {
@@ -70,8 +71,8 @@ const useStyles = makeStyles({
 
 const RenderMarketRow = ({ name }: { name: string }) => {
   const classes = useStyles();
-  const base = name.split('/')[0];
-  const quote = name.split('/')[1];
+  const base = name?.split('/')[0];
+  const quote = name?.split('/')[1];
 
   return (
     <Grid
@@ -109,44 +110,26 @@ const MarketInput = ({
 }) => {
   const classes = useStyles();
 
-  const onChange = (e) => {
+  const onChange = (e, v, r) => {
+    if (!v) {
+      return;
+    }
     const old = [...marketAddresses];
-    old[index] = e.target.value as string;
+    old[index] = v.address.toBase58();
     setMarketAddresses([...old]);
   };
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-        className={classes.gridContainer}
-      >
-        <Select
-          disabled={disabled}
-          className={classes.select}
-          onChange={onChange}
-          IconComponent={() => (
-            <div style={{ marginBottom: 10 }}>
-              <ExpandMoreIcon />
-            </div>
-          )}
-          value={marketAddresses[index]}
-        >
-          {marketsList.map((m, i) => {
-            return (
-              <MenuItem
-                value={m.address.toBase58()}
-                key={`menu-item-${i}-${m.name}`}
-              >
-                <RenderMarketRow name={m.name} />
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </Grid>
+      <Autocomplete
+        onChange={onChange}
+        options={marketsList}
+        getOptionLabel={(option: any) => option.name}
+        className={classes.autoComplete}
+        renderInput={(params) => (
+          <TextField {...params} label="Market" variant="outlined" />
+        )}
+      />
     </div>
   );
 };
