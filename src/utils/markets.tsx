@@ -1,4 +1,4 @@
-import { MARKETS, TOKEN_MINTS } from '@project-serum/serum';
+import { MARKETS, TOKEN_MINTS, Market } from '@project-serum/serum';
 import { AWESOME_MARKETS } from '@dr497/awesome-serum-markets';
 import { tokenMintFromName } from './tokens';
 import { PublicKey } from '@solana/web3.js';
@@ -168,4 +168,32 @@ export const useMarketPrice = (marketAddress: string | null) => {
     }
   };
   return useAsyncData(get, tuple('useMarketPrice', marketAddress));
+};
+
+export const getReferreKey = (market: Market) => {
+  let referrerQuoteWallet: PublicKey | null = null;
+  const usdc = TOKEN_MINTS.find(({ name }) => name === 'USDC');
+  const usdt = TOKEN_MINTS.find(({ name }) => name === 'USDT');
+
+  if (market.supportsReferralFees) {
+    if (
+      process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS &&
+      usdt &&
+      market.quoteMintAddress.equals(usdt?.address)
+    ) {
+      referrerQuoteWallet = new PublicKey(
+        process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS,
+      );
+    }
+    if (
+      process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS &&
+      usdc &&
+      market.quoteMintAddress.equals(usdc?.address)
+    ) {
+      referrerQuoteWallet = new PublicKey(
+        process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS,
+      );
+    }
+  }
+  return referrerQuoteWallet;
 };

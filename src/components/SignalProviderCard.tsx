@@ -29,8 +29,8 @@ import Typography from '@material-ui/core/Typography';
 import { USE_POOLS } from '../utils/pools';
 import TextField from '@material-ui/core/TextField';
 import MarketInput from './MarketInput';
-import { USE_MARKETS } from '../utils/markets';
-import { Market, TOKEN_MINTS } from '@project-serum/serum';
+import { USE_MARKETS, getReferreKey } from '../utils/markets';
+import { Market } from '@project-serum/serum';
 import {
   getDecimalCount,
   roundToDecimal,
@@ -99,7 +99,7 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
 
       tx.add(...instructions);
 
-      const result = await sendTransaction({
+      await sendTransaction({
         transaction: tx,
         wallet,
         connection,
@@ -196,7 +196,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
     if (markets) {
       setMarketAddress([markets[0]]);
     }
-  }, [poolInfoLoaded]);
+  }, [poolInfoLoaded, markets]);
 
   const onChangeSize = (e) => {
     const parsed = parseFloat(e.target.value);
@@ -243,38 +243,13 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         poolInfo?.address,
       );
 
-      let referrerQuoteWallet: PublicKey | null = null;
-      const usdc = TOKEN_MINTS.find(({ name }) => name === 'USDC');
-      const usdt = TOKEN_MINTS.find(({ name }) => name === 'USDT');
-
-      if (market.supportsReferralFees) {
-        if (
-          process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS &&
-          usdt &&
-          market.quoteMintAddress.equals(usdt?.address)
-        ) {
-          referrerQuoteWallet = new PublicKey(
-            process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS,
-          );
-        }
-        if (
-          process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS &&
-          usdc &&
-          market.quoteMintAddress.equals(usdc?.address)
-        ) {
-          referrerQuoteWallet = new PublicKey(
-            process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS,
-          );
-        }
-      }
-
       for (let acc of openOrdersAccounts) {
         const instructions = await settleFunds(
           connection,
           new PublicKey(poolSeed).toBuffer(),
           new PublicKey(marketAddress[0]),
           acc.address,
-          referrerQuoteWallet,
+          getReferreKey(market),
         );
         const tx = new Transaction();
         const signers: Account[] = [];
@@ -323,32 +298,8 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       market?.minOrderSize && getDecimalCount(market.minOrderSize);
     const priceDecimalCount =
       market?.tickSize && getDecimalCount(market.tickSize);
+
     const side = tab === 0 ? OrderSide.Bid : OrderSide.Ask;
-
-    let referrerQuoteWallet: PublicKey | null = null;
-    const usdc = TOKEN_MINTS.find(({ name }) => name === 'USDC');
-    const usdt = TOKEN_MINTS.find(({ name }) => name === 'USDT');
-
-    if (market.supportsReferralFees) {
-      if (
-        process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS &&
-        usdt &&
-        market.quoteMintAddress.equals(usdt?.address)
-      ) {
-        referrerQuoteWallet = new PublicKey(
-          process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS,
-        );
-      }
-      if (
-        process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS &&
-        usdc &&
-        market.quoteMintAddress.equals(usdc?.address)
-      ) {
-        referrerQuoteWallet = new PublicKey(
-          process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS,
-        );
-      }
-    }
 
     if (
       !size ||
@@ -379,7 +330,11 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         new PublicKey(poolSeed).toBuffer(),
         new PublicKey(marketAddress[0]),
         side,
-        new Numberu64(roundToDecimal(parsedPrice, priceDecimalCount)),
+        new Numberu64(
+          market
+            .priceNumberToLots(roundToDecimal(parsedPrice, priceDecimalCount))
+            .toNumber(),
+        ),
         roundToDecimal(parsedSize, sizeDecimalCount),
         OrderType.ImmediateOrCancel,
         new Numberu64(0),
@@ -404,16 +359,17 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         message: 'Order placed',
         variant: 'success',
       });
-      notify({
-        message: 'Settling funds...',
-      });
+
       // Settle funds
+      notify({
+        message: 'Now trying to settle funds...',
+      });
       const settleInstructions = await settleFunds(
         connection,
         new PublicKey(poolSeed).toBuffer(),
         new PublicKey(marketAddress[0]),
         openOrderAccount.publicKey,
-        referrerQuoteWallet,
+        getReferreKey(market),
       );
 
       const txSettle = new Transaction();
@@ -472,6 +428,9 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
             </div>
           );
         })}
+      {marketPrice && (
+        <InformationRow label="Current Market Price" value={marketPrice} />
+      )}
       <Grid container direction="column" justify="center" alignItems="center">
         <Tabs
           value={tab}
@@ -548,7 +507,7 @@ const PoolTitle = ({ poolName }: { poolName: string | undefined }) => {
   return (
     <Grid container direction="column" justify="center" alignItems="center">
       <Grid item>
-        <img src={robot} style={{ height: 70 }} />
+        <img src={robot} style={{ height: 70 }} alt="" />
       </Grid>
       <Grid item>
         <Typography variant="h1" className={classes.poolTitle}>
@@ -563,9 +522,6 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
   const [tokenAccounts] = useTokenAccounts();
   const [poolBalance] = usePoolBalance(poolSeed);
   const [poolInfo] = usePoolInfo(poolSeed);
-  const pool = USE_POOLS.find(
-    (p) => p.poolSeed.toBase58() === poolSeed.toBase58(),
-  );
 
   const userPoolTokenBalance = useBalanceForMint(
     tokenAccounts,
