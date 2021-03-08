@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { USE_TOKENS } from '../utils/tokens';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import getCoinIcon from '../utils/icons';
+import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles({
   root: {
@@ -167,10 +168,7 @@ const DepositInput = ({
           >
             {coinsList.map((t, i) => {
               return (
-                <MenuItem
-                  value={t.address.toBase58()}
-                  key={`menu-item-${i}-${t.name}`}
-                >
+                <MenuItem value={t.address.toBase58()} key={nanoid()}>
                   <RenderCoinRow name={t.name} />
                 </MenuItem>
               );

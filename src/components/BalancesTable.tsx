@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useWallet, getProgramAccounts } from '../utils/wallet';
+import React, { useState } from 'react';
+import { useWallet } from '../utils/wallet';
 import WalletConnect from './WalletConnect';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -21,6 +21,7 @@ import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import FloatingCard from './FloatingCard';
 import TextField from '@material-ui/core/TextField';
+import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles({
   table: {
@@ -189,7 +190,7 @@ const BalancesTable = () => {
         <Table className={classes.table} aria-label="balance table">
           <TableBody>
             {knownTokens.map((row) => {
-              return <BalanceRow row={row} />;
+              return <BalanceRow row={row} key={nanoid()} />;
             })}
           </TableBody>
         </Table>

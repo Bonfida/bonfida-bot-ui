@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import QUESTIONS_ANSWERS, { QnA } from './QuestionsAndAnswers';
+import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,7 +34,7 @@ const FaqCard = () => {
   return (
     <>
       {QUESTIONS_ANSWERS.map((row) => {
-        return <FaqRow faqRow={row} />;
+        return <FaqRow faqRow={row} key={nanoid()} />;
       })}
     </>
   );

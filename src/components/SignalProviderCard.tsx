@@ -52,6 +52,7 @@ import {
   useExpectedSlippage,
   useMarketPrice,
 } from '../utils/markets';
+import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -419,7 +420,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       {poolBalance &&
         poolBalance[1]?.map((asset) => {
           return (
-            <div style={{ marginLeft: 10 }}>
+            <div style={{ marginLeft: 10 }} key={nanoid()}>
               <InformationRow
                 // Abbrev raw mint
                 label={'- ' + tokenNameFromMint(asset.mint) || asset.mint}
@@ -562,7 +563,7 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
       {poolBalance &&
         poolBalance[1]?.map((asset) => {
           return (
-            <div style={{ marginLeft: 10 }}>
+            <div style={{ marginLeft: 10 }} key={nanoid()}>
               <InformationRow
                 // Abbrev raw mint
                 label={'- ' + tokenNameFromMint(asset.mint) || asset.mint}
@@ -578,6 +579,7 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
         {poolMarkets?.map((m) => {
           return (
             <InformationRow
+              key={nanoid()}
               label={marketNameFromAddress(m)}
               value={
                 <ExplorerLink address={m.toBase58()}>

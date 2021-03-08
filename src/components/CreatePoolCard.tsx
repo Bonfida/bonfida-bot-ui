@@ -23,8 +23,6 @@ import { decimalsFromMint, FIDA_USDC_MARKET_ADDRESS } from '../utils/tokens';
 import Spin from './Spin';
 import bs58 from 'bs58';
 
-// TODO Add all markets checkbox
-
 const useStyles = makeStyles({
   img: {
     height: 100,
