@@ -70,7 +70,7 @@ const ExplorerPage = () => {
         >
           {row.map((pool, i) => {
             return (
-              <Grid item className={classes.item}>
+              <Grid item className={classes.item} key={nanoid()}>
                 <StrategyCard pool={pool} left={i % 2 === 0 ? true : false} />
               </Grid>
             );
