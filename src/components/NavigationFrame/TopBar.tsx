@@ -94,6 +94,7 @@ const Logo = () => {
           <img
             src={robot}
             style={{ fontSize: 40, marginLeft: 80, height: 40 }}
+            alt=""
           />
         </Grid>
         <Grid item>

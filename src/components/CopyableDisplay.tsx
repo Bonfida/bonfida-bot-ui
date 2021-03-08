@@ -15,7 +15,7 @@ const CopyableDisplay = ({ text }: { text: string }) => {
   return (
     <>
       <Button onClick={copyToClipboard}>
-        <img src={copy} height="20px" />
+        <img src={copy} height="20px" alt="" />
       </Button>
     </>
   );

@@ -97,7 +97,7 @@ const ExploreBanner = () => {
           </Grid>
           {!smallScreen && (
             <Grid item>
-              <img src={robot} style={{ height: 100 }} />
+              <img src={robot} style={{ height: 100 }} alt="" />
             </Grid>
           )}
         </Grid>

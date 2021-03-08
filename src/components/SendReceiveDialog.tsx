@@ -189,7 +189,7 @@ const SendReceiveDialogButton = ({
   return (
     <>
       <Button onClick={() => setOpen(true)}>
-        <img src={send} height="40px" />
+        <img src={send} height="40px" alt="" />
       </Button>
       <Dialog
         aria-labelledby="simple-dialog-title"

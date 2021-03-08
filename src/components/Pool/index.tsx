@@ -79,7 +79,7 @@ const PoolTitle = ({ poolName }: { poolName: string }) => {
   return (
     <Grid container direction="column" justify="center" alignItems="center">
       <Grid item>
-        <img src={robot} style={{ height: 70 }} />
+        <img src={robot} style={{ height: 70 }} alt="" />
       </Grid>
       <Grid item>
         <Typography variant="h1" className={classes.poolTitle}>

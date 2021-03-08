@@ -49,7 +49,7 @@ const Settings = (): JSX.Element => {
   return (
     <div>
       <button onClick={handleClick} className={classes.button}>
-        <img src={gear} height="30px" />
+        <img src={gear} height="30px" alt="" />
       </button>
       <Popover
         id={id}
