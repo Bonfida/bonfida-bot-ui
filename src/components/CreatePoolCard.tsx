@@ -22,6 +22,7 @@ import { notify } from '../utils/notifications';
 import { decimalsFromMint, FIDA_USDC_MARKET_ADDRESS } from '../utils/tokens';
 import Spin from './Spin';
 import bs58 from 'bs58';
+import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles({
   img: {
@@ -250,6 +251,7 @@ const CreatePoolCard = () => {
             return (
               <>
                 <Grid
+                  key={nanoid()}
                   container
                   direction="row"
                   justify="center"
@@ -301,6 +303,7 @@ const CreatePoolCard = () => {
         {assets.map((asset, index) => {
           return (
             <CoinInput
+              key={nanoid()}
               index={index}
               assets={assets}
               amountLabel={asset.name}

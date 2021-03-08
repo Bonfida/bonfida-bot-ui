@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { usePoolSeedsBySigProvider, usePoolSeedsForUser } from '../utils/pools';
 import { Typography } from '@material-ui/core';
 import { useWallet } from '../utils/wallet';
 import Grid from '@material-ui/core/Grid';
 import Spin from './Spin';
 import WalletConnect from './WalletConnect';
-import { USE_POOLS, poolNameFromSeed } from '../utils/pools';
+import { poolNameFromSeed } from '../utils/pools';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { makeStyles } from '@material-ui/core/styles';
 import FloatingCard from './FloatingCard';
-import { useBalanceForMint, useTokenAccounts } from '../utils/tokens';
-import { getPoolTokenMintFromSeed, BONFIDABOT_PROGRAM_ID } from 'bonfida-bot';
-import { PublicKey } from '@solana/web3.js';
+import { useTokenAccounts } from '../utils/tokens';
 import CustomButton from './CustomButton';
 import Chip from '@material-ui/core/Chip';
 import DoneIcon from '@material-ui/icons/Done';
 import { useHistory } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles({
   table: {
@@ -59,8 +58,6 @@ const PoolTableRow = ({
   tokenAccounts: any;
   owned?: boolean;
 }) => {
-  const classes = useStyles();
-  const [mint, setMint] = useState<string | null>(null);
   const history = useHistory();
 
   return (
@@ -125,6 +122,7 @@ const MyPoolPageCard = () => {
             {ownedPoolSeeds?.map((poolSeed) => {
               return (
                 <PoolTableRow
+                  key={nanoid()}
                   poolSeed={poolSeed}
                   tokenAccounts={tokenAccounts}
                   owned={true}
@@ -134,6 +132,7 @@ const MyPoolPageCard = () => {
             {allPoolSeeds?.map((poolSeed) => {
               return (
                 <PoolTableRow
+                  key={nanoid()}
                   poolSeed={poolSeed}
                   tokenAccounts={tokenAccounts}
                   owned={false}
