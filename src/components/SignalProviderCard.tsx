@@ -197,7 +197,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
     if (markets) {
       setMarketAddress([markets[0]]);
     }
-  }, [poolInfoLoaded, markets]);
+  }, [poolInfoLoaded]);
 
   const onChangeSize = (e) => {
     const parsed = parseFloat(e.target.value);
@@ -292,7 +292,10 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       {},
       SERUM_PROGRAM_ID,
     );
-    const parsedSize = parseFloat(size || '');
+    let parsedSize = parseFloat(size || '');
+    if (parsedSize === 100) {
+      parsedSize = 99;
+    }
     const parsedPrice = parseFloat(price || '');
 
     const sizeDecimalCount =
@@ -301,6 +304,14 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       market?.tickSize && getDecimalCount(market.tickSize);
 
     const side = tab === 0 ? OrderSide.Bid : OrderSide.Ask;
+
+    if (!marketAddress || !marketAddress[0]) {
+      notify({
+        message: 'Please select a market',
+        variant: 'error',
+      });
+      return;
+    }
 
     if (
       !size ||

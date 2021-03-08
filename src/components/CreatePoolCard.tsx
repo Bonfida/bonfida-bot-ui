@@ -249,29 +249,26 @@ const CreatePoolCard = () => {
         <Grid container justify="center">
           {marketAddresses.map((m, i) => {
             return (
-              <>
-                <Grid
-                  key={nanoid()}
-                  container
-                  direction="row"
-                  justify="center"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <MarketInput
-                      marketAddresses={marketAddresses}
-                      setMarketAddresses={setMarketAddresses}
-                      index={i}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <DeleteIcon
-                      className={classes.remove}
-                      onClick={() => removeMarket(i)}
-                    />
-                  </Grid>
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+              >
+                <Grid item>
+                  <MarketInput
+                    marketAddresses={marketAddresses}
+                    setMarketAddresses={setMarketAddresses}
+                    index={i}
+                  />
                 </Grid>
-              </>
+                <Grid item>
+                  <DeleteIcon
+                    className={classes.remove}
+                    onClick={() => removeMarket(i)}
+                  />
+                </Grid>
+              </Grid>
             );
           })}
         </Grid>
@@ -303,7 +300,6 @@ const CreatePoolCard = () => {
         {assets.map((asset, index) => {
           return (
             <CoinInput
-              key={nanoid()}
               index={index}
               assets={assets}
               amountLabel={asset.name}
