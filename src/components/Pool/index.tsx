@@ -296,7 +296,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         (b.tokenAmount.uiAmount / poolTokenSupply) * parseFloat(amount),
         3,
       )} ${tokenNameFromMint(b.mint)}`;
-      if (i < poolBalance.length) {
+      if (i < poolBalance.length - 1) {
         newQuote += ' + ';
       }
     }
