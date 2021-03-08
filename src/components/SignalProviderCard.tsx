@@ -77,8 +77,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-// Order, collect fees
-
 const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
   const classes = useStyles();
   const connection = useConnection();
