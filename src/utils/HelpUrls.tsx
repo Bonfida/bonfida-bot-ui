@@ -5,6 +5,7 @@ const HelpUrls = {
   medium: 'https://bonfida.medium.com/',
   discord: 'https://discord.gg/Nq462DXvzW',
   contact: 'mailto:contact@bonfida.com',
+  bonfidaBotDocs: 'https://bonfida.github.io/bonfida-bot-docs/',
 };
 
 export default HelpUrls;
