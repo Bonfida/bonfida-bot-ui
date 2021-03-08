@@ -19,7 +19,8 @@ import CoinInput from './CoinInputCreatePool';
 import { Transaction, PublicKey } from '@solana/web3.js';
 import { createPool, BONFIDABOT_PROGRAM_ID, Numberu64 } from 'bonfida-bot';
 import { notify } from '../utils/notifications';
-import { decimalsFromMint, FIDA_USDC_MARKET_ADDRESS } from '../utils/tokens';
+import { decimalsFromMint } from '../utils/tokens';
+import { FIDA_USDC_MARKET_ADDRESS } from '../utils/markets';
 import Spin from './Spin';
 import bs58 from 'bs58';
 import { nanoid } from 'nanoid';
@@ -275,10 +276,7 @@ const CreatePoolCard = () => {
         <Grid container justify="center" style={{ marginTop: 20 }}>
           <CustomButton
             onClick={() =>
-              setMarketAddresses([
-                ...marketAddresses,
-                'FrDavxi4QawYnQY259PVfYUjUvuyPNfqSXbLBqMnbfWJ',
-              ])
+              setMarketAddresses([...marketAddresses, FIDA_USDC_MARKET_ADDRESS])
             }
           >
             Add Market

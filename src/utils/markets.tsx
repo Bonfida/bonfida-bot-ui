@@ -11,6 +11,9 @@ export let USE_MARKETS = MARKETS.concat(AWESOME_MARKETS).filter(
   (e) => !e.deprecated,
 );
 
+export const FIDA_USDC_MARKET_ADDRESS =
+  'E14BKBhDWD4EuTkWj1ooZezesGxMW8LPCps4W5PuzZJo';
+
 export const getAssetsFromMarkets = (marketAddresses: string[]) => {
   const result = new Set<string>();
   const names = marketAddresses
