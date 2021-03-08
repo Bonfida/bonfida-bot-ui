@@ -245,6 +245,10 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       );
 
       for (let acc of openOrdersAccounts) {
+        if (!acc.quoteTokenFree.toNumber() && !acc.baseTokenFree.toNumber()) {
+          continue;
+        }
+
         const instructions = await settleFunds(
           connection,
           new PublicKey(poolSeed).toBuffer(),
