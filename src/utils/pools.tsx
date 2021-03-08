@@ -11,10 +11,8 @@ import {
 import { useConnection } from './connection';
 import tuple from 'immutable-tuple';
 import dca from '../assets/icons/illustrations/control.svg';
-import rsi from '../assets/icons/illustrations/line-chart.svg';
 import bs58 from 'bs58';
 import { getTokenPrice } from './markets';
-import { Connection } from '@solana/web3.js';
 import { useEffect, useState } from 'react';
 import { useWallet } from './wallet';
 import { useTokenAccounts } from './tokens';

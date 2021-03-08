@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { usePoolSeedsBySigProvider, usePoolSeedsForUser } from '../utils/pools';
 import { Typography } from '@material-ui/core';
 import { useWallet } from '../utils/wallet';
@@ -84,10 +84,18 @@ const PoolTableRow = ({
 
 const MyPoolPageCard = () => {
   const classes = useStyles();
-  const { wallet, connected } = useWallet();
+  const { connected } = useWallet();
   const [ownedPoolSeeds, ownedPoolSeedsLoaded] = usePoolSeedsBySigProvider();
   const [allPoolSeeds, allPoolSeedsLoaded] = usePoolSeedsForUser();
   const [tokenAccounts, tokenAccountsLoaded] = useTokenAccounts();
+
+  ownedPoolSeeds?.sort((a, b) => {
+    return a.localeCompare(b);
+  });
+
+  allPoolSeeds?.sort((a, b) => {
+    return a.localeCompare(b);
+  });
 
   if (!connected) {
     return (
