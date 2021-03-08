@@ -441,7 +441,10 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
           );
         })}
       {marketPrice && (
-        <InformationRow label="Current Market Price" value={marketPrice} />
+        <InformationRow
+          label="Current Market Price"
+          value={roundToDecimal(marketPrice, 3)}
+        />
       )}
       <Grid container direction="column" justify="center" alignItems="center">
         <Tabs
