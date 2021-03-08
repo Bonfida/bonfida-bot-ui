@@ -29,7 +29,7 @@ export interface Pool {
 
 export const USE_POOLS: Pool[] = [
   {
-    name: 'FIDA/USDC',
+    name: 'DCA FIDA',
     poolSeed: new PublicKey('AHpWNKTasNrJLx9cj3zonVMpqXZw86xe6DQXAPTTJFC1'),
     illustration: dca,
     description:
@@ -37,7 +37,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('ahFRgebqMtH5Y4JT5RYscZKuhmK5btModzKHHpXezn3'),
   },
   {
-    name: 'BTC/USDC',
+    name: 'DCA BTC',
     poolSeed: new PublicKey('7b3RPKFvRHXTq9iXhF8y2WufHojUfVL3R9Kwm5kULTX4'),
     illustration: dca,
     description:
@@ -45,7 +45,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('6HAS1NE7i2eo3YGYoGysgFwWih2WmW1uSsCSmrBhHcpz'),
   },
   {
-    name: 'SRM/USDC',
+    name: 'DCA SRM',
     poolSeed: new PublicKey('9yyiNcBv98HRdCf6XdpLjVF3T4KjijFMUDwpLoYhjGLe'),
     illustration: dca,
     description:
@@ -53,7 +53,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('DH6Jo6JsoDQ7YWPgFUtt9ZXJVZun3kCyhg4Da5fDeyCa'),
   },
   {
-    name: 'FTT/USDC',
+    name: 'DCA FTT',
     poolSeed: new PublicKey('J2wGXgGNGieAikem2jpuT8DdwhoTtRPFVZ4dH5DaKfQJ'),
     illustration: dca,
     description:
@@ -61,7 +61,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('AnVnTDsQqunWe7NDxTRRC441EYfgp4Lehur5wpEPArSt'),
   },
   {
-    name: 'ETH/USDC',
+    name: 'DCA ETH',
     poolSeed: new PublicKey('8JJZWQ8RpmwRB55tsQYWhXh2iDtnJG2gzVoMkvs84NvZ'),
     illustration: dca,
     description:
