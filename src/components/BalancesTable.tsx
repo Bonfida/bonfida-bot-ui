@@ -187,8 +187,8 @@ const BalancesTable = () => {
         </Grid>
         <Table className={classes.table} aria-label="balance table">
           <TableBody>
-            {knownTokens.map((row) => {
-              return <BalanceRow row={row} key={nanoid()} />;
+            {knownTokens.map((row, i) => {
+              return <BalanceRow row={row} key={`balance-row-${i}`} />;
             })}
           </TableBody>
         </Table>
