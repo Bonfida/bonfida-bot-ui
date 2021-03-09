@@ -20,7 +20,6 @@ import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import FloatingCard from './FloatingCard';
 import TextField from '@material-ui/core/TextField';
-import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles({
   table: {
