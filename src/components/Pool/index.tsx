@@ -429,7 +429,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
 
       tx.add(...instructions);
 
-      const result = await sendTransaction({
+      await sendTransaction({
         transaction: tx,
         wallet,
         connection,
