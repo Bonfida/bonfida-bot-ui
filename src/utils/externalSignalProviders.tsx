@@ -1,7 +1,6 @@
 import { ExternalSignalProvider } from './types';
 import { PublicKey } from '@solana/web3.js';
 import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 export const MONTH = 30 * 24 * 60 * 60;
 export const FEES = 0.01;

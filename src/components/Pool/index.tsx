@@ -25,6 +25,7 @@ import {
   usePoolBalance,
   usePoolInfo,
   usePoolUsdBalance,
+  usePoolOrderInfos,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
 import { deposit, Numberu64, redeem } from 'bonfida-bot';
@@ -120,6 +121,11 @@ const PoolInformation = ({
   // Fee Info
   let feePeriod = formatSeconds(poolInfo?.feePeriod.toNumber() || 0);
 
+  // Orders
+  const [poolOrdersInfo, poolOrdersInfoLoaded] = usePoolOrderInfos(poolSeed);
+
+  console.log('poolOrderInfo', poolOrdersInfo);
+
   return (
     <>
       <Tabs
@@ -183,7 +189,11 @@ const PoolInformation = ({
             </Typography>
           </>
         )}
-        <Typography variant="body1" style={{ marginTop: 10 }}>
+        <Typography
+          variant="body1"
+          style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
+          align="center"
+        >
           Pool Keys:
         </Typography>
         <InformationRow
@@ -210,14 +220,18 @@ const PoolInformation = ({
             </ExplorerLink>
           }
         />
-        <Typography variant="body1" style={{ marginBottom: 10, marginTop: 10 }}>
+        <Typography
+          variant="body1"
+          style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
+          align="center"
+        >
           The pool can only trade on the following markets:
         </Typography>
         <div style={{ margin: 10 }}>
           {poolMarkets?.map((m) => {
             return (
               <InformationRow
-                label={marketNameFromAddress(m)}
+                label={' - ' + marketNameFromAddress(m)}
                 value={
                   <ExplorerLink address={m.toBase58()}>
                     {abbreviateAddress(m, 7)}
@@ -227,6 +241,26 @@ const PoolInformation = ({
             );
           })}
         </div>
+        {poolOrdersInfoLoaded && poolOrdersInfo && (
+          <>
+            <Typography
+              variant="body1"
+              style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
+              align="center"
+            >
+              Recent trades of the pool:
+            </Typography>
+            {poolOrdersInfo.map((tx) => {
+              return (
+                <Typography variant="body1">
+                  {' - '} {marketNameFromAddress(tx.market)}{' '}
+                  {tx.side === 0 ? 'buy' : 'sell'} {tx.transferredAmount}@
+                  {tx.limitPrice}
+                </Typography>
+              );
+            })}
+          </>
+        )}
       </TabPanel>
       <TabPanel value={tab} index={2}>
         {poolInfo && (

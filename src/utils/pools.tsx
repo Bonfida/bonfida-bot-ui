@@ -7,6 +7,8 @@ import {
   PoolAssetBalance,
   getPoolsSeedsBySigProvider,
   getPoolTokenMintFromSeed,
+  getPoolOrderInfos,
+  PoolOrderInfo,
 } from 'bonfida-bot';
 import { useConnection } from './connection';
 import tuple from 'immutable-tuple';
@@ -202,4 +204,30 @@ export const poolNameFromSeed = (poolSeed: string) => {
     return poolSeed.slice(0, size) + '...' + poolSeed.slice(-size);
   }
   return knowPool.name;
+};
+
+export const usePoolOrderInfos = (
+  poolSeed: PublicKey | null,
+): [PoolOrderInfo[] | null, boolean] => {
+  const connection = useConnection();
+  const [loaded, setLoaded] = useState(false);
+  const [orders, setOrders] = useState<PoolOrderInfo[] | null>(null);
+
+  useEffect(() => {
+    const get = async () => {
+      if (!poolSeed) {
+        return;
+      }
+      const _orders = await getPoolOrderInfos(
+        connection,
+        poolSeed.toBuffer(),
+        10,
+      );
+      setOrders(_orders);
+      setLoaded(true);
+    };
+    get();
+  }, [connection]);
+
+  return [orders, loaded];
 };
