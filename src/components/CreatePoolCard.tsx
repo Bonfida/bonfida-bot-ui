@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FloatingCard from './FloatingCard';
-import Grid from '@material-ui/core/Grid';
 import createPoolIcon from '../assets/create/create_robot.svg';
-import TextField from '@material-ui/core/TextField';
 import { useWallet } from '../utils/wallet';
-import { Typography } from '@material-ui/core';
+import { Typography, Checkbox, TextField, Grid } from '@material-ui/core';
 import { useConnection } from '../utils/connection';
 import Divider from './Divider';
 import WalletConnect from './WalletConnect';
@@ -21,8 +19,19 @@ import { createPool, BONFIDABOT_PROGRAM_ID, Numberu64 } from 'bonfida-bot';
 import { notify } from '../utils/notifications';
 import { decimalsFromMint } from '../utils/tokens';
 import { FIDA_USDC_MARKET_ADDRESS } from '../utils/markets';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Spin from './Spin';
+import Emoji from './Emoji';
 import bs58 from 'bs58';
+import {
+  FEES,
+  MONTH,
+  EXTERNAL_SIGNAL_PROVIDERS,
+  getDescriptionFromAddress,
+} from '../utils/externalSignalProviders';
+import { ExternalSignalProvider } from '../utils/types';
+import { ExplorerLink } from './Link';
+import { isValidPublicKey } from '../utils/utils';
 
 const useStyles = makeStyles({
   img: {
@@ -49,6 +58,15 @@ const useStyles = makeStyles({
   gridContainer: {
     border: '1px solid #BA0202',
   },
+  autoComplete: {
+    height: 55,
+    width: 300,
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  externalSigProvider: {
+    marginTop: 20,
+  },
 });
 
 const CreatePoolCard = () => {
@@ -70,6 +88,17 @@ const CreatePoolCard = () => {
   const [feeCollectionPeriod, setFeeCollectionPeriod] = useState<string | null>(
     null,
   );
+
+  // External Signal Provider
+  // Set Fees by default
+  const [externalSigProvider, setExternalSigProvider] = useState<string | null>(
+    null,
+  );
+  const [checkedExtSigProvider, setCheckedExtSigProvider] = useState(false);
+  const [
+    extSigProviderDescription,
+    setExtSigProviderDesciption,
+  ] = useState<JSX.Element | null>(null);
 
   const [assets, setAssets] = useState(
     getAssetsFromMarkets(marketAddresses).map((e) => {
@@ -93,6 +122,13 @@ const CreatePoolCard = () => {
     setAssets(newAssets);
   }, [marketAddresses]);
 
+  useEffect(() => {
+    const description = getDescriptionFromAddress(
+      externalSigProvider ? new PublicKey(externalSigProvider) : null,
+    );
+    setExtSigProviderDesciption(description);
+  }, [externalSigProvider]);
+
   if (!connected) {
     return (
       <Grid container justify="center">
@@ -100,6 +136,13 @@ const CreatePoolCard = () => {
       </Grid>
     );
   }
+
+  const onChangeAutoComplete = (e, v, r) => {
+    if (!v) {
+      return;
+    }
+    setExternalSigProvider(v.pubKey.toBase58());
+  };
 
   const removeMarket = (i: number) => {
     setMarketAddresses([
@@ -149,6 +192,18 @@ const CreatePoolCard = () => {
       });
       return;
     }
+
+    if (
+      externalSigProvider &&
+      !isValidPublicKey(new PublicKey(externalSigProvider))
+    ) {
+      notify({
+        message: 'Invalid external signal provider address',
+        variant: 'error',
+      });
+      return;
+    }
+
     try {
       setLoading(true);
       notify({
@@ -176,18 +231,28 @@ const CreatePoolCard = () => {
         amounts.push(asset.amount * Math.pow(10, decimals));
       }
 
+      const sigProvider = externalSigProvider
+        ? new PublicKey(externalSigProvider)
+        : wallet?.publicKey;
+
+      const _feeCollectionPeriod = externalSigProvider
+        ? new Numberu64(MONTH)
+        : new Numberu64(parseFloat(feeCollectionPeriod));
+
+      const _feeRatio = externalSigProvider ? FEES : parseFloat(feeRatio);
+
       const [poolSeed, transactionInstructions] = await createPool(
         connection,
         wallet?.publicKey,
         // @ts-ignore
         sourceAssetsKeys,
-        wallet?.publicKey,
+        sigProvider,
         amounts,
         2 * marketAddresses.length,
         marketAddresses.map((m) => new PublicKey(m)),
         wallet?.publicKey,
-        new Numberu64(parseFloat(feeCollectionPeriod)),
-        parseFloat(feeRatio),
+        _feeCollectionPeriod,
+        _feeRatio,
       );
       const tx = new Transaction();
       tx.add(...transactionInstructions);
@@ -220,19 +285,93 @@ const CreatePoolCard = () => {
         <Grid container justify="center">
           <img className={classes.img} src={createPoolIcon} alt="" />
         </Grid>
-        <Grid container justify="center">
-          <TextField
-            disabled
-            id="sol-creator-address"
-            label="Your SOL address"
-            className={classes.textField}
-            value={wallet?.publicKey}
-            InputProps={{
-              classes: {
-                input: classes.input,
-              },
-            }}
-          />
+        {!checkedExtSigProvider && (
+          <Grid container justify="center">
+            <TextField
+              disabled
+              id="sol-creator-address"
+              label="Your SOL address"
+              className={classes.textField}
+              value={wallet?.publicKey}
+              InputProps={{
+                classes: {
+                  input: classes.input,
+                },
+              }}
+            />
+          </Grid>
+        )}
+        {checkedExtSigProvider && (
+          <>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              direction="column"
+            >
+              <Grid item className={classes.externalSigProvider}>
+                <Emoji emoji="⚠️⚠️⚠️⚠️⚠️⚠️" />
+              </Grid>
+              <Grid item>
+                <Typography variant="body1" align="center">
+                  If you select an external signal provider you will not be able
+                  to send trade orders yourself
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container justify="center">
+              <Autocomplete
+                disableClearable={true}
+                onChange={onChangeAutoComplete}
+                options={EXTERNAL_SIGNAL_PROVIDERS}
+                getOptionLabel={(option: ExternalSignalProvider) => option.name}
+                className={classes.autoComplete}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="External Signal Provider"
+                    variant="outlined"
+                  />
+                )}
+              />
+            </Grid>
+            {externalSigProvider && (
+              <Grid
+                container
+                justify="center"
+                alignItems="center"
+                direction="column"
+              >
+                <Grid item>
+                  <Typography variant="body1">
+                    Signals will be provided by:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <ExplorerLink address={externalSigProvider}>
+                    {externalSigProvider}
+                  </ExplorerLink>
+                </Grid>
+              </Grid>
+            )}
+          </>
+        )}
+        {extSigProviderDescription && <>{extSigProviderDescription}</>}
+        <Grid container alignItems="center" justify="center" direction="row">
+          <Grid item>
+            <Checkbox
+              checked={checkedExtSigProvider}
+              onChange={() => {
+                setCheckedExtSigProvider((prev) => !prev);
+                setExternalSigProvider(null);
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="body1">
+              Use an external signal provider
+            </Typography>
+          </Grid>
         </Grid>
         {/* Markets */}
         <Divider
@@ -321,29 +460,33 @@ const CreatePoolCard = () => {
         </Typography>
         <Grid container justify="center">
           <TextField
+            disabled={!!externalSigProvider}
             InputProps={{
               classes: {
                 input: classes.input,
               },
             }}
             className={classes.textField}
-            label="Fee Collection Period"
+            InputLabelProps={{ shrink: true }}
+            label={externalSigProvider ? null : 'Fee Collection Period'}
             helperText="Must be in seconds"
-            value={feeCollectionPeriod}
+            value={externalSigProvider ? MONTH : feeCollectionPeriod}
             onChange={onChangeFeeCollectionPeriod}
           />
         </Grid>
         <Grid container justify="center">
           <TextField
+            disabled={!!externalSigProvider}
             InputProps={{
               classes: {
                 input: classes.input,
               },
             }}
+            InputLabelProps={{ shrink: true }}
             className={classes.textField}
-            label="Fee Ratio (%)"
+            label={externalSigProvider ? null : 'Fee Ratio (%)'}
             helperText="Percentage of the pool that will be deduced for fees each period"
-            value={feeRatio}
+            value={externalSigProvider ? FEES : feeRatio}
             onChange={onChangeFeeRatio}
           />
         </Grid>

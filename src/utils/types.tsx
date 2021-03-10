@@ -33,3 +33,9 @@ export interface TokenAccount {
   account: AccountInfo<Buffer> | null;
   effectiveMint: PublicKey;
 }
+
+export interface ExternalSignalProvider {
+  name: string;
+  pubKey: PublicKey;
+  description: JSX.Element;
+}

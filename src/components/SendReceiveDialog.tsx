@@ -191,17 +191,12 @@ const SendReceiveDialogButton = ({
       <Button onClick={() => setOpen(true)}>
         <img src={send} height="40px" alt="" />
       </Button>
-      <Dialog
-        aria-labelledby="simple-dialog-title"
-        open={open}
-        onClose={() => setOpen(false)}
-      >
+      <Dialog open={open} onClose={() => setOpen(false)}>
         <Tabs
           value={value}
           indicatorColor="primary"
           textColor="primary"
           onChange={handleChange}
-          aria-label="deposit-withdraw-tabs"
           centered
         >
           <Tab label="Deposit" />

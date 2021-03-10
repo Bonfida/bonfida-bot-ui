@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { USE_POOLS } from '../utils/pools';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, TextField } from '@material-ui/core';
 import CustomButton from '../components/CustomButton';
 import { useHistory } from 'react-router-dom';
 import { notify } from '../utils/notifications';
 import StrategyCard from '../components/StrategyCard';
 import { nanoid } from 'nanoid';
+import Modal from '../components/Modal';
+import { isValidPublicKey } from '../utils/utils';
 
 const useStyles = makeStyles({
   container: {
@@ -32,7 +34,62 @@ const useStyles = makeStyles({
     },
     margin: 10,
   },
+  dialogGridItem: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  dialogContainer: {
+    padding: 25,
+    background: 'white',
+  },
+  input: {
+    fontSize: 15,
+  },
 });
+
+const CustomPoolDialog = () => {
+  const classes = useStyles();
+  const history = useHistory();
+  const [poolSeed, setPoolSeed] = useState<string | null>(null);
+
+  const onChange = (e) => {
+    const input = e.target.value.trim();
+    setPoolSeed(input);
+  };
+
+  const onClick = () => {
+    const isValid = isValidPublicKey(poolSeed);
+    if (!isValid) {
+      notify({
+        message: 'Invalid Pool Seed',
+        variant: 'error',
+      });
+      return;
+    }
+    history.push(`/pool/${poolSeed}`);
+  };
+
+  return (
+    <div className={classes.dialogContainer}>
+      <Grid container direction="column" justify="center" alignItems="center">
+        <Grid item className={classes.dialogGridItem}>
+          <Typography variant="body1">Custom Pool Seed</Typography>
+        </Grid>
+        <Grid item className={classes.dialogGridItem}>
+          <TextField
+            onChange={onChange}
+            value={poolSeed}
+            label="Pool Seed"
+            InputProps={{ className: classes.input }}
+          />
+        </Grid>
+        <Grid item className={classes.dialogGridItem}>
+          <CustomButton onClick={onClick}>Go</CustomButton>
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
 
 const ExplorerPage = () => {
   const classes = useStyles();
@@ -41,15 +98,20 @@ const ExplorerPage = () => {
   const productRows = rows.map((row, idx) =>
     USE_POOLS.slice(idx * 2, idx * 2 + 2),
   );
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <Typography className={classes.addCustomPool} variant="h1" align="center">
         <CustomButton
           className={classes.addCustomPoolButton}
-          onClick={() => notify({ message: 'Coming soon...', variant: 'info' })}
+          onClick={() => setOpen(true)}
         >
           Add Custom Pool
         </CustomButton>
+        <Modal open={open} setOpen={setOpen}>
+          <CustomPoolDialog />
+        </Modal>
         <CustomButton
           className={classes.addCustomPoolButton}
           onClick={() => history.push('/create')}

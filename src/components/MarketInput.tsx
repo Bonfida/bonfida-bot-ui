@@ -68,7 +68,6 @@ const MarketInput = ({
   marketAddresses,
   setMarketAddresses,
   index = 0,
-  disabled = false,
   marketsList = USE_MARKETS,
 }: {
   marketAddresses: string[];
@@ -91,6 +90,7 @@ const MarketInput = ({
   return (
     <div className={classes.root}>
       <Autocomplete
+        disableClearable={true}
         onChange={onChange}
         options={marketsList}
         getOptionLabel={(option: any) => option.name}
