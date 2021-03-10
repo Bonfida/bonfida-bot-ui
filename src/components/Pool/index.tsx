@@ -124,8 +124,6 @@ const PoolInformation = ({
   // Orders
   const [poolOrdersInfo, poolOrdersInfoLoaded] = usePoolOrderInfos(poolSeed);
 
-  console.log('poolOrderInfo', poolOrdersInfo);
-
   return (
     <>
       <Tabs
