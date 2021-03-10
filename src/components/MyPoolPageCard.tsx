@@ -97,6 +97,10 @@ const MyPoolPageCard = () => {
     return a.localeCompare(b);
   });
 
+  const _allPoolSeeds = allPoolSeeds?.filter(
+    (p) => !ownedPoolSeeds?.includes(p),
+  );
+
   if (!connected) {
     return (
       <Grid container alignItems="center" justify="center" direction="row">
@@ -137,7 +141,7 @@ const MyPoolPageCard = () => {
                 />
               );
             })}
-            {allPoolSeeds?.map((poolSeed) => {
+            {_allPoolSeeds?.map((poolSeed) => {
               return (
                 <PoolTableRow
                   key={nanoid()}
