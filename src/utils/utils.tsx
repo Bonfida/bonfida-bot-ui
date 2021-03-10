@@ -15,7 +15,7 @@ const TOKENS = AWESOME_TOKENS.concat(TOKEN_MINTS);
 
 export const BONFIDA_API_URL = 'https://serum-api.bonfida.com/';
 
-export function isValidPublicKey(key) {
+export function isValidPublicKey(key: string | null | undefined) {
   if (!key) {
     return false;
   }
