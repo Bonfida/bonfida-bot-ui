@@ -178,25 +178,37 @@ const CreatePoolCard = () => {
   };
 
   const onSubmit = async () => {
-    if (!feeRatio || !feeCollectionPeriod) {
+    const sigProvider = externalSigProvider
+      ? new PublicKey(externalSigProvider)
+      : wallet?.publicKey;
+
+    let _feeCollectionPeriod = externalSigProvider
+      ? MONTH
+      : feeCollectionPeriod
+      ? parseFloat(feeCollectionPeriod)
+      : null;
+
+    let _feeRatio = externalSigProvider
+      ? FEES
+      : feeRatio
+      ? parseFloat(feeRatio)
+      : null;
+
+    if (!_feeRatio || !_feeCollectionPeriod) {
       notify({
         message: 'Invalid fees',
         variant: 'error',
       });
       return;
     }
-    if (parseFloat(feeCollectionPeriod) < 604800) {
+    if (_feeCollectionPeriod < 604800) {
       notify({
         message: 'Fee period need to be greater than 7 days (604,800s)',
         variant: 'error',
       });
       return;
     }
-
-    if (
-      externalSigProvider &&
-      !isValidPublicKey(new PublicKey(externalSigProvider))
-    ) {
+    if (externalSigProvider && !isValidPublicKey(externalSigProvider)) {
       notify({
         message: 'Invalid external signal provider address',
         variant: 'error',
@@ -231,16 +243,6 @@ const CreatePoolCard = () => {
         amounts.push(asset.amount * Math.pow(10, decimals));
       }
 
-      const sigProvider = externalSigProvider
-        ? new PublicKey(externalSigProvider)
-        : wallet?.publicKey;
-
-      const _feeCollectionPeriod = externalSigProvider
-        ? new Numberu64(MONTH)
-        : new Numberu64(parseFloat(feeCollectionPeriod));
-
-      const _feeRatio = externalSigProvider ? FEES : parseFloat(feeRatio);
-
       const [poolSeed, transactionInstructions] = await createPool(
         connection,
         wallet?.publicKey,
@@ -251,7 +253,7 @@ const CreatePoolCard = () => {
         2 * marketAddresses.length,
         marketAddresses.map((m) => new PublicKey(m)),
         wallet?.publicKey,
-        _feeCollectionPeriod,
+        new Numberu64(_feeCollectionPeriod),
         _feeRatio,
       );
       const tx = new Transaction();
