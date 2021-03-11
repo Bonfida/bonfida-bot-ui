@@ -18,6 +18,8 @@ import { getTokenPrice } from './markets';
 import { useEffect, useState } from 'react';
 import { useWallet } from './wallet';
 import { useTokenAccounts } from './tokens';
+import { poolTitleForExtSigProvider } from './externalSignalProviders';
+import { abbreviateString } from './utils';
 
 export interface Pool {
   name: string;
@@ -227,4 +229,14 @@ export const usePoolOrderInfos = (
   }, [connection]);
 
   return [orders, loaded];
+};
+
+export const usePoolName = (poolSeed: string) => {
+  const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
+  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  const poolName =
+    pool?.name ||
+    poolTitleForExtSigProvider(poolInfo?.signalProvider) ||
+    abbreviateString(poolSeed);
+  return poolName;
 };

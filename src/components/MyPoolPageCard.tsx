@@ -1,23 +1,28 @@
 import React from 'react';
-import { usePoolSeedsBySigProvider, usePoolSeedsForUser } from '../utils/pools';
+import {
+  usePoolSeedsBySigProvider,
+  usePoolSeedsForUser,
+  usePoolName,
+} from '../utils/pools';
 import { Typography } from '@material-ui/core';
 import { useWallet } from '../utils/wallet';
 import Grid from '@material-ui/core/Grid';
 import Spin from './Spin';
 import WalletConnect from './WalletConnect';
-import { poolNameFromSeed } from '../utils/pools';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { makeStyles } from '@material-ui/core/styles';
 import FloatingCard from './FloatingCard';
-import { useTokenAccounts } from '../utils/tokens';
 import CustomButton from './CustomButton';
 import Chip from '@material-ui/core/Chip';
 import DoneIcon from '@material-ui/icons/Done';
 import { useHistory } from 'react-router-dom';
 import { nanoid } from 'nanoid';
+import { poolTitleForExtSigProvider } from '../utils/externalSignalProviders';
+import { PublicKey } from '@solana/web3.js';
+import { abbreviateString } from '../utils/utils';
 
 const useStyles = makeStyles({
   table: {
@@ -51,19 +56,17 @@ const OwnerTag = () => {
 
 const PoolTableRow = ({
   poolSeed,
-  tokenAccounts,
   owned = false,
 }: {
   poolSeed: string;
-  tokenAccounts: any;
   owned?: boolean;
 }) => {
   const history = useHistory();
-
+  const poolName = usePoolName(poolSeed);
   return (
     <TableRow>
       <TableCell>{owned ? <OwnerTag /> : null}</TableCell>
-      <TableCell>{poolNameFromSeed(poolSeed)}</TableCell>
+      <TableCell>{poolName}</TableCell>
       <TableCell>
         <CustomButton onClick={() => history.push(`/pool/${poolSeed}`)}>
           Pool Page
@@ -87,7 +90,6 @@ const MyPoolPageCard = () => {
   const { connected } = useWallet();
   const [ownedPoolSeeds, ownedPoolSeedsLoaded] = usePoolSeedsBySigProvider();
   const [allPoolSeeds, allPoolSeedsLoaded] = usePoolSeedsForUser();
-  const [tokenAccounts, tokenAccountsLoaded] = useTokenAccounts();
 
   ownedPoolSeeds?.sort((a, b) => {
     return a.localeCompare(b);
@@ -108,7 +110,7 @@ const MyPoolPageCard = () => {
       </Grid>
     );
   }
-  if (!ownedPoolSeedsLoaded || !allPoolSeedsLoaded || !tokenAccountsLoaded) {
+  if (!ownedPoolSeedsLoaded || !allPoolSeedsLoaded) {
     return (
       <>
         <Grid container alignItems="center" justify="center" direction="column">
@@ -133,12 +135,7 @@ const MyPoolPageCard = () => {
           <TableBody>
             {ownedPoolSeeds?.map((poolSeed) => {
               return (
-                <PoolTableRow
-                  key={nanoid()}
-                  poolSeed={poolSeed}
-                  tokenAccounts={tokenAccounts}
-                  owned={true}
-                />
+                <PoolTableRow key={nanoid()} poolSeed={poolSeed} owned={true} />
               );
             })}
             {_allPoolSeeds?.map((poolSeed) => {
@@ -146,7 +143,6 @@ const MyPoolPageCard = () => {
                 <PoolTableRow
                   key={nanoid()}
                   poolSeed={poolSeed}
-                  tokenAccounts={tokenAccounts}
                   owned={false}
                 />
               );

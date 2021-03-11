@@ -22,6 +22,7 @@ const styles = {
 export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
   {
     name: 'Weekly DCA (8km...hqa)',
+    displayName: 'Custom Weekly DCA',
     pubKey: new PublicKey('8km6prR9BNjvZFVGRh7YoU2PnsQPn7XnVeYKJfWJvhqa'),
     description: (
       <>
@@ -45,6 +46,7 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
   },
   {
     name: 'Monthly DCA (9vs...eCP)',
+    displayName: 'Custom Monthly DCA',
     pubKey: new PublicKey('9vsePNS3HfZtLHoP4tPCpa16wdq19DJWzifuMjX7keCP'),
     description: (
       <>
@@ -68,6 +70,25 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
     ),
   },
 ];
+
+export const KNOWN_SIGNAL_PROVIDERS = EXTERNAL_SIGNAL_PROVIDERS.map((e) =>
+  e.pubKey.toBase58(),
+);
+
+export const poolTitleForExtSigProvider = (
+  signalProvider: PublicKey | null | undefined,
+) => {
+  if (!signalProvider) {
+    return null;
+  }
+  const pool = EXTERNAL_SIGNAL_PROVIDERS.find((e) =>
+    e.pubKey.equals(signalProvider),
+  );
+  if (!pool) {
+    return null;
+  }
+  return pool.displayName;
+};
 
 export const getDescriptionFromAddress = (address: PublicKey | null) => {
   if (!address) {

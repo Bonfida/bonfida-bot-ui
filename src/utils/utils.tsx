@@ -406,3 +406,7 @@ export const formatSeconds = (sec: number): string => {
       return `${day} day ${hour}h`;
   }
 };
+
+export const abbreviateString = (s: string, size: number = 7) => {
+  return s.slice(0, size) + '…' + s.slice(-size);
+};

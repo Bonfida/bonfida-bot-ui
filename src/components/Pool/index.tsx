@@ -25,7 +25,7 @@ import {
   usePoolBalance,
   usePoolInfo,
   usePoolUsdBalance,
-  usePoolOrderInfos,
+  usePoolName,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
 import { deposit, Numberu64, redeem } from 'bonfida-bot';
@@ -45,6 +45,7 @@ import { useWallet } from '../../utils/wallet';
 import { Transaction, Account, TransactionInstruction } from '@solana/web3.js';
 import { sendTransaction } from '../../utils/send';
 import { useHistory } from 'react-router-dom';
+import { KNOWN_SIGNAL_PROVIDERS } from '../../utils/externalSignalProviders';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,7 +123,7 @@ const PoolInformation = ({
   let feePeriod = formatSeconds(poolInfo?.feePeriod.toNumber() || 0);
 
   // Orders
-  const [poolOrdersInfo, poolOrdersInfoLoaded] = usePoolOrderInfos(poolSeed);
+  // const [poolOrdersInfo, poolOrdersInfoLoaded] = usePoolOrderInfos(poolSeed);
 
   return (
     <>
@@ -239,7 +240,7 @@ const PoolInformation = ({
             );
           })}
         </div>
-        {poolOrdersInfoLoaded && poolOrdersInfo && (
+        {/* {poolOrdersInfoLoaded && poolOrdersInfo && (
           <>
             <Typography
               variant="body1"
@@ -249,6 +250,8 @@ const PoolInformation = ({
               Recent trades of the pool:
             </Typography>
             {poolOrdersInfo.map((tx) => {
+              console.log(tx.settledAmount);
+              console.log(tx.transferredAmount);
               return (
                 <Typography variant="body1">
                   {' - '} {marketNameFromAddress(tx.market)}{' '}
@@ -258,7 +261,7 @@ const PoolInformation = ({
               );
             })}
           </>
-        )}
+        )} */}
       </TabPanel>
       <TabPanel value={tab} index={2}>
         {poolInfo && (
@@ -304,6 +307,12 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
     wallet &&
     connected &&
     poolInfo?.signalProvider.toBase58() === wallet?.publicKey?.toBase58();
+
+  const isVerified =
+    !!pool ||
+    KNOWN_SIGNAL_PROVIDERS.includes(poolInfo?.signalProvider.toBase58() || '');
+  const poolName = usePoolName(poolSeed);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -449,9 +458,9 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
     <div style={{ width: 700, padding: 20, margin: 20 }}>
       <FloatingCard>
         {/* Header */}
-        <VerifiedPool isVerified={!!pool} />
+        <VerifiedPool isVerified={isVerified} />
         {/* Deposit/Withdraw tokens */}
-        <PoolTitle poolName={pool?.name || ''} />
+        <PoolTitle poolName={poolName} />
         <Divider
           width="80%"
           height="1px"

@@ -36,6 +36,7 @@ export interface TokenAccount {
 
 export interface ExternalSignalProvider {
   name: string;
+  displayName: string;
   pubKey: PublicKey;
   description: JSX.Element;
 }
