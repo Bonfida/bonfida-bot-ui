@@ -12,7 +12,11 @@ import CustomButton from './CustomButton';
 import { sendTransaction } from '../utils/send';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { getAssetsFromMarkets } from '../utils/markets';
-import { useTokenAccounts } from '../utils/tokens';
+import {
+  useTokenAccounts,
+  createAssociatedTokenAccount,
+  findAssociatedTokenAddress,
+} from '../utils/tokens';
 import CoinInput from './CoinInputCreatePool';
 import { Transaction, PublicKey } from '@solana/web3.js';
 import { createPool, BONFIDABOT_PROGRAM_ID, Numberu64 } from 'bonfida-bot';
@@ -223,15 +227,34 @@ const CreatePoolCard = () => {
         variant: 'info',
       });
 
-      const sourceAssetsKeys = assets
-        .map((asset) => {
-          for (let token of tokenAccounts) {
-            if (token.account.data.parsed.info.mint === asset.mint) {
-              return new PublicKey(token.pubkey);
-            }
+      // Check if sourceAssetKeys exist, if not create the associated token account
+      let sourceAssetsKeys: PublicKey[] = [];
+      for (let asset of assets) {
+        let _key: PublicKey | null = null;
+        for (let token of tokenAccounts) {
+          if (token.account.data.parsed.info.mint === asset.mint) {
+            _key = new PublicKey(token.pubkey);
           }
-        })
-        .filter((e) => e);
+        }
+        if (!_key && asset.mint) {
+          await createAssociatedTokenAccount(
+            connection,
+            wallet,
+            new PublicKey(asset.mint),
+          );
+          _key = await findAssociatedTokenAddress(
+            wallet.publicKey,
+            new PublicKey(asset.mint),
+          );
+        } else {
+          notify({
+            message: 'Error creating the token account',
+            variant: 'error',
+          });
+          return;
+        }
+        sourceAssetsKeys.push(_key);
+      }
 
       let amounts: number[] = [];
       for (let asset of assets) {
