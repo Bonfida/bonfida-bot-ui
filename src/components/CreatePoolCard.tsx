@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FloatingCard from './FloatingCard';
 import createPoolIcon from '../assets/create/create_robot.svg';
@@ -114,7 +114,7 @@ const CreatePoolCard = () => {
     }),
   );
 
-  useEffect(() => {
+  useMemo(() => {
     const old = [...assets];
     let newAssets = getAssetsFromMarkets(marketAddresses).map((e) => {
       return {
@@ -126,7 +126,7 @@ const CreatePoolCard = () => {
     setAssets(newAssets);
   }, [marketAddresses]);
 
-  useEffect(() => {
+  useMemo(() => {
     const description = getDescriptionFromAddress(
       externalSigProvider ? new PublicKey(externalSigProvider) : null,
     );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   usePoolSeedsBySigProvider,
   usePoolSeedsForUser,
@@ -20,9 +20,6 @@ import Chip from '@material-ui/core/Chip';
 import DoneIcon from '@material-ui/icons/Done';
 import { useHistory } from 'react-router-dom';
 import { nanoid } from 'nanoid';
-import { poolTitleForExtSigProvider } from '../utils/externalSignalProviders';
-import { PublicKey } from '@solana/web3.js';
-import { abbreviateString } from '../utils/utils';
 
 const useStyles = makeStyles({
   table: {
@@ -91,16 +88,25 @@ const MyPoolPageCard = () => {
   const [ownedPoolSeeds, ownedPoolSeedsLoaded] = usePoolSeedsBySigProvider();
   const [allPoolSeeds, allPoolSeedsLoaded] = usePoolSeedsForUser();
 
-  ownedPoolSeeds?.sort((a, b) => {
-    return a.localeCompare(b);
-  });
+  useMemo(
+    () =>
+      ownedPoolSeeds?.sort((a, b) => {
+        return a.localeCompare(b);
+      }),
+    [ownedPoolSeedsLoaded],
+  );
 
-  allPoolSeeds?.sort((a, b) => {
-    return a.localeCompare(b);
-  });
+  useMemo(
+    () =>
+      allPoolSeeds?.sort((a, b) => {
+        return a.localeCompare(b);
+      }),
+    [allPoolSeedsLoaded],
+  );
 
-  const _allPoolSeeds = allPoolSeeds?.filter(
-    (p) => !ownedPoolSeeds?.includes(p),
+  const _allPoolSeeds = useMemo(
+    () => allPoolSeeds?.filter((p) => !ownedPoolSeeds?.includes(p)),
+    [allPoolSeeds?.length],
   );
 
   if (!connected) {

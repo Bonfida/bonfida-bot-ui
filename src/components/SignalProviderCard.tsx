@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { PublicKey, Transaction, Account } from '@solana/web3.js';
 import { useWallet } from '../utils/wallet';
 import Grid from '@material-ui/core/Grid';
@@ -83,10 +83,12 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
   const connection = useConnection();
   const { wallet } = useWallet();
   const [loading, setLoading] = useState(false);
-  const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
+  const [poolInfo, poolInfoLoaded] = usePoolInfo(new PublicKey(poolSeed));
 
   // Format feePeriod in hh:mm:
-  const feePeriod = formatSeconds(poolInfo?.feePeriod.toNumber() || 0);
+  const feePeriod = useMemo(() => {
+    return formatSeconds(poolInfo?.feePeriod.toNumber() || 0);
+  }, [poolInfo]);
 
   const onSubmit = async () => {
     try {
@@ -166,21 +168,35 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
   const [size, setSize] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
 
-  const [poolBalance] = usePoolBalance(new PublicKey(poolSeed));
-
-  let [base, quote] = marketAssetsFromAddress(
-    marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
+  const [poolBalance, poolBalanceLoaded] = usePoolBalance(
+    new PublicKey(poolSeed),
   );
-  const poolBalanceQuote =
-    (poolBalance &&
-      poolBalance[1].find((e) => e.mint === tokenMintFromName(quote || ''))
-        ?.tokenAmount.uiAmount) ||
-    0;
-  const poolBalanceBase =
-    (poolBalance &&
-      poolBalance[1].find((e) => e.mint === tokenMintFromName(base || ''))
-        ?.tokenAmount.uiAmount) ||
-    0;
+
+  let [base, quote] = useMemo(
+    () =>
+      marketAssetsFromAddress(
+        marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
+      ),
+    [marketAddress],
+  );
+
+  const poolBalanceQuote = useMemo(() => {
+    return (
+      (poolBalance &&
+        poolBalance[1].find((e) => e.mint === tokenMintFromName(quote || ''))
+          ?.tokenAmount.uiAmount) ||
+      0
+    );
+  }, [poolBalanceLoaded]);
+
+  const poolBalanceBase = useMemo(() => {
+    return (
+      (poolBalance &&
+        poolBalance[1].find((e) => e.mint === tokenMintFromName(base || ''))
+          ?.tokenAmount.uiAmount) ||
+      0
+    );
+  }, [poolBalanceLoaded]);
 
   const [slippage] = useExpectedSlippage(
     marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
@@ -626,13 +642,19 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
 
 const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
   const classes = useStyles();
-  const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
+  const [poolInfo, poolInfoLoaded] = usePoolInfo(new PublicKey(poolSeed));
   const { connected, wallet } = useWallet();
   const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
   const [tab, setTab] = React.useState(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
   };
+
+  const isOwner = useMemo(
+    () =>
+      wallet?.publicKey?.toBase58() === poolInfo?.signalProvider?.toBase58(),
+    [connected, poolInfoLoaded],
+  );
 
   if (!connected) {
     return (
@@ -641,7 +663,7 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
       </Grid>
     );
   }
-  if (wallet?.publicKey.toBase58() !== poolInfo?.signalProvider.toBase58()) {
+  if (!isOwner) {
     return (
       <FloatingCard>
         <div className={classes.cardContainer}>

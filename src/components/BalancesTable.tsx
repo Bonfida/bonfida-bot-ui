@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useWallet } from '../utils/wallet';
 import WalletConnect from './WalletConnect';
 import { makeStyles } from '@material-ui/core/styles';
@@ -121,41 +121,54 @@ const BalancesTable = () => {
   const [hideZeroBalances, setZeroBalances] = useState(true);
   const [search, setSearch] = useState<string | null>(null);
 
-  let rows = (tokenAccounts || [])
-    .map((token) => {
-      return {
-        name: findNameFromMint(token.account.data.parsed.info.mint),
-        mint: token.account.data.parsed.info.mint,
-        balance: roundToDecimal(
-          token.account.data.parsed.info.tokenAmount.uiAmount,
-          2,
-        ),
-        pubkey: token.pubkey,
-      };
-    })
-    .filter((row) => (hideZeroBalances ? row.balance > 0 : true))
-    .filter((row) =>
-      search
-        ? tokenNameFromMint(row.mint)
-            ?.toLowerCase()
-            ?.includes(search?.toLowerCase() || '')
-        : true,
-    )
-    .sort((a, b) => b.balance - a.balance)
-    .filter((e) => e);
+  let rows = useMemo(
+    () =>
+      (tokenAccounts || [])
+        .map((token) => {
+          return {
+            name: findNameFromMint(token.account.data.parsed.info.mint),
+            mint: token.account.data.parsed.info.mint,
+            balance: roundToDecimal(
+              token.account.data.parsed.info.tokenAmount.uiAmount,
+              2,
+            ),
+            pubkey: token.pubkey,
+          };
+        })
+        .filter((row) => (hideZeroBalances ? row.balance > 0 : true))
+        .filter((row) =>
+          search
+            ? tokenNameFromMint(row.mint)
+                ?.toLowerCase()
+                ?.includes(search?.toLowerCase() || '')
+            : true,
+        )
+        .sort((a, b) => b.balance - a.balance)
+        .filter((e) => e),
+    [tokenAccounts?.length, search],
+  );
 
-  const knownTokens = rows
-    .map((t) => {
-      if (USE_TOKENS.find((e) => e.address.toBase58() === t.mint)) {
-        return t;
-      }
-    })
-    .filter((e) => e)
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const knownTokens = useMemo(
+    () =>
+      rows
+        .map((t) => {
+          if (USE_TOKENS.find((e) => e.address.toBase58() === t.mint)) {
+            return t;
+          }
+        })
+        .filter((e) => e)
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    [rows?.length, search],
+  );
 
-  const unknownTokens = rows.filter((e) => !knownTokens.includes(e));
+  const unknownTokens = useMemo(() => {
+    return rows.filter((e) => !knownTokens.includes(e));
+  }, [rows?.length, search]);
 
-  knownTokens.push(...unknownTokens);
+  useMemo(() => knownTokens.push(...unknownTokens), [
+    tokenAccounts?.length,
+    search,
+  ]);
 
   if (!connected) {
     return (
