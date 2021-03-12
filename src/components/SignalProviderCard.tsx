@@ -610,6 +610,7 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
               key={nanoid()}
               label={marketNameFromAddress(m)}
               value={m.toBase58()}
+              isExplorerLink
             />
           );
         })}
