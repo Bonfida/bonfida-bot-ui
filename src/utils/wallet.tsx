@@ -5,7 +5,6 @@ import { useConnectionConfig } from './connection';
 import { rpcRequest, useLocalStorageState } from './utils';
 import { WalletContextValues } from './types';
 import { SolongAdapter } from './solong_adapter';
-import { getFeeRebate } from './utils';
 import { PublicKey, Connection } from '@solana/web3.js';
 import { useAsyncData } from './fetch-loop';
 import { useConnection } from './connection';
@@ -54,7 +53,6 @@ export function WalletProvider({ children }) {
       localStorage.removeItem('feeDiscountKey');
       setConnected(true);
       let walletPublicKey = wallet.publicKey.toBase58();
-      getFeeRebate(walletPublicKey);
       notify({
         message: 'Wallet connected',
         variant: 'success',

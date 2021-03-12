@@ -216,16 +216,6 @@ export async function apiPost(url: string, body: any, headers: any) {
   }
 }
 
-export const getFeeRebate = async (walletPublicKey) => {
-  await apiPost(
-    'https://wallet-api.bonfida.com/fee-rebate',
-    {
-      publicKey: walletPublicKey,
-    },
-    { 'Content-Type': 'application/json' },
-  );
-};
-
 export const getBestBidsBestAsks = async (marketAddress: PublicKey) => {
   const ENDPOINT = 'https://solana-api.projectserum.com/';
   const connection = new Connection(ENDPOINT);

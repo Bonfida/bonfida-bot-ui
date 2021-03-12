@@ -8,7 +8,7 @@ import {
   SystemProgram,
 } from '@solana/web3.js';
 import { useConnection } from './connection';
-import { useAsyncData, _FAST_REFRESH_INTERVAL } from './fetch-loop';
+import { useAsyncData } from './fetch-loop';
 import { useWallet } from './wallet';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import tuple from 'immutable-tuple';
