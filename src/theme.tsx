@@ -1,21 +1,10 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import background from './assets/background.svg';
+
 export const theme = createMuiTheme({
   typography: {
     fontFamily: ['IBM Plex Mono', 'monospace'].join(','),
   },
   overrides: {
-    MuiCssBaseline: {
-      '@global': {
-        body: {
-          background: '#E5E5E5',
-          backgroundImage: `url(${background})`,
-          backgroundPosition: '50% 50%',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-        },
-      },
-    },
     MuiCardContent: {
       root: {
         '&:last-child': {
