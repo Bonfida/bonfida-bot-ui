@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { USE_POOLS } from '../../utils/pools';
 import FloatingCard from '../FloatingCard';
 import DepositInput from '../DepositInput';
@@ -100,7 +100,7 @@ const PoolInformation = ({
   tokenAccounts: any;
 }) => {
   const [poolBalance] = usePoolBalance(poolSeed);
-  const [poolInfo] = usePoolInfo(poolSeed);
+  const [poolInfo, poolInfoLoaded] = usePoolInfo(poolSeed);
   const pool = USE_POOLS.find(
     (p) => p.poolSeed.toBase58() === poolSeed.toBase58(),
   );
@@ -120,7 +120,10 @@ const PoolInformation = ({
   };
 
   // Fee Info
-  let feePeriod = formatSeconds(poolInfo?.feePeriod.toNumber() || 0);
+  let feePeriod = useMemo(
+    () => formatSeconds(poolInfo?.feePeriod.toNumber() || 0),
+    [poolInfoLoaded],
+  );
 
   // Orders
   // const [poolOrdersInfo, poolOrdersInfoLoaded] = usePoolOrderInfos(poolSeed);
@@ -134,9 +137,9 @@ const PoolInformation = ({
         onChange={handleTabChange}
         centered
       >
-        <Tab label="Pool Content" />
-        <Tab label="Pool Information" />
-        <Tab label="Fee Schedule" />
+        <Tab disableRipple label="Pool Content" />
+        <Tab disableRipple label="Pool Information" />
+        <Tab disableRipple label="Fee Schedule" />
       </Tabs>
       {/* Content of the pool */}
       <TabPanel value={tab} index={0}>
@@ -288,8 +291,10 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const { wallet, connected } = useWallet();
 
   const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
-  const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
-  const [poolBalance] = usePoolBalance(new PublicKey(poolSeed));
+  const [poolInfo, poolInfoLoaded] = usePoolInfo(new PublicKey(poolSeed));
+  const [poolBalance, poolBalanceLoaded] = usePoolBalance(
+    new PublicKey(poolSeed),
+  );
 
   const [tab, setTab] = React.useState(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -303,25 +308,34 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState<string | null>(null);
 
-  const isAdmin =
-    wallet &&
-    connected &&
-    poolInfo?.signalProvider.toBase58() === wallet?.publicKey?.toBase58();
+  const isAdmin = useMemo(
+    () =>
+      wallet &&
+      connected &&
+      poolInfo?.signalProvider.toBase58() === wallet?.publicKey?.toBase58(),
+    [connected, poolInfoLoaded],
+  );
 
-  const isVerified =
-    !!pool ||
-    KNOWN_SIGNAL_PROVIDERS.includes(poolInfo?.signalProvider.toBase58() || '');
+  const isVerified = useMemo(
+    () =>
+      !!pool ||
+      KNOWN_SIGNAL_PROVIDERS.includes(
+        poolInfo?.signalProvider.toBase58() || '',
+      ),
+    [poolInfoLoaded],
+  );
+
   const poolName = usePoolName(poolSeed);
 
   const history = useHistory();
 
-  useEffect(() => {
+  useMemo(() => {
     if (poolInfo) {
       setMint(poolInfo.mintKey.toBase58());
     }
-  }, [poolInfo]);
+  }, [poolInfoLoaded]);
 
-  useEffect(() => {
+  useMemo(() => {
     // Recompute Deposit quote
     const parsedAmount = parseFloat(amount);
     if (!poolBalance || isNaN(parsedAmount) || parsedAmount <= 0) {
@@ -342,7 +356,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
       }
     }
     setQuote(newQuote);
-  }, [amount, poolBalance]);
+  }, [amount, poolBalanceLoaded]);
 
   const onSubmit = async () => {
     if (!connected) {

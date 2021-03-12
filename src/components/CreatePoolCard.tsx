@@ -385,6 +385,7 @@ const CreatePoolCard = () => {
         <Grid container alignItems="center" justify="center" direction="row">
           <Grid item>
             <Checkbox
+              disableRipple
               checked={checkedExtSigProvider}
               onChange={() => {
                 setCheckedExtSigProvider((prev) => !prev);
@@ -461,7 +462,6 @@ const CreatePoolCard = () => {
         {assets.map((asset, index) => {
           return (
             <CoinInput
-              index={index}
               assets={assets}
               amountLabel={asset.name}
               mint={asset.mint || ''}

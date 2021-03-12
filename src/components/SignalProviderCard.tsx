@@ -209,7 +209,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
     marketAddress && marketAddress?.length > 0 ? marketAddress[0] : null,
   );
 
-  useEffect(() => {
+  useMemo(() => {
     if (markets) {
       setMarketAddress([markets[0]]);
     }

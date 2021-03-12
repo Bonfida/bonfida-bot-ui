@@ -166,7 +166,7 @@ const DepositInput = ({
             IconComponent={ExpandMoreIcon}
             value={mint}
           >
-            {coinsList.map((t, i) => {
+            {coinsList.map((t) => {
               return (
                 <MenuItem value={t.address.toBase58()} key={nanoid()}>
                   <RenderCoinRow name={t.name} />

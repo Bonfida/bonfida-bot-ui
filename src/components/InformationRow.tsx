@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,4 +45,4 @@ const InformationRow = ({ label, value }: { label: any; value: any }) => {
   );
 };
 
-export default InformationRow;
+export default memo(InformationRow);

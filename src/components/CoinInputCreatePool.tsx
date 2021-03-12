@@ -94,14 +94,12 @@ const CoinInput = ({
   setAssets,
   assets,
   tokenAccounts,
-  index,
 }: {
   amountLabel: string;
   mint: string;
   setAssets: any;
   assets: any;
   tokenAccounts: any;
-  index: number;
 }) => {
   const classes = useStyles();
   const balance = useBalanceForMint(tokenAccounts, mint);

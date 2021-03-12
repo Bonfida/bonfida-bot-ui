@@ -106,7 +106,6 @@ export const useTokenAccounts = () => {
   return useAsyncData(
     getTokenAccounts,
     tuple('getTokenAccounts', wallet, connected),
-    { refreshInterval: _FAST_REFRESH_INTERVAL },
   );
 };
 

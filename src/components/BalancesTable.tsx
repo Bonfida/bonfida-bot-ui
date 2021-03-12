@@ -81,6 +81,7 @@ const ShowZeroBalance = ({
     <Grid container alignItems="center" justify="flex-start" direction="row">
       <Grid item>
         <Checkbox
+          disableRipple
           checked={hideZeroBalances}
           onChange={() => setZeroBalances((prev) => !prev)}
         />

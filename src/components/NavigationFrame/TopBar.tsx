@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import WalletConnect from '../WalletConnect';
 import Settings from '../Settings';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
+import { nanoid } from 'nanoid';
 
 const useStyles = makeStyles({
   root: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles({
     paddingTop: '10px',
     paddingButton: '10px',
     fontWeight: 'bold',
+    backgroundColor: 'transparent',
     '&:hover': {
       backgroundColor: 'unset',
       color: '#BA0202',
@@ -149,7 +151,8 @@ const TopBar = () => {
             {topBarElement.map((e, i) => {
               return (
                 <Button
-                  key={`top-bar-${i}`}
+                  disableFocusRipple
+                  key={nanoid()}
                   className={classes.button}
                   onClick={() => history.push(e.href)}
                   style={{
