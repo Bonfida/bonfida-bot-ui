@@ -146,7 +146,7 @@ const BalancesTable = () => {
         )
         .sort((a, b) => b.balance - a.balance)
         .filter((e) => e),
-    [tokenAccounts?.length, search],
+    [tokenAccounts?.length, search, hideZeroBalances],
   );
 
   const knownTokens = useMemo(
