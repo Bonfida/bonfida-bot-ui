@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FloatingCard from './FloatingCard';
 import createPoolIcon from '../assets/create/create_robot.svg';
@@ -88,9 +88,9 @@ const CreatePoolCard = () => {
   ]);
 
   // Fees
-  const [feeRatio, setFeeRatio] = useState<string | null>(null);
+  const [feeRatio, setFeeRatio] = useState<string | null>('0.1');
   const [feeCollectionPeriod, setFeeCollectionPeriod] = useState<string | null>(
-    null,
+    '604800',
   );
 
   // External Signal Provider
@@ -133,12 +133,12 @@ const CreatePoolCard = () => {
     setExtSigProviderDesciption(description);
   }, [externalSigProvider]);
 
-  const onChangeAutoComplete = useCallback((e, v, r) => {
+  const onChangeAutoComplete = (e, v, r) => {
     if (!v) {
       return;
     }
     setExternalSigProvider(v.pubKey.toBase58());
-  }, []);
+  };
 
   const removeMarket = (i: number) => {
     setMarketAddresses([
@@ -147,7 +147,7 @@ const CreatePoolCard = () => {
     ]);
   };
 
-  const onChangeFeeCollectionPeriod = useCallback((e) => {
+  const onChangeFeeCollectionPeriod = (e) => {
     const parsed = parseFloat(e.target.value);
     if (isNaN(parsed) || parsed < 0) {
       setFeeCollectionPeriod('');
@@ -158,9 +158,9 @@ const CreatePoolCard = () => {
         ? e.target.value.slice(1)
         : e.target.value,
     );
-  }, []);
+  };
 
-  const onChangeFeeRatio = useCallback((e) => {
+  const onChangeFeeRatio = (e) => {
     const parsed = parseFloat(e.target.value);
     if (isNaN(parsed) || parsed < 0 || parsed > 100) {
       setFeeRatio('');
@@ -171,7 +171,7 @@ const CreatePoolCard = () => {
         ? e.target.value.slice(1)
         : e.target.value,
     );
-  }, []);
+  };
 
   if (!connected) {
     return (
@@ -230,13 +230,20 @@ const CreatePoolCard = () => {
       // Check if sourceAssetKeys exist, if not create the associated token account
       let sourceAssetsKeys: PublicKey[] = [];
       for (let asset of assets) {
+        if (!asset.mint) {
+          notify({
+            message: 'Error creating the token account - mint is undefined',
+            variant: 'error',
+          });
+          return;
+        }
         let _key: PublicKey | null = null;
         for (let token of tokenAccounts) {
           if (token.account.data.parsed.info.mint === asset.mint) {
             _key = new PublicKey(token.pubkey);
           }
         }
-        if (!_key && asset.mint) {
+        if (!_key) {
           await createAssociatedTokenAccount(
             connection,
             wallet,
@@ -246,12 +253,6 @@ const CreatePoolCard = () => {
             wallet.publicKey,
             new PublicKey(asset.mint),
           );
-        } else {
-          notify({
-            message: 'Error creating the token account',
-            variant: 'error',
-          });
-          return;
         }
         sourceAssetsKeys.push(_key);
       }
@@ -459,7 +460,7 @@ const CreatePoolCard = () => {
         <Typography align="center" className={classes.subsection}>
           Initial Assets
         </Typography>
-        {assets.map((asset, index) => {
+        {assets.map((asset) => {
           return (
             <CoinInput
               assets={assets}
@@ -495,7 +496,7 @@ const CreatePoolCard = () => {
             InputLabelProps={{ shrink: true }}
             label={externalSigProvider ? null : 'Fee Collection Period'}
             helperText="Must be in seconds"
-            value={externalSigProvider ? MONTH : feeCollectionPeriod}
+            value={!!externalSigProvider ? MONTH : feeCollectionPeriod}
             onChange={onChangeFeeCollectionPeriod}
           />
         </Grid>
@@ -511,7 +512,7 @@ const CreatePoolCard = () => {
             className={classes.textField}
             label={externalSigProvider ? null : 'Fee Ratio (%)'}
             helperText="Percentage of the pool that will be deduced for fees each period"
-            value={externalSigProvider ? FEES : feeRatio}
+            value={!!externalSigProvider ? FEES : feeRatio}
             onChange={onChangeFeeRatio}
           />
         </Grid>
