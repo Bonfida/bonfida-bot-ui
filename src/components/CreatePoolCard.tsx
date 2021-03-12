@@ -219,6 +219,13 @@ const CreatePoolCard = () => {
       });
       return;
     }
+    if (!assets || marketAddresses.length === 0) {
+      notify({
+        message: 'Please select at least 1 market',
+        variant: 'error',
+      });
+      return;
+    }
 
     try {
       setLoading(true);
