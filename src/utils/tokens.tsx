@@ -80,11 +80,7 @@ export const useSolBalance = () => {
     return balance;
   };
 
-  return useAsyncData(
-    getSolBalance,
-    tuple('getSolBalance', wallet, connected),
-    { refreshInterval: _FAST_REFRESH_INTERVAL },
-  );
+  return useAsyncData(getSolBalance, tuple('getSolBalance', wallet, connected));
 };
 
 export const useTokenAccounts = () => {
