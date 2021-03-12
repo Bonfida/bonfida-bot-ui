@@ -397,6 +397,12 @@ export const formatSeconds = (sec: number): string => {
   }
 };
 
-export const abbreviateString = (s: string, size: number = 7) => {
+export const abbreviateString = (
+  s: string | null | undefined,
+  size: number = 7,
+) => {
+  if (!s) {
+    return '';
+  }
   return s.slice(0, size) + '…' + s.slice(-size);
 };

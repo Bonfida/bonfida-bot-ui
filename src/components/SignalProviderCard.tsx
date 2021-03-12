@@ -571,19 +571,13 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
     <>
       <InformationRow
         label="Pool Address"
-        value={
-          <ExplorerLink address={poolInfo?.address.toBase58()}>
-            {abbreviateAddress(poolInfo?.address, 7)}
-          </ExplorerLink>
-        }
+        value={poolInfo?.address.toBase58()}
+        isExplorerLink
       />
       <InformationRow
         label="Pool Token Mint"
-        value={
-          <ExplorerLink address={poolInfo?.mintKey.toBase58()}>
-            {abbreviateAddress(poolInfo?.mintKey, 7)}
-          </ExplorerLink>
-        }
+        value={poolInfo?.mintKey.toBase58()}
+        isExplorerLink
       />
       <InformationRow
         label="Pool Token Supply"
@@ -615,11 +609,7 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
             <InformationRow
               key={nanoid()}
               label={marketNameFromAddress(m)}
-              value={
-                <ExplorerLink address={m.toBase58()}>
-                  {abbreviateAddress(m, 7)}
-                </ExplorerLink>
-              }
+              value={m.toBase58()}
             />
           );
         })}

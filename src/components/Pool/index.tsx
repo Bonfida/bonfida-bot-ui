@@ -200,27 +200,18 @@ const PoolInformation = ({
         </Typography>
         <InformationRow
           label=" - Signal Provider:"
-          value={
-            <ExplorerLink address={poolInfo?.signalProvider.toBase58()}>
-              {abbreviateAddress(poolInfo?.signalProvider, 7)}
-            </ExplorerLink>
-          }
+          value={poolInfo?.signalProvider.toBase58()}
+          isExplorerLink
         />
         <InformationRow
           label=" - Pool Address"
-          value={
-            <ExplorerLink address={poolInfo?.address.toBase58()}>
-              {abbreviateAddress(poolInfo?.address, 7)}
-            </ExplorerLink>
-          }
+          value={poolInfo?.address.toBase58()}
+          isExplorerLink
         />
         <InformationRow
           label=" - Pool Token Mint"
-          value={
-            <ExplorerLink address={poolInfo?.mintKey.toBase58()}>
-              {abbreviateAddress(poolInfo?.mintKey, 7)}
-            </ExplorerLink>
-          }
+          value={poolInfo?.mintKey.toBase58()}
+          isExplorerLink
         />
         <Typography
           variant="body1"
@@ -234,11 +225,8 @@ const PoolInformation = ({
             return (
               <InformationRow
                 label={' - ' + marketNameFromAddress(m)}
-                value={
-                  <ExplorerLink address={m.toBase58()}>
-                    {abbreviateAddress(m, 7)}
-                  </ExplorerLink>
-                }
+                value={m.toBase58()}
+                isExplorerLink
               />
             );
           })}

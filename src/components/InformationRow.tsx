@@ -2,6 +2,8 @@ import React, { memo } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { ExplorerLink } from './Link';
+import { abbreviateString } from '../utils/utils';
 
 const useStyles = makeStyles({
   infoTextLabel: {
@@ -21,7 +23,15 @@ const useStyles = makeStyles({
   },
 });
 
-const InformationRow = ({ label, value }: { label: any; value: any }) => {
+const InformationRow = ({
+  label,
+  value,
+  isExplorerLink,
+}: {
+  label: string | number | undefined | null;
+  value: string | number | undefined | null;
+  isExplorerLink?: boolean;
+}) => {
   const classes = useStyles();
   return (
     <Grid
@@ -37,9 +47,14 @@ const InformationRow = ({ label, value }: { label: any; value: any }) => {
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant="body1" className={classes.value}>
-          {value}
-        </Typography>
+        {!isExplorerLink && (
+          <Typography variant="body1" className={classes.value}>
+            {value}
+          </Typography>
+        )}
+        {isExplorerLink && typeof value === 'string' && (
+          <ExplorerLink address={value}>{abbreviateString(value)}</ExplorerLink>
+        )}
       </Grid>
     </Grid>
   );
