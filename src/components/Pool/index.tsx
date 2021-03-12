@@ -128,6 +128,15 @@ const PoolInformation = ({
   // Orders
   // const [poolOrdersInfo, poolOrdersInfoLoaded] = usePoolOrderInfos(poolSeed);
 
+  const isVerified = useMemo(
+    () =>
+      !!pool ||
+      KNOWN_SIGNAL_PROVIDERS.includes(
+        poolInfo?.signalProvider.toBase58() || '',
+      ),
+    [poolInfoLoaded],
+  );
+
   return (
     <>
       <Tabs
@@ -179,9 +188,9 @@ const PoolInformation = ({
       </TabPanel>
       {/* Pool Description if whitelisted */}
       <TabPanel value={tab} index={1}>
-        {pool ? (
+        {isVerified ? (
           <>
-            <Typography variant="body1">{pool.description}</Typography>
+            <Typography variant="body1">{pool?.description}</Typography>
           </>
         ) : (
           <>
