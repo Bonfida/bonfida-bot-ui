@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FloatingCard from './FloatingCard';
 import createPoolIcon from '../assets/create/create_robot.svg';
@@ -133,20 +133,12 @@ const CreatePoolCard = () => {
     setExtSigProviderDesciption(description);
   }, [externalSigProvider]);
 
-  if (!connected) {
-    return (
-      <Grid container justify="center">
-        <WalletConnect />
-      </Grid>
-    );
-  }
-
-  const onChangeAutoComplete = (e, v, r) => {
+  const onChangeAutoComplete = useCallback((e, v, r) => {
     if (!v) {
       return;
     }
     setExternalSigProvider(v.pubKey.toBase58());
-  };
+  }, []);
 
   const removeMarket = (i: number) => {
     setMarketAddresses([
@@ -155,7 +147,7 @@ const CreatePoolCard = () => {
     ]);
   };
 
-  const onChangeFeeCollectionPeriod = (e) => {
+  const onChangeFeeCollectionPeriod = useCallback((e) => {
     const parsed = parseFloat(e.target.value);
     if (isNaN(parsed) || parsed < 0) {
       setFeeCollectionPeriod('');
@@ -166,9 +158,9 @@ const CreatePoolCard = () => {
         ? e.target.value.slice(1)
         : e.target.value,
     );
-  };
+  }, []);
 
-  const onChangeFeeRatio = (e) => {
+  const onChangeFeeRatio = useCallback((e) => {
     const parsed = parseFloat(e.target.value);
     if (isNaN(parsed) || parsed < 0 || parsed > 100) {
       setFeeRatio('');
@@ -179,7 +171,15 @@ const CreatePoolCard = () => {
         ? e.target.value.slice(1)
         : e.target.value,
     );
-  };
+  }, []);
+
+  if (!connected) {
+    return (
+      <Grid container justify="center">
+        <WalletConnect />
+      </Grid>
+    );
+  }
 
   const onSubmit = async () => {
     const sigProvider = externalSigProvider
