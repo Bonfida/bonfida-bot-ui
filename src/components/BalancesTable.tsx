@@ -159,16 +159,17 @@ const BalancesTable = () => {
         })
         .filter((e) => e)
         .sort((a, b) => a.name.localeCompare(b.name)),
-    [rows?.length, search],
+    [rows?.length, search, hideZeroBalances],
   );
 
   const unknownTokens = useMemo(() => {
     return rows.filter((e) => !knownTokens.includes(e));
-  }, [rows?.length, search]);
+  }, [rows?.length, search, hideZeroBalances]);
 
   useMemo(() => knownTokens.push(...unknownTokens), [
     tokenAccounts?.length,
     search,
+    hideZeroBalances,
   ]);
 
   if (!connected) {
