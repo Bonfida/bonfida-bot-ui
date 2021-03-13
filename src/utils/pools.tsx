@@ -2,7 +2,7 @@ import { PublicKey } from '@solana/web3.js';
 import { useAsyncData } from './fetch-loop';
 import {
   fetchPoolInfo,
-  BONFIDABOT_PROGRAM_ID,
+  PoolInfo,
   fetchPoolBalances,
   PoolAssetBalance,
   getPoolsSeedsBySigProvider,
@@ -20,6 +20,7 @@ import { useWallet } from './wallet';
 import { useTokenAccounts } from './tokens';
 import { poolTitleForExtSigProvider } from './externalSignalProviders';
 import { abbreviateString } from './utils';
+import { USE_MARKETS } from './markets';
 
 export interface Pool {
   name: string;
@@ -239,4 +240,17 @@ export const usePoolName = (poolSeed: string) => {
     poolTitleForExtSigProvider(poolInfo?.signalProvider) ||
     abbreviateString(poolSeed);
   return poolName;
+};
+
+export const marketNamesFromPoolInfo = (
+  poolInfo: PoolInfo | null | undefined,
+) => {
+  if (!poolInfo) {
+    return null;
+  }
+  const authorizedMarkets = poolInfo.authorizedMarkets.map((m) => m.toBase58());
+  const names = USE_MARKETS.filter(({ address }) =>
+    authorizedMarkets.includes(address.toBase58()),
+  ).map(({ name }) => name);
+  return names;
 };

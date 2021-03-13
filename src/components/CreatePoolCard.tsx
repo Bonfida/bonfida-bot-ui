@@ -32,10 +32,16 @@ import {
   MONTH,
   EXTERNAL_SIGNAL_PROVIDERS,
   getDescriptionFromAddress,
+  TV_CRANKER,
 } from '../utils/externalSignalProviders';
 import { ExternalSignalProvider } from '../utils/types';
 import { ExplorerLink } from './Link';
-import { isValidPublicKey } from '../utils/utils';
+import {
+  isValidPublicKey,
+  generateTradingViewCredentials,
+  postTradingViewCredentials,
+} from '../utils/utils';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   img: {
@@ -71,10 +77,26 @@ const useStyles = makeStyles({
   externalSigProvider: {
     marginTop: 20,
   },
+  breakWord: {
+    overflowWrap: 'break-word',
+    wordWrap: 'break-word',
+  },
+  bold: {
+    fontWeight: 600,
+  },
+  tvText: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  createdPoolSeed: {
+    textDecoration: 'underline',
+    cursor: 'pointer',
+  },
 });
 
 const CreatePoolCard = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [createdPoolAddress, setCreatedPoolAddress] = useState<string | null>(
     null,
@@ -103,6 +125,10 @@ const CreatePoolCard = () => {
     extSigProviderDescription,
     setExtSigProviderDesciption,
   ] = useState<JSX.Element | null>(null);
+  const [isTradingView, setIsTradingView] = useState(false);
+  const [tradingViewCredentials, setTradingViewCredentials] = useState<
+    string | null
+  >(null);
 
   const [assets, setAssets] = useState(
     getAssetsFromMarkets(marketAddresses).map((e) => {
@@ -113,6 +139,10 @@ const CreatePoolCard = () => {
       };
     }),
   );
+
+  useMemo(() => {
+    setIsTradingView(externalSigProvider === TV_CRANKER);
+  }, [externalSigProvider]);
 
   useMemo(() => {
     const old = [...assets];
@@ -301,6 +331,20 @@ const CreatePoolCard = () => {
       );
       setCreatedPoolAddress(poolKey.toBase58());
       setCreatedPoolSeed(bs58.encode(poolSeed));
+
+      if (isTradingView) {
+        notify({
+          message: 'Creating TradingView password...',
+        });
+        const { pubKey, password } = generateTradingViewCredentials();
+        console.log(pubKey, password);
+        await postTradingViewCredentials(pubKey, bs58.encode(poolSeed));
+        setTradingViewCredentials(password);
+        notify({
+          message: 'TradingView password created',
+          variant: 'success',
+        });
+      }
     } catch (err) {
       console.warn(`Error creating the pool ${err}`);
       notify({
@@ -377,7 +421,7 @@ const CreatePoolCard = () => {
               >
                 <Grid item>
                   <Typography variant="body1">
-                    Signals will be provided by:
+                    Transactions will be cranked by:
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -553,10 +597,34 @@ const CreatePoolCard = () => {
             marginTop="20px"
             marginBottom="20px"
           />
-          <Typography align="center">Created Pool Address:</Typography>
-          <Typography align="center">{createdPoolAddress}</Typography>
-          <Typography align="center">Created Pool Seed:</Typography>
-          <Typography align="center">{createdPoolSeed}</Typography>
+          <Typography
+            align="center"
+            style={{ marginTop: 20, marginBottom: 20 }}
+          >
+            Created Pool Seed:
+          </Typography>
+          <Typography
+            align="center"
+            className={classes.createdPoolSeed}
+            onClick={() => history.push(`/pool/${createdPoolSeed}`)}
+          >
+            {createdPoolSeed}
+          </Typography>
+        </>
+      )}
+      {isTradingView && tradingViewCredentials && (
+        <>
+          <Typography align="center" className={classes.tvText}>
+            <Emoji emoji="🚨" /> TradingView Password: <Emoji emoji="🚨" />
+          </Typography>
+          <div className={classes.breakWord}>
+            <Typography align="center" className={classes.bold}>
+              {tradingViewCredentials}
+            </Typography>
+          </div>
+          <Typography align="center" className={classes.tvText}>
+            <Emoji emoji="💾" /> Make sure to save this password in a safe place
+          </Typography>
         </>
       )}
     </FloatingCard>

@@ -31,12 +31,7 @@ import TextField from '@material-ui/core/TextField';
 import MarketInput from './MarketInput';
 import { USE_MARKETS, getReferreKey } from '../utils/markets';
 import { Market } from '@project-serum/serum';
-import {
-  getDecimalCount,
-  roundToDecimal,
-  abbreviateAddress,
-  formatSeconds,
-} from '../utils/utils';
+import { getDecimalCount, roundToDecimal, formatSeconds } from '../utils/utils';
 import {
   useTokenAccounts,
   useBalanceForMint,
@@ -44,7 +39,6 @@ import {
   tokenMintFromName,
 } from '../utils/tokens';
 import InformationRow from './InformationRow';
-import { ExplorerLink } from './Link';
 import { usePoolBalance, usePoolInfo, usePoolUsdBalance } from '../utils/pools';
 import { marketNameFromAddress } from '../utils/markets';
 import {

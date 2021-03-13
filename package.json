@@ -16,7 +16,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "bn.js": "^5.1.3",
-    "bonfida-bot": "^0.3.8",
+    "bonfida-bot": "^0.4.1",
     "bs58": "^4.0.1",
     "clsx": "^1.1.1",
     "dotenv": "^8.2.0",

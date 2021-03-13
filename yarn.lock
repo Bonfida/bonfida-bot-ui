@@ -3117,10 +3117,10 @@ body-parser@1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bonfida-bot@^0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.3.8.tgz#91b5ece9c9916563a6b57c2527bf414fc712b332"
-  integrity sha512-F5jZ0f1RekTEUF+hPKfoZfA+PuU+R0ZFo+5EaJ/dH6+q2NRDsX3o3I2Y56aS4dOxciM6Z2R11FxIqQW/ujKZZg==
+bonfida-bot@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.4.1.tgz#472ae044d7edc083f40337117e573322491a31ff"
+  integrity sha512-H3gQeyzUXS3/sDge+FKz4tkAIyESnhXBWNbHlhrKPQpm+1ZdSjatDUf2GcLWKzHOcrNbWq7OZKmBJLD5LiqbfA==
   dependencies:
     "@project-serum/serum" "^0.13.25"
     "@project-serum/sol-wallet-adapter" "^0.1.5"

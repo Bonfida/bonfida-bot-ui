@@ -340,19 +340,21 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
       return;
     }
     let newQuote = '';
+    let quoteAssets: string[] = [];
     newQuote += `${amount} Pool Token  = `;
     const poolTokenSupply = poolBalance[0].uiAmount;
     for (let i = 0; i < poolBalance[1].length; i++) {
       let b = poolBalance[1][i];
-      newQuote += `${roundToDecimal(
-        (b.tokenAmount.uiAmount / poolTokenSupply) * parseFloat(amount),
-        3,
-      )} ${tokenNameFromMint(b.mint)}`;
-      if (i < poolBalance.length - 1) {
-        newQuote += ' + ';
-      }
+      quoteAssets.push(
+        `${roundToDecimal(
+          (b.tokenAmount.uiAmount / poolTokenSupply) * parseFloat(amount),
+          3,
+        )} ${tokenNameFromMint(b.mint)}`,
+      );
     }
-    setQuote(newQuote);
+    setQuote(
+      quoteAssets.length > 0 ? newQuote + quoteAssets.join(' + ') : null,
+    );
   }, [amount, poolBalanceLoaded]);
 
   const onSubmit = async () => {

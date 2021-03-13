@@ -3,6 +3,8 @@ import {
   usePoolSeedsBySigProvider,
   usePoolSeedsForUser,
   usePoolName,
+  usePoolInfo,
+  marketNamesFromPoolInfo,
 } from '../utils/pools';
 import { Typography } from '@material-ui/core';
 import { useWallet } from '../utils/wallet';
@@ -20,6 +22,7 @@ import Chip from '@material-ui/core/Chip';
 import DoneIcon from '@material-ui/icons/Done';
 import { useHistory } from 'react-router-dom';
 import { nanoid } from 'nanoid';
+import { PublicKey } from '@solana/web3.js';
 
 const useStyles = makeStyles({
   table: {
@@ -60,10 +63,18 @@ const PoolTableRow = ({
 }) => {
   const history = useHistory();
   const poolName = usePoolName(poolSeed);
+  const [poolInfo, poolInfoLoaded] = usePoolInfo(new PublicKey(poolSeed));
+
+  const marketNames = useMemo(
+    () => marketNamesFromPoolInfo(poolInfo)?.join(', '),
+    [poolInfoLoaded],
+  );
+
   return (
     <TableRow>
       <TableCell>{owned ? <OwnerTag /> : null}</TableCell>
       <TableCell>{poolName}</TableCell>
+      {poolInfo && <TableCell>{marketNames}</TableCell>}
       <TableCell>
         <CustomButton onClick={() => history.push(`/pool/${poolSeed}`)}>
           Pool Page

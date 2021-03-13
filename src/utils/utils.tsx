@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Market, TOKEN_MINTS, MARKETS } from '@project-serum/serum';
-import { PublicKey, Connection } from '@solana/web3.js';
+import { PublicKey, Connection, Account } from '@solana/web3.js';
 import BN from 'bn.js';
 import { MAINNET_ENDPOINT } from './connection';
 import { AWESOME_TOKENS, AWESOME_MARKETS } from '@dr497/awesome-serum-markets';
@@ -8,12 +8,17 @@ import { USE_POOLS } from './pools';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import useTheme from '@material-ui/core/styles/useTheme';
 import { SERUM_PROGRAM_ID } from 'bonfida-bot';
+import bs58 from 'bs58';
+import crypto from 'crypto';
 
 const USE_MARKETS = [...MARKETS, ...AWESOME_MARKETS];
 
 const TOKENS = AWESOME_TOKENS.concat(TOKEN_MINTS);
 
 export const BONFIDA_API_URL = 'https://serum-api.bonfida.com/';
+
+export const TRADINGVIEW_NEW_CREDENTIALS =
+  'https://tradingview-cranker.bonfida.com/credentials/new';
 
 export function isValidPublicKey(key: string | null | undefined) {
   if (!key) {
@@ -206,13 +211,13 @@ export async function apiPost(url: string, body: any, headers: any) {
       headers: headers,
     });
     if (!response.ok) {
-      return [];
+      throw new Error(`Error apiPost - status ${response.status}`);
     }
     let json = await response.json();
     return json;
   } catch (err) {
-    console.log(err);
-    return [];
+    console.warn(err);
+    throw new Error(`Error apiPost - err ${err}`);
   }
 }
 
@@ -299,17 +304,6 @@ export const getVolumeFromMarket = async (
 export function format(value, precision) {
   return Math.round(value * precision) / precision;
 }
-
-export const getMarketTableData = async () => {
-  const URL = 'https://wallet-api.bonfida.com/cached/market-table';
-  const result = await apiGet(URL);
-  if (result.success) {
-    return result.data.sort((a, b) => {
-      return b.volume - a.volume;
-    });
-  }
-  return [];
-};
 
 export const numberWithCommas = (x) => {
   return x.toLocaleString();
@@ -405,4 +399,30 @@ export const abbreviateString = (
     return '';
   }
   return s.slice(0, size) + '…' + s.slice(-size);
+};
+
+export const postTradingViewCredentials = async (
+  pubKey: string,
+  poolSeed: string,
+) => {
+  console.log(poolSeed, pubKey);
+  await apiPost(
+    TRADINGVIEW_NEW_CREDENTIALS,
+    {
+      poolSeed: poolSeed,
+      pubKey: pubKey,
+    },
+    {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://bots.bonfida.com',
+    },
+  );
+};
+
+export const generateTradingViewCredentials = () => {
+  const acc = new Account(crypto.randomBytes(64));
+  return {
+    pubKey: acc.publicKey.toBase58(),
+    password: bs58.encode(acc.secretKey),
+  };
 };

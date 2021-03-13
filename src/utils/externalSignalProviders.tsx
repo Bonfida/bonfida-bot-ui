@@ -69,7 +69,32 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
       </>
     ),
   },
+  {
+    name: 'TradingView Alerts',
+    displayName: 'Custom TradingView Alert',
+    pubKey: new PublicKey('3hhmaQycsGNEocctmkCnTLgZboNeF7bM3DARB63N2BeA'),
+    description: (
+      <>
+        <Typography
+          align="center"
+          variant="body1"
+          style={styles.descriptionTitle}
+        >
+          TradingView Alerts
+        </Typography>
+        <Typography
+          align="center"
+          variant="body1"
+          style={styles.descriptionText}
+        >
+          Trade on Serum using your own custom TradingView Alerts
+        </Typography>
+      </>
+    ),
+  },
 ];
+
+export const TV_CRANKER = '3hhmaQycsGNEocctmkCnTLgZboNeF7bM3DARB63N2BeA';
 
 export const KNOWN_SIGNAL_PROVIDERS = EXTERNAL_SIGNAL_PROVIDERS.map((e) =>
   e.pubKey.toBase58(),
