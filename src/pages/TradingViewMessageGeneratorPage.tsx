@@ -119,7 +119,11 @@ const Generator = () => {
       {message && (
         <>
           <Grid container alignItems="center" justify="center">
-            <Grid item>{message}</Grid>
+            <Grid item>
+              <Typography variant="body1" align="center">
+                {message}
+              </Typography>
+            </Grid>
             <Grid item>
               <CopyableDisplay text={message} />
             </Grid>
