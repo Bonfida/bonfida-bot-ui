@@ -32,13 +32,6 @@ const useStyles = makeStyles({
     alignItems: 'start',
     paddingLeft: 10,
   },
-  balanceContainer: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
   imgContainer: {
     height: 100,
     display: 'flex',
@@ -52,6 +45,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    marginTop: 20,
   },
   card: {
     background: '#f0e9e7',
@@ -83,32 +77,16 @@ export const StrategyCard = ({ pool, left }: { pool: Pool; left: boolean }) => {
       }}
     >
       <CardContent className={classes.cardContent}>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-        >
-          {pool?.illustration && (
-            <Grid item>
-              <img
-                src={pool?.illustration}
-                className={classes.img}
-                alt={pool.name}
-              />
-            </Grid>
-          )}
-          <Grid item>
-            <Typography variant="h1" className={classes.name}>
-              {pool.name}
-            </Typography>
-          </Grid>
-        </Grid>
+        <Typography variant="h1" className={classes.name}>
+          {pool.name}
+        </Typography>
       </CardContent>
 
       {pool.description && (
-        <CardContent className={classes.balanceContainer}>
-          <Typography className={classes.text}>{pool.description}</Typography>
+        <CardContent>
+          <Typography align="center" className={classes.text}>
+            {pool.description}
+          </Typography>
         </CardContent>
       )}
       <div className={classes.center}>

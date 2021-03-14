@@ -21,6 +21,10 @@ import { useTokenAccounts } from './tokens';
 import { poolTitleForExtSigProvider } from './externalSignalProviders';
 import { abbreviateString } from './utils';
 import { USE_MARKETS } from './markets';
+import { useLocalStorageState } from './utils';
+
+export const TV_PASSWORD_STORAGE_PREFIX = 'tvAuth';
+export const CUSTOME_NAME_PREFIX = 'customName';
 
 export interface Pool {
   name: string;
@@ -30,7 +34,7 @@ export interface Pool {
   mintAddress: PublicKey;
 }
 
-export const USE_POOLS: Pool[] = [
+export const DCA_POOLS: Pool[] = [
   {
     name: 'DCA FIDA',
     poolSeed: new PublicKey('AHpWNKTasNrJLx9cj3zonVMpqXZw86xe6DQXAPTTJFC1'),
@@ -56,14 +60,6 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('DH6Jo6JsoDQ7YWPgFUtt9ZXJVZun3kCyhg4Da5fDeyCa'),
   },
   {
-    name: 'DCA FTT',
-    poolSeed: new PublicKey('J2wGXgGNGieAikem2jpuT8DdwhoTtRPFVZ4dH5DaKfQJ'),
-    illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on FTT/USDC.',
-    mintAddress: new PublicKey('AnVnTDsQqunWe7NDxTRRC441EYfgp4Lehur5wpEPArSt'),
-  },
-  {
     name: 'DCA ETH',
     poolSeed: new PublicKey('8JJZWQ8RpmwRB55tsQYWhXh2iDtnJG2gzVoMkvs84NvZ'),
     illustration: dca,
@@ -72,6 +68,43 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('6mN2vpHXmqXAyeUXv1MZpyGgJQCZGBicRSUKWvhDm6AT'),
   },
 ];
+
+export const TV_POOLS: Pool[] = [
+  {
+    name: 'Super Trend BTC',
+    poolSeed: new PublicKey('AHpWNKTasNrJLx9cj3zonVMpqXZw86xe6DQXAPTTJFC1'),
+    illustration: dca,
+    description:
+      'Dollar cost average and reduce the impact of volatility of the market on FIDA/USDC.',
+    mintAddress: new PublicKey('ahFRgebqMtH5Y4JT5RYscZKuhmK5btModzKHHpXezn3'),
+  },
+  {
+    name: 'MACD BTC',
+    poolSeed: new PublicKey('7b3RPKFvRHXTq9iXhF8y2WufHojUfVL3R9Kwm5kULTX4'),
+    illustration: dca,
+    description:
+      'Dollar cost average and reduce the impact of volatility of the market on BTC/USDC.',
+    mintAddress: new PublicKey('6HAS1NE7i2eo3YGYoGysgFwWih2WmW1uSsCSmrBhHcpz'),
+  },
+  {
+    name: 'Super Trend ETH',
+    poolSeed: new PublicKey('AHpWNKTasNrJLx9cj3zonVMpqXZw86xe6DQXAPTTJFC1'),
+    illustration: dca,
+    description:
+      'Dollar cost average and reduce the impact of volatility of the market on FIDA/USDC.',
+    mintAddress: new PublicKey('ahFRgebqMtH5Y4JT5RYscZKuhmK5btModzKHHpXezn3'),
+  },
+  {
+    name: 'MACD ETH',
+    poolSeed: new PublicKey('7b3RPKFvRHXTq9iXhF8y2WufHojUfVL3R9Kwm5kULTX4'),
+    illustration: dca,
+    description:
+      'Dollar cost average and reduce the impact of volatility of the market on BTC/USDC.',
+    mintAddress: new PublicKey('6HAS1NE7i2eo3YGYoGysgFwWih2WmW1uSsCSmrBhHcpz'),
+  },
+];
+
+export const USE_POOLS = DCA_POOLS.concat(TV_POOLS);
 
 export const usePoolInfo = (poolSeed: PublicKey) => {
   const connection = useConnection();
@@ -234,6 +267,10 @@ export const usePoolOrderInfos = (
 
 export const usePoolName = (poolSeed: string) => {
   const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
+  const [customName] = useLocalStorageState(CUSTOME_NAME_PREFIX + poolSeed);
+  if (customName) {
+    return customName;
+  }
   const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
   const poolName =
     pool?.name ||
@@ -253,4 +290,18 @@ export const marketNamesFromPoolInfo = (
     authorizedMarkets.includes(address.toBase58()),
   ).map(({ name }) => name);
   return names;
+};
+
+export const saveTradingViewPassword = (poolSeed: string, password: string) => {
+  localStorage.setItem(
+    TV_PASSWORD_STORAGE_PREFIX + poolSeed,
+    JSON.stringify(password),
+  );
+};
+
+export const saveCustomName = (poolSeed: string, customName: string) => {
+  localStorage.setItem(
+    CUSTOME_NAME_PREFIX + poolSeed,
+    JSON.stringify(customName),
+  );
 };

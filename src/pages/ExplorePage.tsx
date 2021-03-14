@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { USE_POOLS } from '../utils/pools';
+import { DCA_POOLS, TV_POOLS } from '../utils/pools';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, TextField } from '@material-ui/core';
@@ -94,9 +94,13 @@ const CustomPoolDialog = () => {
 const ExplorerPage = () => {
   const classes = useStyles();
   const history = useHistory();
-  const rows = [...Array(Math.ceil(USE_POOLS.length / 2))];
-  const productRows = rows.map((row, idx) =>
-    USE_POOLS.slice(idx * 2, idx * 2 + 2),
+  const dcaRows = [...Array(Math.ceil(DCA_POOLS.length / 2))];
+  const dcaProductRows = dcaRows.map((row, idx) =>
+    DCA_POOLS.slice(idx * 2, idx * 2 + 2),
+  );
+  const tvRows = [...Array(Math.ceil(TV_POOLS.length / 2))];
+  const tvProductRows = tvRows.map((row, idx) =>
+    TV_POOLS.slice(idx * 2, idx * 2 + 2),
   );
   const [open, setOpen] = useState(false);
 
@@ -119,8 +123,32 @@ const ExplorerPage = () => {
           Create Pool
         </CustomButton>
       </Typography>
-
-      {productRows.map((row) => (
+      <Typography variant="h2" align="center" style={{ marginTop: 50 }}>
+        DCA Pools
+      </Typography>
+      {dcaProductRows.map((row) => (
+        <Grid
+          key={nanoid()}
+          className={classes.container}
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={10}
+        >
+          {row.map((pool, i) => {
+            return (
+              <Grid item className={classes.item} key={nanoid()}>
+                <StrategyCard pool={pool} left={i % 2 === 0 ? true : false} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      ))}
+      <Typography variant="h2" align="center">
+        TradingView Pools
+      </Typography>
+      {tvProductRows.map((row) => (
         <Grid
           key={nanoid()}
           className={classes.container}

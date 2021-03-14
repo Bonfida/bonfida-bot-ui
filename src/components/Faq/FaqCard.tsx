@@ -1,9 +1,12 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import QUESTIONS_ANSWERS, { QnA } from './QuestionsAndAnswers';
+import QUESTIONS_ANSWERS, {
+  QnA,
+  TV_TUTORIAL,
+  Step,
+} from './QuestionsAndAnswers';
 import { nanoid } from 'nanoid';
-import classes from '*.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,6 +26,10 @@ const useStyles = makeStyles((theme: Theme) =>
     rowContainer: {
       margin: 20,
     },
+    breakWord: {
+      overflowWrap: 'break-word',
+      wordWrap: 'break-word',
+    },
   }),
 );
 
@@ -40,10 +47,33 @@ const FaqRow = ({ faqRow }: { faqRow: QnA }) => {
   );
 };
 
+const TutorialRow = ({ tutorialRow }: { tutorialRow: Step }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.rowContainer}>
+      <Typography variant="body1" className={classes.question}>
+        - {tutorialRow.title}
+      </Typography>
+      <Typography variant="body1" className={classes.answer}>
+        {tutorialRow.text}
+      </Typography>
+    </div>
+  );
+};
+
 const FaqCard = () => {
   const classes = useStyles();
   return (
     <>
+      <div className={classes.breakWord}>
+        <Typography variant="h1" className={classes.title} align="center">
+          Create a TradingView Pool
+        </Typography>
+      </div>
+
+      {TV_TUTORIAL.map((row) => {
+        return <TutorialRow tutorialRow={row} key={nanoid()} />;
+      })}
       <Typography variant="h1" className={classes.title} align="center">
         F.A.Q
       </Typography>

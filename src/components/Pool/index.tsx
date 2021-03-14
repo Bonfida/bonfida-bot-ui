@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { USE_POOLS } from '../../utils/pools';
 import FloatingCard from '../FloatingCard';
 import DepositInput from '../DepositInput';
@@ -26,6 +26,8 @@ import {
   usePoolInfo,
   usePoolUsdBalance,
   usePoolName,
+  saveCustomName,
+  CUSTOME_NAME_PREFIX,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
 import { deposit, Numberu64, redeem } from 'bonfida-bot';
@@ -33,11 +35,10 @@ import CustomButton from '../CustomButton';
 import InformationRow from '../InformationRow';
 import {
   roundToDecimal,
-  abbreviateAddress,
   formatSeconds,
+  useLocalStorageState,
 } from '../../utils/utils';
 import Emoji from '../Emoji';
-import { ExplorerLink } from '../Link';
 import { notify } from '../../utils/notifications';
 import Spin from '../Spin';
 import { marketNameFromAddress } from '../../utils/markets';
@@ -46,11 +47,28 @@ import { Transaction, Account, TransactionInstruction } from '@solana/web3.js';
 import { sendTransaction } from '../../utils/send';
 import { useHistory } from 'react-router-dom';
 import { KNOWN_SIGNAL_PROVIDERS } from '../../utils/externalSignalProviders';
+import EditIcon from '@material-ui/icons/Edit';
+import Modal from '../Modal';
+import { TextField } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     poolTitle: {
       fontSize: 30,
+    },
+    dialogContainer: {
+      padding: 25,
+      background: 'white',
+    },
+    dialogGridItem: {
+      marginTop: 10,
+      marginBottom: 10,
+    },
+    input: {
+      fontSize: 15,
+    },
+    editIcon: {
+      cursor: 'pointer',
     },
   }),
 );
@@ -76,19 +94,89 @@ const VerifiedPool = ({ isVerified }: { isVerified: boolean }) => {
   );
 };
 
-const PoolTitle = ({ poolName }: { poolName: string }) => {
-  const classes = useStyles(0);
+const CustomNameDialog = ({
+  poolSeed,
+  setOpen,
+}: {
+  poolSeed: string;
+  setOpen: (arg: any) => void;
+}) => {
+  const classes = useStyles();
+  const history = useHistory();
+  const [customName, setCustomName] = useState<string | null>(null);
+  const [, storeCustomName] = useLocalStorageState(
+    CUSTOME_NAME_PREFIX + poolSeed,
+  );
+
+  const onChange = (e) => {
+    const input = e.target.value;
+    setCustomName(input);
+  };
+
+  const onClick = () => {
+    if (!customName) {
+      notify({
+        message: 'Custom name cannot be null',
+        variant: 'error',
+      });
+      return;
+    }
+    storeCustomName(customName);
+    setOpen(false);
+  };
+
   return (
-    <Grid container direction="column" justify="center" alignItems="center">
-      <Grid item>
-        <img src={robot} style={{ height: 70 }} alt="" />
+    <div className={classes.dialogContainer}>
+      <Grid container direction="column" justify="center" alignItems="center">
+        <Grid item className={classes.dialogGridItem}>
+          <Typography variant="body1">Custom Pool Name</Typography>
+        </Grid>
+        <Grid item className={classes.dialogGridItem}>
+          <TextField
+            onChange={onChange}
+            value={customName}
+            label="Name"
+            InputProps={{ className: classes.input }}
+          />
+        </Grid>
+        <Grid item className={classes.dialogGridItem}>
+          <CustomButton onClick={onClick}>Save</CustomButton>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Typography variant="h1" className={classes.poolTitle}>
-          {poolName}
-        </Typography>
+    </div>
+  );
+};
+
+const PoolTitle = ({
+  poolName,
+  poolSeed,
+}: {
+  poolName: string;
+  poolSeed: string;
+}) => {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Grid container direction="column" justify="center" alignItems="center">
+        <Grid item>
+          <img src={robot} style={{ height: 70 }} alt="" />
+        </Grid>
+        <Grid item>
+          <Typography variant="h1" className={classes.poolTitle}>
+            {poolName}{' '}
+            <EditIcon
+              className={classes.editIcon}
+              onClick={() => setOpen(true)}
+            />
+          </Typography>
+        </Grid>
       </Grid>
-    </Grid>
+      <Modal open={open} setOpen={setOpen}>
+        <CustomNameDialog poolSeed={poolSeed} setOpen={setOpen} />
+      </Modal>
+    </>
   );
 };
 
@@ -213,8 +301,8 @@ const PoolInformation = ({
           isExplorerLink
         />
         <InformationRow
-          label=" - Pool Address"
-          value={poolInfo?.address.toBase58()}
+          label=" - Pool Seed (Address)"
+          value={poolSeed.toBase58()}
           isExplorerLink
         />
         <InformationRow
@@ -473,7 +561,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         {/* Header */}
         <VerifiedPool isVerified={isVerified} />
         {/* Deposit/Withdraw tokens */}
-        <PoolTitle poolName={poolName} />
+        <PoolTitle poolName={poolName} poolSeed={poolSeed} />
         <Divider
           width="80%"
           height="1px"

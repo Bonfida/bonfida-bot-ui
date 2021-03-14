@@ -1,10 +1,191 @@
 import React from 'react';
 import Link from '../Link';
 import HelpUrls from '../../utils/HelpUrls';
+import Emoji from '../Emoji';
+import Grid from '@material-ui/core/Grid';
+import tv1 from '../../assets/tv-tutorial/tv-tutorial-1.png';
+import tv2 from '../../assets/tv-tutorial/tv-tutorial-2.png';
+import tv3 from '../../assets/tv-tutorial/tv-tutorial-3.png';
+
 export interface QnA {
   question: JSX.Element;
   answer: JSX.Element;
 }
+
+export interface Step {
+  title: JSX.Element;
+  text: JSX.Element;
+}
+
+const styles = {
+  img: {
+    width: '80%',
+    margin: 20,
+  },
+  margin: {
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  breakWord: {
+    overflowWrap: 'break-word',
+    wordWrap: 'break-word',
+  },
+};
+
+export const TV_TUTORIAL: Step[] = [
+  {
+    title: <>Create your custom pool</>,
+    text: (
+      <>
+        First step is to create your own custom pool, for this go to{' '}
+        <Link to="/create">the create pool page</Link>.
+        <ul style={styles.margin}>
+          <li style={styles.margin}>
+            Tick the <b>Use an external signal provider</b> and select{' '}
+            <b>TradingView Alerts</b>
+          </li>
+          <li style={styles.margin}>
+            Select the markets on which you want to trade, e.g <b>FIDA/USDC</b>.
+            Note that you can select several markets for a signle pool.{' '}
+            <Emoji emoji="⚠️" />
+            You cannot add a market to the pool after its creation.
+          </li>
+          <li style={styles.margin}>
+            Select how many assets you want to deposit in the pool at the
+            beginning. You can deposit more at anytime. However, the initial
+            amount deposited will determine the initial value of a pool token.
+            For instance, if you decide to deposit first 100 USDC + 10 FIDA, 1
+            Pool Token = 100 USDC + 1 FIDA.
+          </li>
+          <li style={styles.margin}>
+            Click on <b>Create</b> and approve the transactions in the wallet
+            pop up.
+          </li>
+          <li style={styles.margin}>
+            Once the transactions have been confirmed you will received a{' '}
+            <b>Pool Seed</b> and a <b>TradingView Auth Token</b> save the{' '}
+            <b>TradingView Auth Token</b> in a safe place.
+          </li>
+          <Grid
+            container
+            justify="center"
+            spacing={5}
+            direction="column"
+            alignItems="center"
+          >
+            <Grid item>
+              <img src={tv1} style={styles.img} alt="" />
+            </Grid>
+            <Grid item>
+              <img src={tv2} style={styles.img} alt="" />
+            </Grid>
+          </Grid>
+        </ul>
+      </>
+    ),
+  },
+  {
+    title: <>Set up TradingView Alert</>,
+    text: (
+      <>
+        Now, go to{' '}
+        <Link external to="https://tradingview.com">
+          TradingView
+        </Link>{' '}
+        on the chart page with your favourite indicator on. For this example, we
+        will use MACD.
+        <ul style={styles.margin}>
+          <li style={styles.margin}>
+            Click on <b>Alert</b>
+          </li>
+          <li style={styles.margin}>
+            Select your indicator in the condition row of the form. In our case,
+            it's MACD, so the strategy is to go long when the histogram is
+            crossing up above 0
+          </li>
+          <li style={styles.margin}>
+            Select <b>Open-ended</b> if you want the strategy to run with no
+            limit in time.
+          </li>
+          <li style={styles.margin}>
+            In the <b>Alert Actions</b> tick the box <b>Webhook URL</b> and
+            enter <b>https://tradingview-cranker.bonfida.com/alerts</b>
+          </li>
+          <li style={styles.margin}>
+            Give a name to the alert, e.g <b>Bonfida Bot</b>
+          </li>
+          <li style={styles.margin}>
+            In the message you will to enter the following parameters:{' '}
+            <b>marketName</b>, <b>auth</b>, <b>poolSeed</b>, <b>side</b>,{' '}
+            <b>size</b>.
+            <br />
+            <div style={{ marginTop: 20 }} />
+            It needs to be done with the following format: <br />
+            <div style={{ marginTop: 20 }} />
+            {'{'}
+            <br />
+            poolSeed: "poolSeed", <br />
+            size: "size of your order", <br />
+            side: "side", <br />
+            auth: "tradingViewAuthToken", <br />
+            marketName: "marketName" <br />
+            {'}'}
+            <br />
+            <div style={{ marginTop: 20 }} />
+            For instance a valid message is: <br />
+            <div
+              style={{
+                marginTop: 20,
+                overflowWrap: 'break-word',
+                wordWrap: 'break-word',
+              }}
+            >
+              {'{'}
+              <br />
+              poolSeed: "DhCEYSbw2uHdDBt2D7Xaxdy2LUUSKk11Kvpd1WJFEwGy", <br />
+              size: 10, <br />
+              side: "buy", <br />
+              auth:
+              "3d7NfKp7ddFWXcuPd1BrJFkb2VEmo4EnNa9Yocus3Pf4vRy4ufvtKvuA2bmT595cgiaizMyZA1Ma1zAdQwH68oiT",{' '}
+              <br />
+              marketName: "FIDA/USDC" <br />
+              {'}'}
+            </div>
+          </li>
+          <li style={styles.margin}>
+            <Emoji emoji="⚠️" /> <b>side</b> needs to be either <b>buy</b> or{' '}
+            <b>sell</b>. This field is case sensitive, it means that <b>buy</b>{' '}
+            is valid but <b>BUY</b> or <b>Buy</b> are not.
+          </li>
+          <li style={styles.margin}>
+            <Emoji emoji="⚠️" /> <b>marketName</b> needs to be a valid Serum
+            market on which your custom pool can trade. This field is case
+            sensitive. Below are some example of valid and invalid market name{' '}
+            <Emoji emoji="👇" />
+            <br />
+            <ul style={styles.margin}>
+              <li style={styles.margin}>
+                <b>Valid:</b> "BTC/USDC", "BTC/USDT", "ETH/USDC"
+              </li>
+              <li style={styles.margin}>
+                <b>Not valid:</b> "BTC/USD", "btc/usdc", "BTCUSDC", "BTC-USDC"
+              </li>
+            </ul>
+          </li>
+          <li style={styles.margin}>
+            <Emoji emoji="⚠️" /> <b>size</b> needs to be a number between 0 and
+            100. It's the percentage of the pool's funds that will be used to
+            execute the order. If a buy order is sent to a pool containing 1,000
+            USDC with a size of 10 it will use 10% of 1,000 i.e 100 USDC
+          </li>
+        </ul>
+        <Grid container justify="center">
+          <img src={tv3} style={styles.img} alt="" />
+        </Grid>
+      </>
+    ),
+  },
+];
 
 const QUESTIONS_ANSWERS: QnA[] = [
   {

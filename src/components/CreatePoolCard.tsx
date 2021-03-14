@@ -42,6 +42,7 @@ import {
   postTradingViewCredentials,
 } from '../utils/utils';
 import { useHistory } from 'react-router-dom';
+import { saveTradingViewPassword } from '../utils/pools';
 
 const useStyles = makeStyles({
   img: {
@@ -98,9 +99,6 @@ const CreatePoolCard = () => {
   const classes = useStyles();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
-  const [createdPoolAddress, setCreatedPoolAddress] = useState<string | null>(
-    null,
-  );
   const [createdPoolSeed, setCreatedPoolSeed] = useState<string | null>(null);
   const connection = useConnection();
   const { wallet, connected } = useWallet();
@@ -325,11 +323,7 @@ const CreatePoolCard = () => {
         connection: connection,
         sendingMessage: 'Sending create pool instruction...',
       });
-      const poolKey = await PublicKey.createProgramAddress(
-        [poolSeed],
-        BONFIDABOT_PROGRAM_ID,
-      );
-      setCreatedPoolAddress(poolKey.toBase58());
+
       setCreatedPoolSeed(bs58.encode(poolSeed));
 
       if (isTradingView) {
@@ -340,6 +334,7 @@ const CreatePoolCard = () => {
         console.log(pubKey, password);
         await postTradingViewCredentials(pubKey, bs58.encode(poolSeed));
         setTradingViewCredentials(password);
+        saveTradingViewPassword(bs58.encode(poolSeed), password);
         notify({
           message: 'TradingView password created',
           variant: 'success',
@@ -585,7 +580,7 @@ const CreatePoolCard = () => {
           </CustomButton>
         </Grid>
       </form>
-      {createdPoolAddress && createdPoolSeed && (
+      {createdPoolSeed && (
         <>
           <Divider
             background="#BA0202"

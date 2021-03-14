@@ -22,7 +22,7 @@ export default function Routes() {
       <NavigationFrame>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/faq" component={FaqPage} />
+          <Route exact path="/help" component={FaqPage} />
           <Route extact path="/balances" component={BalancesPage} />
           <Route extact path="/explore" component={ExplorePage} />
           <Route extact path="/create" component={CreatePoolPage} />

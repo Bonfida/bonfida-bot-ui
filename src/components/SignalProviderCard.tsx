@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PublicKey, Transaction, Account } from '@solana/web3.js';
 import { useWallet } from '../utils/wallet';
 import Grid from '@material-ui/core/Grid';
@@ -39,7 +39,12 @@ import {
   tokenMintFromName,
 } from '../utils/tokens';
 import InformationRow from './InformationRow';
-import { usePoolBalance, usePoolInfo, usePoolUsdBalance } from '../utils/pools';
+import {
+  usePoolBalance,
+  usePoolInfo,
+  usePoolUsdBalance,
+  usePoolName,
+} from '../utils/pools';
 import { marketNameFromAddress } from '../utils/markets';
 import {
   marketAssetsFromAddress,
@@ -77,7 +82,7 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
   const connection = useConnection();
   const { wallet } = useWallet();
   const [loading, setLoading] = useState(false);
-  const [poolInfo, poolInfoLoaded] = usePoolInfo(new PublicKey(poolSeed));
+  const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
 
   // Format feePeriod in hh:mm:
   const feePeriod = useMemo(() => {
@@ -540,7 +545,7 @@ const PoolTitle = ({ poolName }: { poolName: string | undefined }) => {
       </Grid>
       <Grid item>
         <Typography variant="h1" className={classes.poolTitle}>
-          {poolName || 'Unknown Pool'}
+          {poolName}
         </Typography>
       </Grid>
     </Grid>
@@ -635,6 +640,8 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
     setTab(newValue);
   };
 
+  const poolName = usePoolName(poolSeed);
+
   const isOwner = useMemo(
     () =>
       wallet?.publicKey?.toBase58() === poolInfo?.signalProvider?.toBase58(),
@@ -661,7 +668,7 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
     <>
       <FloatingCard>
         <div className={classes.cardContainer}>
-          <PoolTitle poolName={pool?.name} />
+          <PoolTitle poolName={poolName} />
           <Tabs
             value={tab}
             indicatorColor="primary"

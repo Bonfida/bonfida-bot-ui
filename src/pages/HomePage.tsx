@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CustomButton from '../components/CustomButton';
 import Grid from '@material-ui/core/Grid';
-import Emoji from '../components/Emoji';
 import StrategyCard from '../components/StrategyCard';
 import { useHistory } from 'react-router-dom';
 import robot from '../assets/icons/illustrations/robot-top-bar.svg';
