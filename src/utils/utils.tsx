@@ -426,3 +426,14 @@ export const generateTradingViewCredentials = () => {
     password: bs58.encode(acc.secretKey),
   };
 };
+
+export const generateTradingViewMessage = (
+  auth: string,
+  poolSeed: string,
+  marketName: string,
+  side: string,
+  size: string,
+) => {
+  const message = `{"auth":"${auth}", "poolSeed":"${poolSeed}", "marketName: "${marketName}", "side":"${side}", "size":${size}}`;
+  return message;
+};

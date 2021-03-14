@@ -1,12 +1,15 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import QUESTIONS_ANSWERS, {
   QnA,
   TV_TUTORIAL,
   Step,
 } from './QuestionsAndAnswers';
 import { nanoid } from 'nanoid';
+import ReactPlayer from 'react-player';
+import HelpUrls from '../../utils/HelpUrls';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,15 +68,6 @@ const FaqCard = () => {
   const classes = useStyles();
   return (
     <>
-      <div className={classes.breakWord}>
-        <Typography variant="h1" className={classes.title} align="center">
-          Create a TradingView Pool
-        </Typography>
-      </div>
-
-      {TV_TUTORIAL.map((row) => {
-        return <TutorialRow tutorialRow={row} key={nanoid()} />;
-      })}
       <Typography variant="h1" className={classes.title} align="center">
         F.A.Q
       </Typography>
@@ -85,3 +79,22 @@ const FaqCard = () => {
 };
 
 export default FaqCard;
+
+export const TradingViewCard = () => {
+  const classes = useStyles();
+  return (
+    <>
+      <div className={classes.breakWord}>
+        <Typography variant="h1" className={classes.title} align="center">
+          Create a TradingView Pool
+        </Typography>
+      </div>
+      <Grid container justify="center">
+        <ReactPlayer url={HelpUrls.youtubeTradingViewTutorial} />
+      </Grid>
+      {TV_TUTORIAL.map((row) => {
+        return <TutorialRow tutorialRow={row} key={nanoid()} />;
+      })}
+    </>
+  );
+};

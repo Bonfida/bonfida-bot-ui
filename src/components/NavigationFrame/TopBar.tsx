@@ -78,6 +78,10 @@ const topBarElement = [
     name: 'help',
     href: '/help',
   },
+  {
+    name: 'tradingview',
+    href: '/tradingview',
+  },
 ];
 
 const Logo = () => {
@@ -126,6 +130,8 @@ const TopBar = () => {
       setSelectedIndex('create');
     } else if (location.pathname.includes('pools')) {
       setSelectedIndex('pools');
+    } else if (location.pathname.includes('tradingview')) {
+      setSelectedIndex('tradingview');
     } else {
       setSelectedIndex('home');
     }

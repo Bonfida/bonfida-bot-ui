@@ -153,6 +153,12 @@ export const TV_TUTORIAL: Step[] = [
             </div>
           </li>
           <li style={styles.margin}>
+            <Emoji emoji="💡" />{' '}
+            <a href="/#/tradingview-generator">
+              You can use our TradingView Message Generator
+            </a>
+          </li>
+          <li style={styles.margin}>
             <Emoji emoji="⚠️" /> <b>side</b> needs to be either <b>buy</b> or{' '}
             <b>sell</b>. This field is case sensitive, it means that <b>buy</b>{' '}
             is valid but <b>BUY</b> or <b>Buy</b> are not.
