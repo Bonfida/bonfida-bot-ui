@@ -34,77 +34,39 @@ export interface Pool {
   mintAddress: PublicKey;
 }
 
-export const DCA_POOLS: Pool[] = [
-  {
-    name: 'DCA FIDA',
-    poolSeed: new PublicKey('AHpWNKTasNrJLx9cj3zonVMpqXZw86xe6DQXAPTTJFC1'),
-    illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on FIDA/USDC.',
-    mintAddress: new PublicKey('ahFRgebqMtH5Y4JT5RYscZKuhmK5btModzKHHpXezn3'),
-  },
-  {
-    name: 'DCA BTC',
-    poolSeed: new PublicKey('7b3RPKFvRHXTq9iXhF8y2WufHojUfVL3R9Kwm5kULTX4'),
-    illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on BTC/USDC.',
-    mintAddress: new PublicKey('6HAS1NE7i2eo3YGYoGysgFwWih2WmW1uSsCSmrBhHcpz'),
-  },
-  {
-    name: 'DCA SRM',
-    poolSeed: new PublicKey('9yyiNcBv98HRdCf6XdpLjVF3T4KjijFMUDwpLoYhjGLe'),
-    illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on SRM/USDC.',
-    mintAddress: new PublicKey('DH6Jo6JsoDQ7YWPgFUtt9ZXJVZun3kCyhg4Da5fDeyCa'),
-  },
-  {
-    name: 'DCA ETH',
-    poolSeed: new PublicKey('8JJZWQ8RpmwRB55tsQYWhXh2iDtnJG2gzVoMkvs84NvZ'),
-    illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on ETH/USDC.',
-    mintAddress: new PublicKey('6mN2vpHXmqXAyeUXv1MZpyGgJQCZGBicRSUKWvhDm6AT'),
-  },
-];
-
 export const TV_POOLS: Pool[] = [
-  {
-    name: 'Super Trend BTC',
-    poolSeed: new PublicKey('AHpWNKTasNrJLx9cj3zonVMpqXZw86xe6DQXAPTTJFC1'),
-    illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on FIDA/USDC.',
-    mintAddress: new PublicKey('ahFRgebqMtH5Y4JT5RYscZKuhmK5btModzKHHpXezn3'),
-  },
+  // MACD Strategies
   {
     name: 'MACD BTC',
-    poolSeed: new PublicKey('7b3RPKFvRHXTq9iXhF8y2WufHojUfVL3R9Kwm5kULTX4'),
+    poolSeed: new PublicKey('CwAcCoFZRxUppbwU1xp5qv8hUqNvDWasuRdAibKLXnj8'),
     illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on BTC/USDC.',
-    mintAddress: new PublicKey('6HAS1NE7i2eo3YGYoGysgFwWih2WmW1uSsCSmrBhHcpz'),
-  },
-  {
-    name: 'Super Trend ETH',
-    poolSeed: new PublicKey('AHpWNKTasNrJLx9cj3zonVMpqXZw86xe6DQXAPTTJFC1'),
-    illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on FIDA/USDC.',
-    mintAddress: new PublicKey('ahFRgebqMtH5Y4JT5RYscZKuhmK5btModzKHHpXezn3'),
+    description: 'Daily MACD strategy on BTC/USDC',
+    mintAddress: new PublicKey('25XmCiAQX9diUfTA8KwSmUFQRbKByi57VDp2SddVEsZ1'),
   },
   {
     name: 'MACD ETH',
-    poolSeed: new PublicKey('7b3RPKFvRHXTq9iXhF8y2WufHojUfVL3R9Kwm5kULTX4'),
+    poolSeed: new PublicKey('7nmoqCBGzHcFgpiDCx25kJp4zLnUMdEnb1k3kAN36YuK'),
     illustration: dca,
-    description:
-      'Dollar cost average and reduce the impact of volatility of the market on BTC/USDC.',
-    mintAddress: new PublicKey('6HAS1NE7i2eo3YGYoGysgFwWih2WmW1uSsCSmrBhHcpz'),
+    description: 'Daily MACD strategy on ETH/USDC',
+    mintAddress: new PublicKey('26ZS2DADN23Yqgi8hRA2bKXdZtqBz9t5uqC15gjpAP7Q'),
+  },
+  {
+    name: 'MACD SRM',
+    poolSeed: new PublicKey('2ekyVKS2Sq54mPUwx4eybA3gnrHKR9nBZP6DFRDcZn9j'),
+    illustration: dca,
+    description: 'Daily MACD strategy on SRM/USDC',
+    mintAddress: new PublicKey('4NDwbkYhwZDWbBkVsGUZVqFfok7S4KkoLqAP8y7QqNo2'),
+  },
+  {
+    name: 'MACD FIDA',
+    poolSeed: new PublicKey('3u6zrpaW9uRfpVqZYwCAiQLvQpiY1JmCCdvZV8ydro4r'),
+    illustration: dca,
+    description: 'Daily MACD strategy on FIDA/USDC',
+    mintAddress: new PublicKey('DjYdPqYto61n1gBrhnc64s3tEawsLAmTRKwmSxZ5BLc6'),
   },
 ];
 
-export const USE_POOLS = DCA_POOLS.concat(TV_POOLS);
+export const USE_POOLS = TV_POOLS;
 
 export const usePoolInfo = (poolSeed: PublicKey) => {
   const connection = useConnection();

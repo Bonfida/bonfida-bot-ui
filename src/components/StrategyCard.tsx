@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -78,19 +77,19 @@ export const StrategyCard = ({ pool, left }: { pool: Pool; left: boolean }) => {
     >
       <CardContent className={classes.cardContent}>
         <Typography variant="h1" className={classes.name}>
-          {pool.name}
+          {pool?.name}
         </Typography>
       </CardContent>
 
       {pool.description && (
         <CardContent>
           <Typography align="center" className={classes.text}>
-            {pool.description}
+            {pool?.description}
           </Typography>
         </CardContent>
       )}
       <div className={classes.center}>
-        <CustomButton onClick={onClick}>{`Select ${pool.name}`}</CustomButton>
+        <CustomButton onClick={onClick}>{`Select ${pool?.name}`}</CustomButton>
       </div>
     </Card>
   );
