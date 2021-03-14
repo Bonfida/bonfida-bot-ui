@@ -55,7 +55,7 @@ export const TV_TUTORIAL: Step[] = [
             beginning. You can deposit more at anytime. However, the initial
             amount deposited will determine the initial value of a pool token.
             For instance, if you decide to deposit first 100 USDC + 10 FIDA, 1
-            Pool Token = 100 USDC + 1 FIDA.
+            Pool Token = 100 USDC + 10 FIDA.
           </li>
           <li style={styles.margin}>
             Click on <b>Create</b> and approve the transactions in the wallet
