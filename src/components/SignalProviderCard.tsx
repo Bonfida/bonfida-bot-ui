@@ -634,7 +634,6 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
   const classes = useStyles();
   const [poolInfo, poolInfoLoaded] = usePoolInfo(new PublicKey(poolSeed));
   const { connected, wallet } = useWallet();
-  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
   const [tab, setTab] = React.useState(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);

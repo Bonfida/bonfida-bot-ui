@@ -38,7 +38,7 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
           variant="body1"
           style={styles.descriptionText}
         >
-          Every Sunday at 00:00 UTC, the pool will use 10% of the quote currency
+          Every Sunday at 08:00 UTC, the pool will use 10% of the quote currency
           contained in the pool to perform a DCA strategy on each market.
         </Typography>
       </>
@@ -62,7 +62,7 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
           variant="body1"
           style={styles.descriptionText}
         >
-          On the 1st of each month 00:00 UTC, the pool will use 10% of the quote
+          On the 1st of each month 08:00 UTC, the pool will use 10% of the quote
           currency contained in the pool to perform a DCA strategy on each
           market.
         </Typography>
