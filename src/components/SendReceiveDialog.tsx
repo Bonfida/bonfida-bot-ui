@@ -18,6 +18,7 @@ import { sendSplToken } from '../utils/send';
 import { useWallet } from '../utils/wallet';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomButton from './CustomButton';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   centeredContainer: {
@@ -56,7 +57,9 @@ const DepositTab = ({ pubkey }: { pubkey: string }) => {
   const classes = useStyles();
   return (
     <>
-      <Typography>Your deposit address:</Typography>
+      <Typography>
+        <Translate id="send.yourAddress">Your deposit address:</Translate>
+      </Typography>
       <ExplorerLink
         address={pubkey}
         // @ts-ignore
@@ -142,7 +145,9 @@ const SendTab = ({ pubkey, mint }: { pubkey: string; mint: string }) => {
   return (
     <>
       <form>
-        <label htmlFor="amount">Amount:</label>
+        <label htmlFor="amount">
+          <Translate id="send.amount">Amount:</Translate>
+        </label>
         <br />
         <input
           id="amount"
@@ -151,7 +156,9 @@ const SendTab = ({ pubkey, mint }: { pubkey: string; mint: string }) => {
           className={classes.input}
         />
         <br style={{ height: 20 }} />
-        <label htmlFor="destination">Destination:</label>
+        <label htmlFor="destination">
+          <Translate id="send.amount">Destination:</Translate>
+        </label>
         <br />
         <input
           id={`destination-${mint}`}

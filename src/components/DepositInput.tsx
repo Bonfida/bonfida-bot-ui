@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
 import { USE_TOKENS } from '../utils/tokens';
 import Spin from './Spin';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   root: {
@@ -137,7 +138,8 @@ const CoinInput = ({
             className={classes.inputLabel}
             onClick={() => setAmount(balance)}
           >
-            Balance: {balance?.toLocaleString() || 0}
+            <Translate id="coinInputCreatePool.balance">Balance:</Translate>{' '}
+            {balance?.toLocaleString() || 0}
           </Typography>
         </Grid>
       </Grid>

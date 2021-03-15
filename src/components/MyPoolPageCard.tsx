@@ -23,6 +23,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import { useHistory } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { PublicKey } from '@solana/web3.js';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   table: {
@@ -77,7 +78,7 @@ const PoolTableRow = ({
       {poolInfo && <TableCell>{marketNames}</TableCell>}
       <TableCell>
         <CustomButton onClick={() => history.push(`/pool/${poolSeed}`)}>
-          Pool Page
+          <Translate id="myPool.poolPage">Pool Page</Translate>
         </CustomButton>
       </TableCell>
       {owned && (
@@ -85,7 +86,7 @@ const PoolTableRow = ({
           <CustomButton
             onClick={() => history.push(`/signal-provider/${poolSeed}`)}
           >
-            Admin Page
+            <Translate id="myPool.poolPage">Admin Page</Translate>
           </CustomButton>
         </TableCell>
       )}
@@ -136,7 +137,9 @@ const MyPoolPageCard = () => {
           </Grid>
           <Grid item>
             <Typography variant="body1">
-              Loading all your pools... This might take several seconds
+              <Translate id="myPool.loading">
+                Loading all your pools... This might take several seconds
+              </Translate>
             </Typography>
           </Grid>
         </Grid>
@@ -147,7 +150,9 @@ const MyPoolPageCard = () => {
   return (
     <>
       <FloatingCard>
-        <Typography variant="body1">Your Pools</Typography>
+        <Typography variant="body1">
+          <Translate id="myPool.yourPools">Your Pools</Translate>
+        </Typography>
         <Table className={classes.table}>
           <TableBody>
             {ownedPoolSeeds?.map((poolSeed) => {

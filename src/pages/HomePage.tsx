@@ -9,6 +9,7 @@ import robot from '../assets/icons/illustrations/robot-top-bar.svg';
 import { USE_POOLS } from '../utils/pools';
 import FloatingCard from '../components/FloatingCard';
 import { useSmallScreen } from '../utils/utils';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   root: {
@@ -67,7 +68,13 @@ const ExploreBanner = () => {
         >
           <Grid item>
             <Typography className={classes.title} variant="h1">
-              Create and automate your <br /> trading strategies on chain.
+              <Translate id="homepage.createAndAutomate">
+                Create and automate your
+              </Translate>{' '}
+              <br />{' '}
+              <Translate id="homepage.tradingStrat">
+                trading strategies on chain.
+              </Translate>
             </Typography>
             <CustomButton
               style={{ marginLeft: 50, marginTop: 40 }}
@@ -75,7 +82,7 @@ const ExploreBanner = () => {
                 history.push('/explore');
               }}
             >
-              Explore strategy
+              <Translate id="homepage.tradingStrat">Explore strategy</Translate>
             </CustomButton>
           </Grid>
           {!smallScreen && (
@@ -100,7 +107,7 @@ const Subtitle = () => {
       style={{ marginTop: 60 }}
     >
       <Typography className={classes.subtitle} variant="h2">
-        Featured strategies
+        <Translate id="homepage.featuredStrat">Featured strategies</Translate>
       </Typography>
     </Grid>
   );
@@ -133,7 +140,7 @@ const HomePage = () => {
         </Grid>
         <div className={classes.exploreContainer}>
           <CustomButton onClick={() => history.push('/explore')}>
-            Explore
+            <Translate id="homepage.explore">Explore</Translate>
           </CustomButton>
         </div>
       </div>

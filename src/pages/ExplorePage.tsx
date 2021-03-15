@@ -10,6 +10,7 @@ import StrategyCard from '../components/StrategyCard';
 import { nanoid } from 'nanoid';
 import Modal from '../components/Modal';
 import { isValidPublicKey } from '../utils/utils';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   container: {
@@ -73,7 +74,9 @@ const CustomPoolDialog = () => {
     <div className={classes.dialogContainer}>
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid item className={classes.dialogGridItem}>
-          <Typography variant="body1">Custom Pool Seed</Typography>
+          <Typography variant="body1">
+            <Translate id="explore.customSeed">Custom Pool Seed</Translate>
+          </Typography>
         </Grid>
         <Grid item className={classes.dialogGridItem}>
           <TextField
@@ -84,7 +87,9 @@ const CustomPoolDialog = () => {
           />
         </Grid>
         <Grid item className={classes.dialogGridItem}>
-          <CustomButton onClick={onClick}>Go</CustomButton>
+          <CustomButton onClick={onClick}>
+            <Translate id="explore.go">Go</Translate>
+          </CustomButton>
         </Grid>
       </Grid>
     </div>
@@ -107,7 +112,7 @@ const ExplorerPage = () => {
           className={classes.addCustomPoolButton}
           onClick={() => setOpen(true)}
         >
-          Add Custom Pool
+          <Translate id="explore.addCustomPool">Add Custom Pool</Translate>
         </CustomButton>
         <Modal open={open} setOpen={setOpen}>
           <CustomPoolDialog />
@@ -116,7 +121,7 @@ const ExplorerPage = () => {
           className={classes.addCustomPoolButton}
           onClick={() => history.push('/create')}
         >
-          Create Pool
+          <Translate id="explore.createPool">Create Pool</Translate>
         </CustomButton>
       </Typography>
       {tvProductRows.map((row) => (

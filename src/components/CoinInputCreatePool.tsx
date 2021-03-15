@@ -7,6 +7,7 @@ import { tokenNameFromMint } from '../utils/tokens';
 import getCoinIcon from '../utils/icons';
 import { useBalanceForMint } from '../utils/tokens';
 import { notify } from '../utils/notifications';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   root: {
@@ -152,7 +153,8 @@ const CoinInput = ({
         </Grid>
         <Grid item>
           <Typography variant="body1" className={classes.inputLabel}>
-            Balance: {balance?.toLocaleString() || 0}
+            <Translate id="coinInputCreatePool.balance">Balance:</Translate>{' '}
+            {balance?.toLocaleString() || 0}
           </Typography>
           <RenderCoinRow name={tokenNameFromMint(mint) || ''} />
         </Grid>

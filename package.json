@@ -26,6 +26,7 @@
     "notistack": "^1.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-localize-redux": "^3.5.3",
     "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",

@@ -1,0 +1,91 @@
+{
+    "homepage": {
+      "explore": ["Explore", "Type Chinese here"],
+      "createAndAutomate":["Create and automate your", "Chinese"],
+      "tradingStrat":["trading strategies on chain.", "Chinese"],
+      "exploreStrat": ["Explore strategy", "Chinese"],
+      "featuredStrat": ["Featured strategies", "Chinese"]
+    },
+    "topbar": {
+      "home": ["home", "Type Chinese here"],
+      "explore": ["explore", "Type Chinese here"],
+      "balances": ["balances", "Type Chinese here"],
+      "pools": ["pools", "Type Chinese here"],
+      "create": ["create", "Type Chinese here"],
+      "help": ["create", "Type Chinese here"],
+      "tradingview": ["create", "Type Chinese here"]
+    },
+    "navigationFrame":{
+      "disclaimer": ["No statement or warranty is provided in relation to the utility of this program, the safety of its code or its suitability for your use, and by using it, you agree to bear any risk associated with such potential vulnerabilities, including, but not limited to the potential loss of tokens.", "Type Chinese here"],
+      "agree": ["I agree", "Type Chinese here"]
+    },
+    "pool":{
+      "deposit": ["Deposit", "Chinese"],
+      "withdraw": ["Withdraw", "Chinese"],
+      "customPoolName": ["Custom Pool Name", "Chinese"],
+      "save":["Save", "Chinese"],
+      "tokensInPool": ["Tokens in the pool:", "Chinese"],
+      "unverifiedDisclaimer": ["This pool is unverified, use at your own risk", "Chinese"],
+      "poolKeys": ["Pool Keys:", "Chinese"],
+      "authorizedMarkets": ["The pool can only trade on the following markets:", "Chinese"],
+      "youOwnThePool": ["It looks like you own this pool", "Chinese"],
+      "adminPage":["Admin Page", "Chinese"],
+      "invalidSeed":["Invalid Pool Seed", "Chinese"]
+    },
+    "balances":{
+      "0balances": ["Hide zero balances", "Chinese"]
+    },
+    "coinInputCreatePool":{
+      "balance": ["Balance:", "Chinese"]
+    },
+    "createPool":{
+      "extSigProvDisclaimer":["If you select an external signal provider you will not be able to send trade orders yourself", "Chinese"],
+      "txCrankedBy": ["Transactions will be cranked by:", "Chinese"],
+      "useExtSigProv":["Use an external signal provider", "Chinese"],
+      "serumMarkets": ["Serum Markets", "Chinese"],
+      "addMarket": ["Add Market", "Chinese"],
+      "initialAssets":["Initial Assets", "Chinese"],
+      "fees":["Fees", "Chinese"],
+      "createdPoolSeed":["Created Pool Seed:", "Chinese"],
+      "create": ["Create", "Chinese"],
+      "tvPassword":["TradingView Password:", "Chinese"],
+      "saveTvPassword": ["Make sure to save this password in a safe place", "Chinese"]
+    },
+    "myPool":{
+      "poolPage": ["Pool Page", "Chinese"],
+      "adminPage": ["Admin Page", "Chinese"],
+      "loading":["Loading all your pools... This might take several seconds", "Chinese"],
+      "yourPools":["Your Pools", "Chinese"]
+    },
+    "send":{
+      "yourAddress": ["Your deposit address:", "Chinese"],
+      "amount":["Amount:", "Chinese"],
+      "destination": ["Destination:", "Chinese"]
+    },
+    "settings":{
+      "wallet":["Wallet:", "Chinese"],
+      "endpoint":["Endpoint:", "Chinese"]
+    },
+    "signalProvider":{
+      "tokensInPool":["Tokens in the pool:", "Chinese"],
+      "settle":["Settle funds", "Chinese"],
+      "authorizedMarkets":["The pool can only trade on the following markets:", "Chinese"],
+      "notYourPool": ["You do not own this pool", "Chinese"],
+      "collect":["Collect your fees", "Chinese"]
+    },
+    "wallet":{
+      "unlock":["Unlock wallet", "Chinese"],
+      "connect":["Connect wallet", "Chinese"],
+      "disconnect":["Disconnect", "Chinese"]
+    },
+    "explore":{
+      "customSeed":["Custom Pool Seed", "Chinese"],
+      "go": ["Go", "Chinese"],
+      "addCustomPool":["Add Custom Pool", "Chinese"],
+      "createPool":["Create Pool", "Chinese"]
+    },
+    "strategyCard":{
+      "select":["Select", "Chinese"]
+    }
+  }
+

@@ -13,8 +13,12 @@ import SignalProviderPage from './pages/SignalProviderPage';
 import MyPoolPage from './pages/MyPoolPage';
 import TradingViewPage from './pages/TradingViewPage';
 import TradingViewMessageGeneratorPage from './pages/TradingViewMessageGeneratorPage';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { withLocalize } from 'react-localize-redux';
+// @ts-ignore
+import globalTranslations from './translations/global.json';
 
-export default function Routes() {
+const Routes = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   useEffect(() => {
     SnackbarUtils.setSnackBar(enqueueSnackbar, closeSnackbar);
@@ -47,4 +51,26 @@ export default function Routes() {
       </NavigationFrame>
     </HashRouter>
   );
+};
+
+class Main extends React.Component {
+  constructor(props) {
+    super(props);
+    // @ts-ignore
+    this.props.initialize({
+      languages: [
+        { name: 'English', code: 'en' },
+        { name: 'Chinese', code: 'zh' },
+      ],
+      translation: globalTranslations,
+      options: { renderToStaticMarkup },
+    });
+  }
+
+  render() {
+    return <Routes />;
+  }
 }
+
+// @ts-ignore
+export default withLocalize(Main);

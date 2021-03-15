@@ -6,6 +6,7 @@ import { WALLET_PROVIDERS, useWallet } from '../utils/wallet';
 import Typography from '@material-ui/core/Typography';
 import { useConnectionConfig } from '../utils/connection';
 import Grid from '@material-ui/core/Grid';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,7 +75,7 @@ const Settings = (): JSX.Element => {
           >
             <Grid item>
               <Typography className={classes.text}>
-                Wallet:{' '}
+                <Translate id="settings.wallet">Wallet:</Translate>{' '}
                 <select
                   name="wallet-provider"
                   onChange={(v) => setProvider(v.target.value)}
@@ -96,7 +97,7 @@ const Settings = (): JSX.Element => {
             </Grid>
             <Grid item>
               <Typography className={classes.text}>
-                Endpoint:{' '}
+                <Translate id="settings.endpoint">Endpoint:</Translate>{' '}
                 <select
                   name="endpoint"
                   onChange={(v) => {

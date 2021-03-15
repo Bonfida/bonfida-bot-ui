@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CustomButton from './CustomButton';
 import { useHistory } from 'react-router-dom';
 import { Pool } from '../utils/pools';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   text: {
@@ -89,7 +90,9 @@ export const StrategyCard = ({ pool, left }: { pool: Pool; left: boolean }) => {
         </CardContent>
       )}
       <div className={classes.center}>
-        <CustomButton onClick={onClick}>{`Select ${pool?.name}`}</CustomButton>
+        <CustomButton onClick={onClick}>
+          <Translate id="strategyCard.select">Select</Translate> {pool?.name}
+        </CustomButton>
       </div>
     </Card>
   );

@@ -20,6 +20,7 @@ import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import FloatingCard from './FloatingCard';
 import TextField from '@material-ui/core/TextField';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   table: {
@@ -87,7 +88,9 @@ const ShowZeroBalance = ({
         />
       </Grid>
       <Grid item>
-        <Typography>Hide zero balances</Typography>
+        <Typography>
+          <Translate id="balances.0balances">Hide zero balances</Translate>
+        </Typography>
       </Grid>
     </Grid>
   );

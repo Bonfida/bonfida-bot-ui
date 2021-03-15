@@ -9,6 +9,7 @@ import { USE_TOKENS } from '../utils/tokens';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import getCoinIcon from '../utils/icons';
 import { nanoid } from 'nanoid';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   root: {
@@ -158,7 +159,8 @@ const DepositInput = ({
             className={classes.inputLabel}
             onClick={() => setAmount(balance)}
           >
-            Balance: {balance?.toLocaleString()}
+            <Translate id="coinInputCreatePool.balance">Balance:</Translate>{' '}
+            {balance?.toLocaleString()}
           </Typography>
           <Select
             className={classes.select}

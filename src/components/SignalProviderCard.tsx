@@ -52,6 +52,7 @@ import {
   useMarketPrice,
 } from '../utils/markets';
 import { nanoid } from 'nanoid';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -445,7 +446,11 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         />
       </Grid>
       {poolBalance && (
-        <Typography variant="body1">Tokens in the pool:</Typography>
+        <Typography variant="body1">
+          <Translate id="signalProvider.tokensInPool">
+            Tokens in the pool:
+          </Translate>
+        </Typography>
       )}
       {poolBalance &&
         poolBalance[1]?.map((asset) => {
@@ -529,7 +534,9 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
           </CustomButton>
         </Grid>
         <Grid item>
-          <CustomButton onClick={onSubmitSettle}>Settle funds</CustomButton>
+          <CustomButton onClick={onSubmitSettle}>
+            <Translate id="signalProvider.settle">Settle funds</Translate>
+          </CustomButton>
         </Grid>
       </Grid>
     </>
@@ -586,7 +593,11 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
         label="USD Value of the Pool"
         value={`$${roundToDecimal(usdValue, 2)}`}
       />
-      <Typography variant="body1">Tokens in the pool:</Typography>
+      <Typography variant="body1">
+        <Translate id="signalProvider.tokensInPool">
+          Tokens in the pool:
+        </Translate>
+      </Typography>
       {poolBalance &&
         poolBalance[1]?.map((asset) => {
           return (
@@ -600,7 +611,9 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
           );
         })}
       <Typography variant="body1" style={{ marginBottom: 10, marginTop: 10 }}>
-        The pool can only trade on the following markets:
+        <Translate id="signalProvider.authorizedMarkets">
+          The pool can only trade on the following markets:
+        </Translate>
       </Typography>
       <div style={{ margin: 10 }}>
         {poolMarkets?.map((m) => {
@@ -658,7 +671,10 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
     return (
       <FloatingCard>
         <div className={classes.cardContainer}>
-          You do not own this pool <Emoji emoji="🤖" />
+          <Translate id="signalProvider.notYourPool">
+            You do not own this pool
+          </Translate>{' '}
+          <Emoji emoji="🤖" />
         </div>
       </FloatingCard>
     );
@@ -684,7 +700,9 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
           </TabPanel>
           <TabPanel index={1} value={tab}>
             <Typography align="center" variant="body1">
-              Collect your fees
+              <Translate id="signalProvider.collect">
+                Collect your fees
+              </Translate>
             </Typography>
             <CollectFeesButton poolSeed={poolSeed} />
           </TabPanel>

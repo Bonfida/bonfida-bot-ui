@@ -43,6 +43,7 @@ import {
 } from '../utils/utils';
 import { useHistory } from 'react-router-dom';
 import { saveTradingViewPassword } from '../utils/pools';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   img: {
@@ -386,8 +387,10 @@ const CreatePoolCard = () => {
               </Grid>
               <Grid item>
                 <Typography variant="body1" align="center">
-                  If you select an external signal provider you will not be able
-                  to send trade orders yourself
+                  <Translate id="createPool.extSigProvDisclaimer">
+                    If you select an external signal provider you will not be
+                    able to send trade orders yourself
+                  </Translate>
                 </Typography>
               </Grid>
             </Grid>
@@ -416,7 +419,9 @@ const CreatePoolCard = () => {
               >
                 <Grid item>
                   <Typography variant="body1">
-                    Transactions will be cranked by:
+                    <Translate id="createPool.txCrankedBy">
+                      Transactions will be cranked by:
+                    </Translate>
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -442,7 +447,9 @@ const CreatePoolCard = () => {
           </Grid>
           <Grid item>
             <Typography variant="body1">
-              Use an external signal provider
+              <Translate id="createPool.useExtSigProv">
+                Use an external signal provider
+              </Translate>
             </Typography>
           </Grid>
         </Grid>
@@ -456,7 +463,7 @@ const CreatePoolCard = () => {
           marginLeft="auto"
         />
         <Typography align="center" className={classes.subsection}>
-          Serum Markets
+          <Translate id="createPool.serumMarkets">Serum Markets</Translate>
         </Typography>
         <Grid container justify="center">
           {marketAddresses.map((m, i) => {
@@ -490,7 +497,7 @@ const CreatePoolCard = () => {
               setMarketAddresses([...marketAddresses, FIDA_USDC_MARKET_ADDRESS])
             }
           >
-            Add Market
+            <Translate id="createPool.addMarket">Add Market</Translate>
           </CustomButton>
         </Grid>
         {/* Assets and min amount */}
@@ -504,7 +511,7 @@ const CreatePoolCard = () => {
           marginTop="20px"
         />
         <Typography align="center" className={classes.subsection}>
-          Initial Assets
+          <Translate id="createPool.initialAssets">Initial Assets</Translate>
         </Typography>
         {assets.map((asset) => {
           return (
@@ -528,7 +535,7 @@ const CreatePoolCard = () => {
           marginTop="20px"
         />
         <Typography align="center" className={classes.subsection}>
-          Fees
+          <Translate id="createPool.initialAssets">Fees</Translate>
         </Typography>
         <Grid container justify="center">
           <TextField
@@ -576,7 +583,11 @@ const CreatePoolCard = () => {
         />
         <Grid container justify="center">
           <CustomButton onClick={onSubmit}>
-            {loading ? <Spin size={20} /> : 'Create'}
+            {loading ? (
+              <Spin size={20} />
+            ) : (
+              <Translate id="createPool.create">Create</Translate>
+            )}
           </CustomButton>
         </Grid>
       </form>
@@ -596,7 +607,9 @@ const CreatePoolCard = () => {
             align="center"
             style={{ marginTop: 20, marginBottom: 20 }}
           >
-            Created Pool Seed:
+            <Translate id="createPool.createdPoolSeed">
+              Created Pool Seed:
+            </Translate>
           </Typography>
           <Typography
             align="center"
@@ -610,7 +623,11 @@ const CreatePoolCard = () => {
       {isTradingView && tradingViewCredentials && (
         <>
           <Typography align="center" className={classes.tvText}>
-            <Emoji emoji="🚨" /> TradingView Password: <Emoji emoji="🚨" />
+            <Emoji emoji="🚨" />{' '}
+            <Translate id="createPool.createdPoolSeed">
+              TradingView Password:
+            </Translate>{' '}
+            <Emoji emoji="🚨" />
           </Typography>
           <div className={classes.breakWord}>
             <Typography align="center" className={classes.bold}>
@@ -618,7 +635,10 @@ const CreatePoolCard = () => {
             </Typography>
           </div>
           <Typography align="center" className={classes.tvText}>
-            <Emoji emoji="💾" /> Make sure to save this password in a safe place
+            <Emoji emoji="💾" />{' '}
+            <Translate id="createPool.saveTvPassword">
+              Make sure to save this password in a safe place
+            </Translate>
           </Typography>
         </>
       )}

@@ -26,7 +26,6 @@ import {
   usePoolInfo,
   usePoolUsdBalance,
   usePoolName,
-  saveCustomName,
   CUSTOME_NAME_PREFIX,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
@@ -50,6 +49,7 @@ import { KNOWN_SIGNAL_PROVIDERS } from '../../utils/externalSignalProviders';
 import EditIcon from '@material-ui/icons/Edit';
 import Modal from '../Modal';
 import { TextField } from '@material-ui/core';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -102,7 +102,6 @@ const CustomNameDialog = ({
   setOpen: (arg: any) => void;
 }) => {
   const classes = useStyles();
-  const history = useHistory();
   const [customName, setCustomName] = useState<string | null>(null);
   const [, storeCustomName] = useLocalStorageState(
     CUSTOME_NAME_PREFIX + poolSeed,
@@ -129,7 +128,9 @@ const CustomNameDialog = ({
     <div className={classes.dialogContainer}>
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid item className={classes.dialogGridItem}>
-          <Typography variant="body1">Custom Pool Name</Typography>
+          <Typography variant="body1">
+            <Translate id="pool.customPoolName">Custom Pool Name</Translate>
+          </Typography>
         </Grid>
         <Grid item className={classes.dialogGridItem}>
           <TextField
@@ -140,7 +141,9 @@ const CustomNameDialog = ({
           />
         </Grid>
         <Grid item className={classes.dialogGridItem}>
-          <CustomButton onClick={onClick}>Save</CustomButton>
+          <CustomButton onClick={onClick}>
+            <Translate id="pool.save">Save</Translate>
+          </CustomButton>
         </Grid>
       </Grid>
     </div>
@@ -213,9 +216,6 @@ const PoolInformation = ({
     [poolInfoLoaded],
   );
 
-  // Orders
-  // const [poolOrdersInfo, poolOrdersInfoLoaded] = usePoolOrderInfos(poolSeed);
-
   const isVerified = useMemo(
     () =>
       !!pool ||
@@ -256,7 +256,9 @@ const PoolInformation = ({
               : 0
           }`}
         />
-        <Typography variant="body1">Tokens in the pool:</Typography>
+        <Typography variant="body1">
+          <Translate id="pool.tokensInPool">Tokens in the pool:</Translate>
+        </Typography>
         {poolBalance &&
           poolBalance[1]?.map((asset) => {
             return (
@@ -284,7 +286,9 @@ const PoolInformation = ({
           <>
             <Typography variant="body1">
               <Emoji emoji="⚠️" />
-              This pool is unverified, use at your own risk
+              <Translate id="pool.unverifiedDisclaimer">
+                This pool is unverified, use at your own risk
+              </Translate>
             </Typography>
           </>
         )}
@@ -293,7 +297,7 @@ const PoolInformation = ({
           style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
           align="center"
         >
-          Pool Keys:
+          <Translate id="pool.poolKeys">Pool Keys:</Translate>
         </Typography>
         <InformationRow
           label=" - Signal Provider:"
@@ -315,7 +319,9 @@ const PoolInformation = ({
           style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
           align="center"
         >
-          The pool can only trade on the following markets:
+          <Translate id="pool.authorizedMarkets">
+            The pool can only trade on the following markets:
+          </Translate>
         </Typography>
         <div style={{ margin: 10 }}>
           {poolMarkets?.map((m) => {
@@ -328,28 +334,6 @@ const PoolInformation = ({
             );
           })}
         </div>
-        {/* {poolOrdersInfoLoaded && poolOrdersInfo && (
-          <>
-            <Typography
-              variant="body1"
-              style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
-              align="center"
-            >
-              Recent trades of the pool:
-            </Typography>
-            {poolOrdersInfo.map((tx) => {
-              console.log(tx.settledAmount);
-              console.log(tx.transferredAmount);
-              return (
-                <Typography variant="body1">
-                  {' - '} {marketNameFromAddress(tx.market)}{' '}
-                  {tx.side === 0 ? 'buy' : 'sell'} {tx.transferredAmount}@
-                  {tx.limitPrice}
-                </Typography>
-              );
-            })}
-          </>
-        )} */}
       </TabPanel>
       <TabPanel value={tab} index={2}>
         {poolInfo && (
@@ -627,7 +611,13 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         />
         <Grid container justify="center">
           <CustomButton onClick={onSubmit}>
-            {loading ? <Spin size={20} /> : tab === 0 ? 'Deposit' : 'Withdraw'}
+            {loading ? (
+              <Spin size={20} />
+            ) : tab === 0 ? (
+              <Translate id="pool.deposit">Deposit</Translate>
+            ) : (
+              <Translate id="pool.withdraw">Withdraw</Translate>
+            )}
           </CustomButton>
         </Grid>
 
@@ -645,13 +635,15 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         {isAdmin && (
           <>
             <Typography align="center" variant="body1">
-              It looks like you own this pool
+              <Translate id="pool.youOwnThePool">
+                It looks like you own this pool
+              </Translate>
             </Typography>
             <Grid container justify="center" style={{ marginTop: 10 }}>
               <CustomButton
                 onClick={() => history.push(`/signal-provider/${poolSeed}`)}
               >
-                Admin Page
+                <Translate id="pool.adminPage">Admin Page</Translate>
               </CustomButton>
             </Grid>
           </>

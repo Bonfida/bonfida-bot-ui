@@ -5,6 +5,7 @@ import { theme } from './theme';
 import { WalletProvider } from './utils/wallet';
 import { ConnectionProvider } from './utils/connection';
 import { SnackbarProvider } from 'notistack';
+import { LocalizeProvider } from 'react-localize-redux';
 
 const App = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,7 +14,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
         <WalletProvider>
           <MuiThemeProvider theme={theme}>
             <CssBaseline />
-            {children}
+            <LocalizeProvider>{children}</LocalizeProvider>
           </MuiThemeProvider>
         </WalletProvider>
       </SnackbarProvider>

@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { useWallet } from '../utils/wallet';
 import { makeStyles } from '@material-ui/core/styles';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   button: {
@@ -33,7 +34,11 @@ export default function WalletConnect() {
         variant="contained"
         className={classes.button}
       >
-        {!connected ? <>Connect wallet</> : <>Disconnect</>}
+        {!connected ? (
+          <Translate id="wallet.connect">Connect wallet</Translate>
+        ) : (
+          <Translate id="wallet.disconnect">Disconnect</Translate>
+        )}
       </Button>
     </React.Fragment>
   );

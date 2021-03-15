@@ -11,6 +11,8 @@ import WalletConnect from '../WalletConnect';
 import Settings from '../Settings';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
 import { nanoid } from 'nanoid';
+import LanguageToggle from '../LanguageToggle';
+import { Translate } from 'react-localize-redux';
 
 const useStyles = makeStyles({
   root: {
@@ -165,7 +167,7 @@ const TopBar = () => {
                     color: selectedIndex === e.name ? '#BA0202' : '#393939',
                   }}
                 >
-                  {e.name}
+                  <Translate id={`topbar.${e.name}`}>{e.name}</Translate>
                 </Button>
               );
             })}
@@ -186,6 +188,7 @@ const TopBar = () => {
             </Grid>
           </Grid>
         </Grid>
+        <LanguageToggle />
       </AppBar>
     </div>
   );
