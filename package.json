@@ -1,0 +1,85 @@
+{
+  "name": "bonfida-bot-ui",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://bots.bonfida.com",
+  "dependencies": {
+    "@dr497/awesome-serum-markets": "^1.1.16",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@project-serum/serum": "^0.13.30",
+    "@project-serum/sol-wallet-adapter": "^0.1.4",
+    "@solana/spl-token": "^0.0.13",
+    "@solana/web3.js": "^0.94.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "bn.js": "^5.1.3",
+    "bonfida-bot": "^0.4.3",
+    "bs58": "^4.0.1",
+    "clsx": "^1.1.1",
+    "dotenv": "^8.2.0",
+    "immutable-tuple": "^0.4.10",
+    "nanoid": "^3.1.20",
+    "notistack": "^1.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-player": "^2.9.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "git pull --ff-only && yarn && yarn build",
+    "deploy": "ipfs-deploy build -d cloudflare",
+    "lint": "npm run pretty && eslint .",
+    "lint:fix": "npm run pretty:fix",
+    "pretty": "prettier --check '{,!(node_modules)/**/}*.[jt]sx'",
+    "pretty:fix": "prettier --write '{,!(node_modules)/**/}*.[jt]sx'"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "always",
+    "trailingComma": "all"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "devDependencies": {
+    "@types/bn.js": "^4.11.6",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.7",
+    "typescript": "^4.1.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,css,md}": "prettier --write"
+  }
+}
