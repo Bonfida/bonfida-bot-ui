@@ -26,7 +26,6 @@ import {
   usePoolInfo,
   usePoolUsdBalance,
   usePoolName,
-  saveCustomName,
   CUSTOME_NAME_PREFIX,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
@@ -102,7 +101,6 @@ const CustomNameDialog = ({
   setOpen: (arg: any) => void;
 }) => {
   const classes = useStyles();
-  const history = useHistory();
   const [customName, setCustomName] = useState<string | null>(null);
   const [, storeCustomName] = useLocalStorageState(
     CUSTOME_NAME_PREFIX + poolSeed,
