@@ -363,6 +363,10 @@ const CreatePoolCard = () => {
         amounts.push(asset.amount * Math.pow(10, decimals));
       }
 
+      const authorizedMarkets = [...new Set(marketAddresses)].map(
+        (m) => new PublicKey(m),
+      );
+
       const [poolSeed, transactionInstructions] = await createPool(
         connection,
         wallet?.publicKey,
@@ -371,7 +375,7 @@ const CreatePoolCard = () => {
         sigProvider,
         amounts,
         2 * marketAddresses.length,
-        marketAddresses.map((m) => new PublicKey(m)),
+        authorizedMarkets,
         wallet?.publicKey,
         new Numberu64(_feeCollectionPeriod),
         _feeRatio,
