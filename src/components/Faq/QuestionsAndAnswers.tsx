@@ -124,11 +124,11 @@ export const TV_TUTORIAL: Step[] = [
             <div style={{ marginTop: 20 }} />
             {'{'}
             <br />
-            poolSeed: "poolSeed", <br />
-            size: "size of your order", <br />
-            side: "side", <br />
-            auth: "tradingViewAuthToken", <br />
-            marketName: "marketName" <br />
+            "poolSeed": "poolSeed", <br />
+            "size": "size of your order", <br />
+            "side": "side", <br />
+            "auth": "tradingViewAuthToken", <br />
+            "marketName": "marketName" <br />
             {'}'}
             <br />
             <div style={{ marginTop: 20 }} />
@@ -142,13 +142,13 @@ export const TV_TUTORIAL: Step[] = [
             >
               {'{'}
               <br />
-              poolSeed: "DhCEYSbw2uHdDBt2D7Xaxdy2LUUSKk11Kvpd1WJFEwGy", <br />
-              size: 10, <br />
-              side: "buy", <br />
-              auth:
+              "poolSeed": "DhCEYSbw2uHdDBt2D7Xaxdy2LUUSKk11Kvpd1WJFEwGy", <br />
+              "size": 10, <br />
+              "side": "buy", <br />
+              "auth":
               "3d7NfKp7ddFWXcuPd1BrJFkb2VEmo4EnNa9Yocus3Pf4vRy4ufvtKvuA2bmT595cgiaizMyZA1Ma1zAdQwH68oiT",{' '}
               <br />
-              marketName: "FIDA/USDC" <br />
+              "marketName": "FIDA/USDC" <br />
               {'}'}
             </div>
           </li>
