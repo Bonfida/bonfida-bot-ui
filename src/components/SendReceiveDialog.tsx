@@ -54,6 +54,7 @@ export function parseMintData(data) {
 
 const DepositTab = ({ pubkey }: { pubkey: string }) => {
   const classes = useStyles();
+  const { wallet } = useWallet();
   return (
     <>
       <Typography>Your deposit address:</Typography>
@@ -64,7 +65,7 @@ const DepositTab = ({ pubkey }: { pubkey: string }) => {
       >
         {pubkey}
       </ExplorerLink>
-      <CopyableDisplay text="Some text jnnk" />
+      <CopyableDisplay text={wallet?.publicKey} />
     </>
   );
 };
