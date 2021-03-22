@@ -119,6 +119,7 @@ const TEMPLATES: Template[] = [
     key: 'dcaMonthly',
   },
   { name: 'DCA Weekly', key: 'dcaWeekly' },
+  { name: 'DCA Daily', key: 'dcaDaily' },
   {
     name: 'TradingView',
     key: 'tradingView',
@@ -194,7 +195,6 @@ const CreatePoolCard = () => {
       };
     }),
   );
-
   useMemo(() => {
     setIsTradingView(externalSigProvider === TV_CRANKER);
   }, [externalSigProvider]);
@@ -415,11 +415,9 @@ const CreatePoolCard = () => {
   const handleClickStrategy = (props) => (event) => {
     event.preventDefault();
     setStep(1);
-    if (props === 'dcaMonthly') {
-      setExternalSigProvider(getSignalProviderByName(props));
-    } else if (props === 'dcaWeekly') {
-      setExternalSigProvider(getSignalProviderByName(props));
-    } else if (props === 'tradingView') {
+    if (
+      ['dcaMonthly', 'dcaWeekly', 'dcaDaily', 'tradingView'].includes(props)
+    ) {
       setExternalSigProvider(getSignalProviderByName(props));
     } else if (props === 'custom') {
       setCustom(true);

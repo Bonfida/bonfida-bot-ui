@@ -19,7 +19,7 @@ export const getAssetsFromMarkets = (marketAddresses: string[]) => {
   const names = marketAddresses
     .map((m) => USE_MARKETS.find((e) => e.address.toBase58() === m)?.name)
     .filter((e) => e);
-  names.map((e) => {
+  names.forEach((e) => {
     // @ts-ignore
     result.add(e?.split('/')[0]);
     // @ts-ignore

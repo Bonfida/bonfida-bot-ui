@@ -25,6 +25,8 @@ export const getSignalProviderByName = (name: string) => {
       return '8km6prR9BNjvZFVGRh7YoU2PnsQPn7XnVeYKJfWJvhqa';
     case 'dcaMonthly':
       return '9vsePNS3HfZtLHoP4tPCpa16wdq19DJWzifuMjX7keCP';
+    case 'dcaDaily':
+      return 'FukKpDC8AX76sHjU8p717qUneDgpR35nHyFjqT8LaZ4x';
     case 'tradingView':
       return '3hhmaQycsGNEocctmkCnTLgZboNeF7bM3DARB63N2BeA';
     default:
@@ -78,6 +80,30 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
           On the 1st of each month 08:00 UTC, the pool will use 10% of the quote
           currency contained in the pool to perform a DCA strategy on each
           market.
+        </Typography>
+      </>
+    ),
+  },
+  {
+    name: 'Daily DCA (Fuk...Z4x)',
+    displayName: 'Custom Daily DCA',
+    pubKey: new PublicKey('FukKpDC8AX76sHjU8p717qUneDgpR35nHyFjqT8LaZ4x'),
+    description: (
+      <>
+        <Typography
+          align="center"
+          variant="body1"
+          style={styles.descriptionTitle}
+        >
+          Daily DCA strategy:
+        </Typography>
+        <Typography
+          align="center"
+          variant="body1"
+          style={styles.descriptionText}
+        >
+          Every day at 08:00 UTC, the pool will use 10% of the quote currency
+          contained in the pool to perform a DCA strategy on each market.
         </Typography>
       </>
     ),
