@@ -15,6 +15,7 @@ const HelpUrls = {
     volatilityExpan:
       'https://www.forex.academy/volatility-expansion-strategy/#:~:text=The%20Strategy,as%20a%20measure%20of%20volatility.',
   },
+  webhookUrl: 'https://tradingview-cranker.bonfida.com/alerts',
 };
 
 export default HelpUrls;

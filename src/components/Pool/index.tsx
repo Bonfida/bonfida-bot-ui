@@ -58,6 +58,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import IconButton from '@material-ui/core/IconButton';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import HelpUrls from '../../utils/HelpUrls';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -232,9 +233,6 @@ const PoolInformation = ({
     [poolInfoLoaded],
   );
 
-  // Orders
-  // const [poolOrdersInfo, poolOrdersInfoLoaded] = usePoolOrderInfos(poolSeed);
-
   const isVerified = useMemo(
     () =>
       !!pool ||
@@ -378,7 +376,6 @@ const PoolInformation = ({
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="toggle password visibility"
                     onClick={() => setShowTvPassowrd((prev) => !prev)}
                     onMouseDown={(e) => e.preventDefault()}
                     edge="end"
@@ -387,9 +384,31 @@ const PoolInformation = ({
                     {showTvPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                   <IconButton
-                    aria-label="toggle password visibility"
                     onClick={() => {
                       navigator.clipboard.writeText(tradingViewPassword || '');
+                      notify({ message: 'Copied!' });
+                    }}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                    style={{ margin: 10 }}
+                  >
+                    <FileCopyIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+            <InputLabel>Webhook URL</InputLabel>
+            <OutlinedInput
+              disabled
+              type="text"
+              value={HelpUrls.webhookUrl}
+              className={classes.tvPassword}
+              inputProps={{ style: { fontSize: 20 } }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => {
+                      navigator.clipboard.writeText(HelpUrls.webhookUrl || '');
                       notify({ message: 'Copied!' });
                     }}
                     onMouseDown={(e) => e.preventDefault()}
