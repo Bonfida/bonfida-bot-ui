@@ -4,7 +4,9 @@ An implementation of a UI for Bonfida Bot.
 
 [Bonfida Bot Tutorial](https://www.youtube.com/watch?v=6BFmyi0qnEI)
 
-Bonfida Bot is hosted on IPFS. Current IPFS CID: **Qmakz1wPEA88eU5WGrwJNH41DsZW41LCN9uWgBYjZpZM2V**
+Bonfida Bot is hosted on IPFS. Current IPFS CID: **Qmakz1wPEA88eU5WGrwJNH41DsZW41LCN9uWgBYjZpZM2V**.
+
+You can verify the build using the `etag` of the **Response Header**.
 
 ## Running the UI
 
