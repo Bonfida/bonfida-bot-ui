@@ -27,6 +27,7 @@ import {
   usePoolUsdBalance,
   usePoolName,
   CUSTOME_NAME_PREFIX,
+  TV_PASSWORD_STORAGE_PREFIX,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
 import { deposit, Numberu64, redeem } from 'bonfida-bot';
@@ -49,6 +50,14 @@ import { KNOWN_SIGNAL_PROVIDERS } from '../../utils/externalSignalProviders';
 import EditIcon from '@material-ui/icons/Edit';
 import Modal from '../Modal';
 import { TextField } from '@material-ui/core';
+import { TV_CRANKER } from '../../utils/externalSignalProviders';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import IconButton from '@material-ui/core/IconButton';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,6 +77,17 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     editIcon: {
       cursor: 'pointer',
+    },
+    tvPassword: {
+      height: 40,
+      width: '100%',
+      marginTop: 10,
+      marginBottom: 10,
+    },
+    tvSection: {
+      marginBottom: 15,
+      marginTop: 15,
+      fontWeight: 600,
     },
   }),
 );
@@ -185,6 +205,7 @@ const PoolInformation = ({
   poolSeed: PublicKey;
   tokenAccounts: any;
 }) => {
+  const classes = useStyles();
   const [poolBalance] = usePoolBalance(poolSeed);
   const [poolInfo, poolInfoLoaded] = usePoolInfo(poolSeed);
   const pool = USE_POOLS.find(
@@ -222,6 +243,18 @@ const PoolInformation = ({
       ),
     [poolInfoLoaded],
   );
+
+  const isCustomTradingView = useMemo(
+    () => poolInfo?.signalProvider.toBase58() === TV_CRANKER && !pool,
+    [poolInfoLoaded],
+  );
+
+  const [tradingViewPassword] = useLocalStorageState(
+    TV_PASSWORD_STORAGE_PREFIX + poolSeed,
+    null,
+  );
+
+  const [showTvPassword, setShowTvPassowrd] = useState(false);
 
   return (
     <>
@@ -326,28 +359,56 @@ const PoolInformation = ({
             );
           })}
         </div>
-        {/* {poolOrdersInfoLoaded && poolOrdersInfo && (
+        {isCustomTradingView && tradingViewPassword && (
           <>
             <Typography
               variant="body1"
-              style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
+              className={classes.tvSection}
               align="center"
             >
-              Recent trades of the pool:
+              TradingView
             </Typography>
-            {poolOrdersInfo.map((tx) => {
-              console.log(tx.settledAmount);
-              console.log(tx.transferredAmount);
-              return (
-                <Typography variant="body1">
-                  {' - '} {marketNameFromAddress(tx.market)}{' '}
-                  {tx.side === 0 ? 'buy' : 'sell'} {tx.transferredAmount}@
-                  {tx.limitPrice}
-                </Typography>
-              );
-            })}
+            <InputLabel>TradingView Password</InputLabel>
+            <OutlinedInput
+              disabled
+              type={showTvPassword ? 'text' : 'password'}
+              value={tradingViewPassword}
+              className={classes.tvPassword}
+              inputProps={{ style: { fontSize: 20 } }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowTvPassowrd((prev) => !prev)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                    style={{ margin: 10 }}
+                  >
+                    {showTvPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => {
+                      navigator.clipboard.writeText(tradingViewPassword || '');
+                      notify({ message: 'Copied!' });
+                    }}
+                    onMouseDown={(e) => e.preventDefault()}
+                    edge="end"
+                    style={{ margin: 10 }}
+                  >
+                    <FileCopyIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+            <InformationRow
+              label="TradingView Message"
+              value="/tradingview-generator"
+              isLink
+              linkText="Message Generator"
+            />
           </>
-        )} */}
+        )}
       </TabPanel>
       <TabPanel value={tab} index={2}>
         {poolInfo && (

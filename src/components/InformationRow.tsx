@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { ExplorerLink } from './Link';
+import Link, { ExplorerLink } from './Link';
 import { abbreviateString } from '../utils/utils';
 
 const useStyles = makeStyles({
@@ -27,10 +27,14 @@ const InformationRow = ({
   label,
   value,
   isExplorerLink,
+  isLink,
+  linkText,
 }: {
   label: string | number | undefined | null;
   value: string | number | undefined | null;
   isExplorerLink?: boolean;
+  isLink?: boolean;
+  linkText?: string;
 }) => {
   const classes = useStyles();
   return (
@@ -47,13 +51,18 @@ const InformationRow = ({
         </Typography>
       </Grid>
       <Grid item>
-        {!isExplorerLink && (
+        {!isExplorerLink && !isLink && (
           <Typography variant="body1" className={classes.value}>
             {value}
           </Typography>
         )}
         {isExplorerLink && typeof value === 'string' && (
           <ExplorerLink address={value}>{abbreviateString(value)}</ExplorerLink>
+        )}
+        {isLink && typeof value === 'string' && (
+          <Link external={value.includes('https')} to={value}>
+            {linkText}
+          </Link>
         )}
       </Grid>
     </Grid>
