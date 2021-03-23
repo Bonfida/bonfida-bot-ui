@@ -199,6 +199,87 @@ const PoolTitle = ({
   );
 };
 
+export const TradingViewSection = ({
+  isCustomTradingView,
+  tradingViewPassword,
+}: {
+  isCustomTradingView: boolean | undefined | null;
+  tradingViewPassword: string | undefined | null;
+}) => {
+  const classes = useStyles();
+  const [showTvPassword, setShowTvPassword] = useState(false);
+  if (!isCustomTradingView || !tradingViewPassword) {
+    return null;
+  }
+  return (
+    <>
+      <Typography variant="body1" className={classes.tvSection} align="center">
+        TradingView
+      </Typography>
+      <InputLabel>TradingView Password</InputLabel>
+      <OutlinedInput
+        disabled
+        type={showTvPassword ? 'text' : 'password'}
+        value={tradingViewPassword}
+        className={classes.tvPassword}
+        inputProps={{ style: { fontSize: 20 } }}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              onClick={() => setShowTvPassword((prev) => !prev)}
+              onMouseDown={(e) => e.preventDefault()}
+              edge="end"
+              style={{ margin: 10 }}
+            >
+              {showTvPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                navigator.clipboard.writeText(tradingViewPassword || '');
+                notify({ message: 'Copied!' });
+              }}
+              onMouseDown={(e) => e.preventDefault()}
+              edge="end"
+              style={{ margin: 10 }}
+            >
+              <FileCopyIcon />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+      <InputLabel>Webhook URL</InputLabel>
+      <OutlinedInput
+        disabled
+        type="text"
+        value={HelpUrls.webhookUrl}
+        className={classes.tvPassword}
+        inputProps={{ style: { fontSize: 20 } }}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              onClick={() => {
+                navigator.clipboard.writeText(HelpUrls.webhookUrl || '');
+                notify({ message: 'Copied!' });
+              }}
+              onMouseDown={(e) => e.preventDefault()}
+              edge="end"
+              style={{ margin: 10 }}
+            >
+              <FileCopyIcon />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+      <InformationRow
+        label="TradingView Message"
+        value="/tradingview-generator"
+        isLink
+        linkText="Message Generator"
+      />
+    </>
+  );
+};
+
 const PoolInformation = ({
   poolSeed,
   tokenAccounts,
@@ -251,8 +332,6 @@ const PoolInformation = ({
     TV_PASSWORD_STORAGE_PREFIX + poolSeed,
     null,
   );
-
-  const [showTvPassword, setShowTvPassowrd] = useState(false);
 
   return (
     <>
@@ -357,77 +436,10 @@ const PoolInformation = ({
             );
           })}
         </div>
-        {isCustomTradingView && tradingViewPassword && (
-          <>
-            <Typography
-              variant="body1"
-              className={classes.tvSection}
-              align="center"
-            >
-              TradingView
-            </Typography>
-            <InputLabel>TradingView Password</InputLabel>
-            <OutlinedInput
-              disabled
-              type={showTvPassword ? 'text' : 'password'}
-              value={tradingViewPassword}
-              className={classes.tvPassword}
-              inputProps={{ style: { fontSize: 20 } }}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowTvPassowrd((prev) => !prev)}
-                    onMouseDown={(e) => e.preventDefault()}
-                    edge="end"
-                    style={{ margin: 10 }}
-                  >
-                    {showTvPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      navigator.clipboard.writeText(tradingViewPassword || '');
-                      notify({ message: 'Copied!' });
-                    }}
-                    onMouseDown={(e) => e.preventDefault()}
-                    edge="end"
-                    style={{ margin: 10 }}
-                  >
-                    <FileCopyIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <InputLabel>Webhook URL</InputLabel>
-            <OutlinedInput
-              disabled
-              type="text"
-              value={HelpUrls.webhookUrl}
-              className={classes.tvPassword}
-              inputProps={{ style: { fontSize: 20 } }}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => {
-                      navigator.clipboard.writeText(HelpUrls.webhookUrl || '');
-                      notify({ message: 'Copied!' });
-                    }}
-                    onMouseDown={(e) => e.preventDefault()}
-                    edge="end"
-                    style={{ margin: 10 }}
-                  >
-                    <FileCopyIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <InformationRow
-              label="TradingView Message"
-              value="/tradingview-generator"
-              isLink
-              linkText="Message Generator"
-            />
-          </>
-        )}
+        <TradingViewSection
+          isCustomTradingView={isCustomTradingView}
+          tradingViewPassword={tradingViewPassword}
+        />
       </TabPanel>
       <TabPanel value={tab} index={2}>
         {poolInfo && (
