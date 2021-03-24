@@ -111,6 +111,9 @@ const useStyles = makeStyles({
     fontSize: 40,
     marginBottom: 50,
   },
+  mouseOverPopOverText: {
+    fontSize: 12,
+  },
 });
 
 const TEMPLATES: Template[] = [
@@ -655,7 +658,10 @@ const CreatePoolCard = () => {
               marginLeft="auto"
               marginTop="20px"
             />
-            <MouseOverPopOver popOverText="Fees are split 50/50 between the Signal Provider and FIDA buy and burn">
+            <MouseOverPopOver
+              popOverText="Fees are split 50/25/25 between the Signal Provider, insurance fund and FIDA buy and burn 🔥"
+              textClassName={classes.mouseOverPopOverText}
+            >
               <Typography align="center" className={classes.subsection}>
                 Fees
               </Typography>

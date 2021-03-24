@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const MouseOverPopOver = ({ children, popOverText }) => {
+const MouseOverPopOver = ({ children, popOverText, textClassName }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
@@ -65,7 +65,9 @@ const MouseOverPopOver = ({ children, popOverText }) => {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography variant="body1">{popOverText}</Typography>
+        <Typography className={textClassName} variant="body1">
+          {popOverText}
+        </Typography>
       </Popover>
     </div>
   );
