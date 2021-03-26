@@ -28,6 +28,7 @@ import {
   usePoolName,
   CUSTOME_NAME_PREFIX,
   TV_PASSWORD_STORAGE_PREFIX,
+  usePublicKeyFromSeed,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
 import { deposit, Numberu64, redeem } from 'bonfida-bot';
@@ -59,6 +60,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import IconButton from '@material-ui/core/IconButton';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import HelpUrls from '../../utils/HelpUrls';
+import { ExplorerLink } from '../Link';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -88,6 +90,11 @@ const useStyles = makeStyles((theme: Theme) =>
     tvSection: {
       marginBottom: 15,
       marginTop: 15,
+      fontWeight: 600,
+    },
+    subSectionPoolInformation: {
+      marginBottom: 20,
+      marginTop: 20,
       fontWeight: 600,
     },
   }),
@@ -288,6 +295,7 @@ const PoolInformation = ({
   tokenAccounts: any;
 }) => {
   const classes = useStyles();
+  const [poolKey] = usePublicKeyFromSeed(poolSeed);
   const [poolBalance] = usePoolBalance(poolSeed);
   const [poolInfo, poolInfoLoaded] = usePoolInfo(poolSeed);
   const pool = USE_POOLS.find(
@@ -398,7 +406,7 @@ const PoolInformation = ({
         )}
         <Typography
           variant="body1"
-          style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
+          className={classes.subSectionPoolInformation}
           align="center"
         >
           Pool Keys:
@@ -409,8 +417,13 @@ const PoolInformation = ({
           isExplorerLink
         />
         <InformationRow
-          label=" - Pool Seed (Address)"
+          label=" - Pool Seed"
           value={poolSeed.toBase58()}
+          isExplorerLink
+        />
+        <InformationRow
+          label=" - Pool PublicKey"
+          value={poolKey?.toBase58()}
           isExplorerLink
         />
         <InformationRow
@@ -420,7 +433,7 @@ const PoolInformation = ({
         />
         <Typography
           variant="body1"
-          style={{ marginBottom: 15, marginTop: 15, fontWeight: 600 }}
+          className={classes.subSectionPoolInformation}
           align="center"
         >
           The pool can only trade on the following markets:
@@ -436,6 +449,16 @@ const PoolInformation = ({
             );
           })}
         </div>
+        <Typography
+          variant="body1"
+          className={classes.subSectionPoolInformation}
+          align="center"
+        >
+          <ExplorerLink address={poolKey?.toBase58()}>
+            View the bot's trades on the Solana Explorer
+          </ExplorerLink>
+        </Typography>
+
         <TradingViewSection
           isCustomTradingView={isCustomTradingView}
           tradingViewPassword={tradingViewPassword}

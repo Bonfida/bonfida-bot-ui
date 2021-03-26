@@ -9,6 +9,7 @@ import {
   getPoolTokenMintFromSeed,
   getPoolOrderInfos,
   PoolOrderInfo,
+  BONFIDABOT_PROGRAM_ID,
 } from 'bonfida-bot';
 import { useConnection } from './connection';
 import tuple from 'immutable-tuple';
@@ -365,4 +366,19 @@ export const saveCustomName = (poolSeed: string, customName: string) => {
     CUSTOME_NAME_PREFIX + poolSeed,
     JSON.stringify(customName),
   );
+};
+
+export const getPublicKeyFromSeed = async (poolSeed: PublicKey) => {
+  const poolKey = await PublicKey.createProgramAddress(
+    [poolSeed.toBuffer()],
+    BONFIDABOT_PROGRAM_ID,
+  );
+  return poolKey;
+};
+
+export const usePublicKeyFromSeed = (poolSeed: PublicKey) => {
+  const get = async () => {
+    return await getPublicKeyFromSeed(poolSeed);
+  };
+  return useAsyncData(get, `usePublicKeyFromSeed-${poolSeed.toBase58()}`);
 };
