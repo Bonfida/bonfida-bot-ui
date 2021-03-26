@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   name: {
     color: 'black',
     fontWeight: 'bold',
-    fontSize: '30px',
+    fontSize: 20,
     textAlign: 'center',
     marginLeft: 30,
   },
@@ -85,12 +85,12 @@ export const StrategyCard = ({ pool, left }: { pool: Pool; left: boolean }) => {
       {pool.description && (
         <CardContent>
           <Typography align="center" className={classes.text}>
-            {pool?.description}
+            {pool?.shortDescription}
           </Typography>
         </CardContent>
       )}
       <div className={classes.center}>
-        <CustomButton onClick={onClick}>{pool?.name}</CustomButton>
+        <CustomButton onClick={onClick}>Select</CustomButton>
       </div>
     </Card>
   );

@@ -34,6 +34,7 @@ export interface Pool {
   poolSeed: PublicKey;
   illustration: string | null;
   description: string | JSX.Element;
+  shortDescription?: string | JSX.Element;
   mintAddress: PublicKey;
 }
 
@@ -52,7 +53,65 @@ export const TV_POOLS: Pool[] = [
         </Link>
       </>
     ),
+    shortDescription: (
+      <>
+        <b>4H Super Trend</b> strategy on <b>BTC/USDC</b>. Super Trend is a
+        TradingView indicator, you can find more information about...
+      </>
+    ),
     mintAddress: new PublicKey('BMTwkARS5jTygykkAukwL2GW15kt4pij1kqmBn4oNc62'),
+  },
+  // Benson
+  {
+    name: 'Sentiment Strategy Pro [Benson]',
+    poolSeed: new PublicKey('GjrAkn4wu1ijif7SYhnQc4uDMxMdW5X8AW3MLig5X33t'),
+    illustration: null,
+    description: (
+      <>
+        <div>
+          The bot aggregates exchanges spot and future trading data from
+          Binance, Coinbase, BitMEX, Bybit and FTX to identify the market
+          sentiment. <b>Long</b> when the market is in <b>fear</b> and exit when
+          the market is <b>optimistic</b>.
+        </div>
+        <div style={{ marginTop: 10 }}>
+          Join Benson's{' '}
+          <Link
+            external
+            to={HelpUrls.benson.telegram}
+            style={{ color: 'black', fontWeight: 600 }}
+          >
+            Telegram Group{' '}
+          </Link>
+        </div>
+      </>
+    ),
+    shortDescription: (
+      <>The bot aggregates exchanges data to identify the market sentiment...</>
+    ),
+    mintAddress: new PublicKey('C1a6WeNFZ3bXYP3gA2GKVQKyfHGZ5ecTS7V7m5ykmwLF'),
+  },
+  // SAR
+  {
+    name: 'Volatility Expansion BTC',
+    poolSeed: new PublicKey('5tLDije3S75K8wgwnuk941cQuJGKu6EVAgEwN6jB6WVk'),
+    illustration: dca,
+    description: (
+      <>
+        <b>4H Volatility Expansion Close</b> strategy on <b>BTC/USDC</b>. Use
+        volatility to catch new trends in the market. Learn more about it on the{' '}
+        <Link external to={HelpUrls.strategies.volatilityExpan}>
+          dedicated page
+        </Link>
+      </>
+    ),
+    shortDescription: (
+      <>
+        <b>4H Volatility Expansion Close</b> strategy on <b>BTC/USDC</b>. Use
+        volatility to catch trends...
+      </>
+    ),
+    mintAddress: new PublicKey('Caj7qWJDHNsjhP9EpcdeGwSeguST8cPwLGRjVdYW2RtH'),
   },
   // RSI
   {
@@ -69,23 +128,13 @@ export const TV_POOLS: Pool[] = [
         </Link>
       </>
     ),
-    mintAddress: new PublicKey('6GZoDMn1UFG16v9KjRUMao5kRZ978v1DGUzAg1ZjyzJu'),
-  },
-  // SAR
-  {
-    name: 'Volatility Expansion BTC',
-    poolSeed: new PublicKey('5tLDije3S75K8wgwnuk941cQuJGKu6EVAgEwN6jB6WVk'),
-    illustration: dca,
-    description: (
+    shortDescription: (
       <>
-        <b>4H Volatility Expansion Close</b> strategy on <b>BTC/USDC</b>. Use
-        volatility to catch new trends in the market. Learn more about it on the{' '}
-        <Link external to={HelpUrls.strategies.volatilityExpan}>
-          dedicated page
-        </Link>
+        <b>4H RSI</b> strategy on <b>BTC/USDC</b>. RSI is a momentum oscillator
+        that measures the speed and change of price movements...
       </>
     ),
-    mintAddress: new PublicKey('Caj7qWJDHNsjhP9EpcdeGwSeguST8cPwLGRjVdYW2RtH'),
+    mintAddress: new PublicKey('6GZoDMn1UFG16v9KjRUMao5kRZ978v1DGUzAg1ZjyzJu'),
   },
   {
     name: 'RSI ETH',
@@ -99,6 +148,12 @@ export const TV_POOLS: Pool[] = [
         <Link external to={HelpUrls.strategies.rsi}>
           dedicated page
         </Link>
+      </>
+    ),
+    shortDescription: (
+      <>
+        <b>4H RSI</b> strategy on <b>ETH/USDC</b>. RSI is a momentum oscillator
+        that measures the speed and change of price movements...
       </>
     ),
     mintAddress: new PublicKey('GNPF6P8DNBavyYkhhMMn53hKQVdz9dAJdpLwF7rgWRSe'),
@@ -117,6 +172,12 @@ export const TV_POOLS: Pool[] = [
         </Link>
       </>
     ),
+    shortDescription: (
+      <>
+        <b>Daily MACD</b> strategy on <b>BTC/USDC</b>. MACD is a trend-following
+        momentum indicator, learn more about...
+      </>
+    ),
     mintAddress: new PublicKey('25XmCiAQX9diUfTA8KwSmUFQRbKByi57VDp2SddVEsZ1'),
   },
   {
@@ -130,6 +191,12 @@ export const TV_POOLS: Pool[] = [
         <Link external to={HelpUrls.strategies.macd}>
           dedicated page
         </Link>
+      </>
+    ),
+    shortDescription: (
+      <>
+        <b>Daily MACD</b> strategy on <b>ETH/USDC</b>. MACD is a trend-following
+        momentum indicator, learn more about...
       </>
     ),
     mintAddress: new PublicKey('26ZS2DADN23Yqgi8hRA2bKXdZtqBz9t5uqC15gjpAP7Q'),
@@ -147,6 +214,12 @@ export const TV_POOLS: Pool[] = [
         </Link>
       </>
     ),
+    shortDescription: (
+      <>
+        <b>Daily MACD</b> strategy on <b>SRM/USDC</b>. MACD is a trend-following
+        momentum indicator, learn more about...
+      </>
+    ),
     mintAddress: new PublicKey('4NDwbkYhwZDWbBkVsGUZVqFfok7S4KkoLqAP8y7QqNo2'),
   },
   {
@@ -160,6 +233,12 @@ export const TV_POOLS: Pool[] = [
         <Link external to={HelpUrls.strategies.macd}>
           dedicated page
         </Link>
+      </>
+    ),
+    shortDescription: (
+      <>
+        <b>Daily MACD</b> strategy on <b>FIDA/USDC</b>. MACD is a
+        trend-following momentum indicator, learn more about...
       </>
     ),
     mintAddress: new PublicKey('DjYdPqYto61n1gBrhnc64s3tEawsLAmTRKwmSxZ5BLc6'),

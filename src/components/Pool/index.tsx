@@ -176,9 +176,11 @@ const CustomNameDialog = ({
 const PoolTitle = ({
   poolName,
   poolSeed,
+  canEdit,
 }: {
   poolName: string;
   poolSeed: string;
+  canEdit?: boolean;
 }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -191,11 +193,13 @@ const PoolTitle = ({
         </Grid>
         <Grid item>
           <Typography variant="h1" className={classes.poolTitle}>
-            {poolName}{' '}
-            <EditIcon
-              className={classes.editIcon}
-              onClick={() => setOpen(true)}
-            />
+            {poolName}
+            {canEdit && (
+              <EditIcon
+                className={classes.editIcon}
+                onClick={() => setOpen(true)}
+              />
+            )}
           </Typography>
         </Grid>
       </Grid>
@@ -454,8 +458,9 @@ const PoolInformation = ({
           className={classes.subSectionPoolInformation}
           align="center"
         >
+          View the bot's trades on the{' '}
           <ExplorerLink address={poolKey?.toBase58()}>
-            View the bot's trades on the Solana Explorer
+            Solana Explorer
           </ExplorerLink>
         </Typography>
 
@@ -674,7 +679,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         {/* Header */}
         <VerifiedPool isVerified={isVerified} />
         {/* Deposit/Withdraw tokens */}
-        <PoolTitle poolName={poolName} poolSeed={poolSeed} />
+        <PoolTitle poolName={poolName} poolSeed={poolSeed} canEdit={!pool} />
         <Divider
           width="80%"
           height="1px"
