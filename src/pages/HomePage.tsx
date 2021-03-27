@@ -3,12 +3,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CustomButton from '../components/CustomButton';
 import Grid from '@material-ui/core/Grid';
-import StrategyCard from '../components/StrategyCard';
 import { useHistory } from 'react-router-dom';
 import robot from '../assets/icons/illustrations/robot-top-bar.svg';
-import { USE_POOLS } from '../utils/pools';
 import FloatingCard from '../components/FloatingCard';
 import { useSmallScreen } from '../utils/utils';
+import {
+  RSI_STRATEGIES,
+  SUPER_TRENDS_STRATEGIES,
+  StrategySection,
+} from './ExplorePage';
 
 const useStyles = makeStyles({
   root: {
@@ -17,6 +20,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '3%',
   },
   bannerContainer: {
     display: 'flex',
@@ -89,48 +93,18 @@ const ExploreBanner = () => {
   );
 };
 
-const Subtitle = () => {
-  const classes = useStyles();
-  return (
-    <Grid
-      container
-      direction="row"
-      justify="center"
-      alignItems="center"
-      style={{ marginTop: 60 }}
-    >
-      <Typography className={classes.subtitle} variant="h2">
-        Featured strategies
-      </Typography>
-    </Grid>
-  );
-};
-
 const HomePage = () => {
   const classes = useStyles();
   const history = useHistory();
-  const smallScreen = useSmallScreen('md');
   return (
     <>
       <div className={classes.root}>
         <ExploreBanner />
-        <Subtitle />
-        <Grid
-          container
-          direction={smallScreen ? 'column' : 'row'}
-          justify="center"
-          alignItems="center"
-          spacing={5}
-          style={{ marginTop: 40 }}
-        >
-          <Grid item>
-            <StrategyCard pool={USE_POOLS[0]} left={true} />
-          </Grid>
-          <div style={{ width: '10vw' }} />
-          <Grid item>
-            <StrategyCard pool={USE_POOLS[1]} left={false} />
-          </Grid>
-        </Grid>
+        <StrategySection
+          h2="Super Trend Strategies"
+          strategiesArray={SUPER_TRENDS_STRATEGIES}
+        />
+        <StrategySection h2="RSI Strategies" strategiesArray={RSI_STRATEGIES} />
         <div className={classes.exploreContainer}>
           <CustomButton onClick={() => history.push('/explore')}>
             Explore

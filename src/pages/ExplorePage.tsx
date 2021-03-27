@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TV_POOLS } from '../utils/pools';
+import { USE_POOLS, STRATEGY_TYPES, Pool } from '../utils/pools';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, TextField } from '@material-ui/core';
@@ -10,6 +10,27 @@ import StrategyCard from '../components/StrategyCard';
 import { nanoid } from 'nanoid';
 import Modal from '../components/Modal';
 import { isValidPublicKey } from '../utils/utils';
+import Link from '../components/Link';
+
+export const RSI_STRATEGIES = USE_POOLS.filter(
+  (p) => p.strategyType === STRATEGY_TYPES.RSI,
+);
+
+const MACD_STRATEGIES = USE_POOLS.filter(
+  (p) => p.strategyType === STRATEGY_TYPES.MACD,
+);
+
+export const SUPER_TRENDS_STRATEGIES = USE_POOLS.filter(
+  (p) => p.strategyType === STRATEGY_TYPES.SUPER_TREND,
+);
+
+const VOLATILITY_EXPANSION_STRATEGIES = USE_POOLS.filter(
+  (p) => p.strategyType === STRATEGY_TYPES.VOLATILITY_EXPANSION,
+);
+
+const BENSON_STRATEGIES = USE_POOLS.filter(
+  (p) => p.strategyType === STRATEGY_TYPES.SENTIMENT_BENSON,
+);
 
 const useStyles = makeStyles({
   container: {
@@ -44,6 +65,10 @@ const useStyles = makeStyles({
   },
   input: {
     fontSize: 15,
+  },
+  createYourOwn: {
+    fontSize: 30,
+    margin: 20,
   },
 });
 
@@ -91,13 +116,70 @@ const CustomPoolDialog = () => {
   );
 };
 
+export const productRows = (array: Pool[], n: number = 4) => {
+  const arrayRows = [...Array(Math.ceil(array.length / n))];
+  const arrayProductRows = arrayRows.map((row, idx) =>
+    array.slice(idx * n, idx * n + n),
+  );
+  return arrayProductRows;
+};
+
+export const StrategySection = ({
+  h2,
+  strategiesArray,
+}: {
+  h2: string;
+  strategiesArray: Pool[];
+}) => {
+  const classes = useStyles();
+  const rows = productRows(strategiesArray);
+  return (
+    <>
+      <Typography
+        variant="h2"
+        align="center"
+        style={{ fontSize: '1.38rem', marginTop: '2%' }}
+      >
+        {h2}
+      </Typography>
+      {rows.map((row) => (
+        <Grid
+          key={nanoid()}
+          className={classes.container}
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={10}
+        >
+          {row.map((pool, i) => {
+            return (
+              <Grid item className={classes.item} key={nanoid()}>
+                <StrategyCard pool={pool} left={i % 2 === 0 ? true : false} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      ))}
+    </>
+  );
+};
+
+const CreateYourOwn = () => {
+  const classes = useStyles();
+  return (
+    <>
+      <Typography align="center" variant="h2" className={classes.createYourOwn}>
+        Cannot find your dream strategy?{' '}
+        <Link to="/create">Create your own</Link>
+      </Typography>
+    </>
+  );
+};
+
 const ExplorerPage = () => {
   const classes = useStyles();
   const history = useHistory();
-  const tvRows = [...Array(Math.ceil(TV_POOLS.length / 2))];
-  const tvProductRows = tvRows.map((row, idx) =>
-    TV_POOLS.slice(idx * 2, idx * 2 + 2),
-  );
   const [open, setOpen] = useState(false);
 
   return (
@@ -119,25 +201,21 @@ const ExplorerPage = () => {
           Create Pool
         </CustomButton>
       </Typography>
-      {tvProductRows.map((row) => (
-        <Grid
-          key={nanoid()}
-          className={classes.container}
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={10}
-        >
-          {row.map((pool, i) => {
-            return (
-              <Grid item className={classes.item} key={nanoid()}>
-                <StrategyCard pool={pool} left={i % 2 === 0 ? true : false} />
-              </Grid>
-            );
-          })}
-        </Grid>
-      ))}
+      <StrategySection
+        h2="Sentiment Strategy Pro [Benson]"
+        strategiesArray={BENSON_STRATEGIES}
+      />
+      <StrategySection h2="RSI Strategies" strategiesArray={RSI_STRATEGIES} />
+      <StrategySection
+        h2="Super Trend Strategies"
+        strategiesArray={SUPER_TRENDS_STRATEGIES}
+      />
+      <StrategySection h2="MACD Strategies" strategiesArray={MACD_STRATEGIES} />
+      <StrategySection
+        h2="Volatility Expansion Strategies"
+        strategiesArray={VOLATILITY_EXPANSION_STRATEGIES}
+      />
+      <CreateYourOwn />
     </>
   );
 };
