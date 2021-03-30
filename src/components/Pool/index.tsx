@@ -306,9 +306,18 @@ const PerformanceSection = ({ poolSeed }: { poolSeed: string }) => {
     return null;
   }
   return (
-    <div className={classes.performanceContainer}>
-      <Graph data={performance} yKey="poolTokenUsdValue" xKey="time" />
-    </div>
+    <>
+      <Typography
+        variant="body1"
+        className={classes.subSectionPoolInformation}
+        align="center"
+      >
+        Pool Historical Performance:
+      </Typography>
+      <div className={classes.performanceContainer}>
+        <Graph data={performance} yKey="poolTokenUsdValue" xKey="time" />
+      </div>
+    </>
   );
 };
 
