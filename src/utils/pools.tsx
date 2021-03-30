@@ -22,7 +22,11 @@ import { useTokenAccounts } from './tokens';
 import { poolTitleForExtSigProvider } from './externalSignalProviders';
 import { abbreviateString, apiGet, timeConverter } from './utils';
 import { USE_MARKETS } from './markets';
-import { useLocalStorageState, BONFIDA_API_URL_PERFORMANCE } from './utils';
+import {
+  useLocalStorageState,
+  BONFIDA_API_URL_PERFORMANCE,
+  roundToDecimal,
+} from './utils';
 import Link from '../components/Link';
 import HelpUrls from './HelpUrls';
 
@@ -566,7 +570,7 @@ export const useHistoricalPerformance = (
     return result?.performance?.map((e) => {
       return {
         time: timeConverter(e.time),
-        poolTokenUsdValue: e.poolTokenUsdValue,
+        poolTokenUsdValue: roundToDecimal(e.poolTokenUsdValue, 3),
       };
     });
   };
