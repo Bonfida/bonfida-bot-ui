@@ -13,6 +13,7 @@ import SignalProviderPage from './pages/SignalProviderPage';
 import MyPoolPage from './pages/MyPoolPage';
 import TradingViewPage from './pages/TradingViewPage';
 import TradingViewMessageGeneratorPage from './pages/TradingViewMessageGeneratorPage';
+import WrapperPage from './pages/WrapperPage';
 
 export default function Routes() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -29,6 +30,7 @@ export default function Routes() {
           <Route extact path="/explore" component={ExplorePage} />
           <Route extact path="/create" component={CreatePoolPage} />
           <Route exact path="/tradingview" component={TradingViewPage} />
+          <Route exact path="/wrapper" component={WrapperPage} />
           <Route
             exact
             path="/tradingview-generator"

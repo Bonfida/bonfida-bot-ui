@@ -83,7 +83,7 @@ export const useSolBalance = () => {
   return useAsyncData(getSolBalance, tuple('getSolBalance', wallet, connected));
 };
 
-export const useTokenAccounts = () => {
+export const useTokenAccounts = (mint?: string) => {
   const { wallet, connected } = useWallet();
   const getTokenAccounts = async () => {
     if (!connected) {
@@ -96,6 +96,9 @@ export const useTokenAccounts = () => {
         a.account.data.parsed.info.tokenAmount.uiAmount
       );
     });
+    if (mint) {
+      return accounts.filter((e) => e.account.data.parsed.info.mint === mint);
+    }
     return accounts;
   };
 
