@@ -483,6 +483,11 @@ const PoolInformation = ({
             );
           })}
         </div>
+        <TradingViewSection
+          isCustomTradingView={isCustomTradingView}
+          tradingViewPassword={tradingViewPassword}
+        />
+        <PerformanceSection poolSeed={poolSeed.toBase58()} />
         <Typography
           variant="body1"
           className={classes.subSectionPoolInformation}
@@ -493,12 +498,6 @@ const PoolInformation = ({
             Solana Explorer
           </ExplorerLink>
         </Typography>
-
-        <TradingViewSection
-          isCustomTradingView={isCustomTradingView}
-          tradingViewPassword={tradingViewPassword}
-        />
-        <PerformanceSection poolSeed={poolSeed.toBase58()} />
       </TabPanel>
       <TabPanel value={tab} index={2}>
         {poolInfo && (
