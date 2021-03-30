@@ -20,9 +20,9 @@ import { useEffect, useState } from 'react';
 import { useWallet } from './wallet';
 import { useTokenAccounts } from './tokens';
 import { poolTitleForExtSigProvider } from './externalSignalProviders';
-import { abbreviateString } from './utils';
+import { abbreviateString, apiGet, timeConverter } from './utils';
 import { USE_MARKETS } from './markets';
-import { useLocalStorageState } from './utils';
+import { useLocalStorageState, BONFIDA_API_URL_PERFORMANCE } from './utils';
 import Link from '../components/Link';
 import HelpUrls from './HelpUrls';
 
@@ -56,6 +56,12 @@ export enum ASSETS {
   SRM = 'SRM',
 }
 
+const styles = {
+  b: {
+    opacity: 0.75,
+  },
+};
+
 const superTrendDescription = (
   marketName: string,
   tf: string,
@@ -64,15 +70,17 @@ const superTrendDescription = (
   if (short) {
     return (
       <>
-        <b>{tf} Super Trend</b> strategy on <b>{marketName}</b>. Super Trend is
-        a TradingView indicator, you can find more information about...
+        <b style={styles.b}>{tf} Super Trend</b> strategy on{' '}
+        <b style={styles.b}>{marketName}</b>. Super Trend is a TradingView
+        indicator, you can find more information about...
       </>
     );
   }
   return (
     <>
-      <b>{tf} Super Trend</b> strategy on <b>{marketName}</b>. Super Trend is a
-      TradingView indicator, you can find more information about it on the{' '}
+      <b style={styles.b}>{tf} Super Trend</b> strategy on{' '}
+      <b style={styles.b}>{marketName}</b>. Super Trend is a TradingView
+      indicator, you can find more information about it on the{' '}
       <Link external to={HelpUrls.strategies.superTrend}>
         dedicated page
       </Link>
@@ -88,16 +96,18 @@ const rsiDescription = (
   if (short) {
     return (
       <>
-        <b>{tf} RSI</b> strategy on <b>{marketName}</b>. RSI is a momentum
-        oscillator that measures the speed and change of price movements...
+        <b style={styles.b}>{tf} RSI</b> strategy on{' '}
+        <b style={styles.b}>{marketName}</b>. RSI is a momentum oscillator that
+        measures the speed and change of price movements...
       </>
     );
   }
   return (
     <>
-      <b>{tf} RSI</b> strategy on <b>{marketName}</b>. RSI is a momentum
-      oscillator that measures the speed and change of price movements, learn
-      more about it on the{' '}
+      <b style={styles.b}>{tf} RSI</b> strategy on{' '}
+      <b style={styles.b}>{marketName}</b>. RSI is a momentum oscillator that
+      measures the speed and change of price movements, learn more about it on
+      the{' '}
       <Link external to={HelpUrls.strategies.rsi}>
         dedicated page
       </Link>
@@ -113,15 +123,17 @@ const macdDescription = (
   if (short) {
     return (
       <>
-        <b>{tf} MACD</b> strategy on <b>{marketName}</b>. MACD is a
-        trend-following momentum indicator, learn more about...
+        <b style={styles.b}>{tf} MACD</b> strategy on{' '}
+        <b style={styles.b}>{marketName}</b>. MACD is a trend-following momentum
+        indicator, learn more about...
       </>
     );
   }
   return (
     <>
-      <b>{tf} MACD</b> strategy on <b>{marketName}</b>. MACD is a
-      trend-following momentum indicator, learn more about it on the{' '}
+      <b style={styles.b}>{tf} MACD</b> strategy on{' '}
+      <b style={styles.b}>{marketName}</b>. MACD is a trend-following momentum
+      indicator, learn more about it on the{' '}
       <Link external to={HelpUrls.strategies.macd}>
         dedicated page
       </Link>
@@ -140,8 +152,9 @@ const bensonDescription = (short: boolean = false) => {
       <div>
         The bot aggregates exchanges spot and future trading data from Binance,
         Coinbase, BitMEX, Bybit and FTX to identify the market sentiment.{' '}
-        <b>Long</b> when the market is in <b>fear</b> and exit when the market
-        is <b>optimistic</b>.
+        <b style={styles.b}>Long</b> when the market is in{' '}
+        <b style={styles.b}>fear</b> and exit when the market is{' '}
+        <b style={styles.b}>optimistic</b>.
       </div>
       <div style={{ marginTop: 10 }}>
         Join Benson's{' '}
@@ -165,16 +178,16 @@ const volExpansionDescription = (
   if (short) {
     return (
       <>
-        <b>{tf} Volatility Expansion Close</b> strategy on <b>{marketName}</b>.
-        Use volatility to catch trends...
+        <b style={styles.b}>{tf} Volatility Expansion Close</b> strategy on{' '}
+        <b>{marketName}</b>. Use volatility to catch trends...
       </>
     );
   }
   return (
     <>
-      <b>{tf} Volatility Expansion Close</b> strategy on <b>{marketName}</b>.
-      Use volatility to catch new trends in the market. Learn more about it on
-      the{' '}
+      <b style={styles.b}>{tf} Volatility Expansion Close</b> strategy on{' '}
+      <b style={styles.b}>{marketName}</b>. Use volatility to catch new trends
+      in the market. Learn more about it on the{' '}
       <Link external to={HelpUrls.strategies.volatilityExpan}>
         dedicated page
       </Link>
@@ -543,4 +556,19 @@ export const usePublicKeyFromSeed = (poolSeed: PublicKey) => {
     return await getPublicKeyFromSeed(poolSeed);
   };
   return useAsyncData(get, `usePublicKeyFromSeed-${poolSeed.toBase58()}`);
+};
+
+export const useHistoricalPerformance = (
+  poolSeed: string,
+): [any | null, boolean] => {
+  const get = async () => {
+    const result = await apiGet(BONFIDA_API_URL_PERFORMANCE + poolSeed);
+    return result?.performance?.map((e) => {
+      return {
+        time: timeConverter(e.time),
+        poolTokenUsdValue: e.poolTokenUsdValue,
+      };
+    });
+  };
+  return useAsyncData(get, `getHistoricalPerformance-${poolSeed}`);
 };

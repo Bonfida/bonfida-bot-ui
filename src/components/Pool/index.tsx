@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { USE_POOLS } from '../../utils/pools';
+import { usePoolTokenSupply, USE_POOLS } from '../../utils/pools';
 import FloatingCard from '../FloatingCard';
 import DepositInput from '../DepositInput';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
@@ -29,6 +29,7 @@ import {
   CUSTOME_NAME_PREFIX,
   TV_PASSWORD_STORAGE_PREFIX,
   usePublicKeyFromSeed,
+  useHistoricalPerformance,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
 import { deposit, Numberu64, redeem } from 'bonfida-bot';
@@ -38,6 +39,7 @@ import {
   roundToDecimal,
   formatSeconds,
   useLocalStorageState,
+  timeConverter,
 } from '../../utils/utils';
 import Emoji from '../Emoji';
 import { notify } from '../../utils/notifications';
@@ -61,6 +63,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import HelpUrls from '../../utils/HelpUrls';
 import { ExplorerLink } from '../Link';
+import Graph from './Graph';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -96,6 +99,11 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: 20,
       marginTop: 20,
       fontWeight: 600,
+      opacity: 0.75,
+    },
+    performanceContainer: {
+      width: '100%',
+      height: '250px',
     },
   }),
 );
@@ -291,6 +299,19 @@ export const TradingViewSection = ({
   );
 };
 
+const PerformanceSection = ({ poolSeed }: { poolSeed: string }) => {
+  const classes = useStyles();
+  const [performance] = useHistoricalPerformance(poolSeed);
+  if (!performance || performance?.length === 0) {
+    return null;
+  }
+  return (
+    <div className={classes.performanceContainer}>
+      <Graph data={performance} yKey="poolTokenUsdValue" xKey="time" />
+    </div>
+  );
+};
+
 const PoolInformation = ({
   poolSeed,
   tokenAccounts,
@@ -468,6 +489,7 @@ const PoolInformation = ({
           isCustomTradingView={isCustomTradingView}
           tradingViewPassword={tradingViewPassword}
         />
+        <PerformanceSection poolSeed={poolSeed.toBase58()} />
       </TabPanel>
       <TabPanel value={tab} index={2}>
         {poolInfo && (

@@ -136,7 +136,7 @@ const SelectAccount = ({
   const handleChange = (event) => {
     setSelectedAccount(event.target.value);
   };
-  const noWrappedAccount = tokenAccounts.length === 0;
+  const noWrappedAccount = tokenAccounts?.length === 0;
   return (
     <>
       <FormControl style={{ minWidth: 200, width: '100%' }}>

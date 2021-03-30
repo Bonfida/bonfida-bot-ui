@@ -16,6 +16,8 @@ const USE_MARKETS = [...MARKETS, ...AWESOME_MARKETS];
 const TOKENS = AWESOME_TOKENS.concat(TOKEN_MINTS);
 
 export const BONFIDA_API_URL = process.env.REACT_APP_BONFIDA_API_URL;
+export const BONFIDA_API_URL_PERFORMANCE =
+  process.env.REACT_APP_BOT_PERFORMANCE;
 
 export const TRADINGVIEW_NEW_CREDENTIALS =
   process.env.REACT_APP_TRADINGVIEW_NEW_CREDENTIALS;
@@ -448,4 +450,26 @@ export const generateTradingViewMessage = (
     size: size,
   };
   return message;
+};
+
+export const timeConverter = (time: number) => {
+  const date = new Date(time);
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  const year = date.getFullYear();
+  const month = months[date.getMonth()];
+  const day = date.getDate();
+  return `${day}/${month}/${year}`;
 };
