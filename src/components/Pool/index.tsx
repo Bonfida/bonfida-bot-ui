@@ -39,7 +39,6 @@ import {
   roundToDecimal,
   formatSeconds,
   useLocalStorageState,
-  timeConverter,
 } from '../../utils/utils';
 import Emoji from '../Emoji';
 import { notify } from '../../utils/notifications';
@@ -329,6 +328,7 @@ const PoolInformation = ({
   tokenAccounts: any;
 }) => {
   const classes = useStyles();
+  const { connected } = useWallet();
   const [poolKey] = usePublicKeyFromSeed(poolSeed);
   const [poolBalance] = usePoolBalance(poolSeed);
   const [poolInfo, poolInfoLoaded] = usePoolInfo(poolSeed);
@@ -392,19 +392,24 @@ const PoolInformation = ({
       <TabPanel value={tab} index={0}>
         <InformationRow
           label="Pool Token Supply"
-          value={poolBalance ? poolBalance[0]?.uiAmount : 0}
+          value={poolBalance ? poolBalance[0]?.uiAmount : 'Loading...'}
         />
         <InformationRow
           label="USD Value of the Pool"
-          value={`$${roundToDecimal(usdValue, 2)}`}
+          value={usdValue ? `$${roundToDecimal(usdValue, 2)}` : 'Loading...'}
         />
         <InformationRow
+          //
           label="Pool Token Value"
-          value={`$${
-            poolBalance
-              ? roundToDecimal(usdValue / poolBalance[0]?.uiAmount, 3)
-              : 0
-          }`}
+          value={
+            usdValue
+              ? `$${
+                  poolBalance
+                    ? roundToDecimal(usdValue / poolBalance[0]?.uiAmount, 3)
+                    : 0
+                }`
+              : 'Loading...'
+          }
         />
         <Typography variant="body1">Tokens in the pool:</Typography>
         {poolBalance &&
@@ -419,10 +424,12 @@ const PoolInformation = ({
               </div>
             );
           })}
-        <InformationRow
-          label="Your Share of the Pool"
-          value={userPoolTokenBalance?.toLocaleString() || 0}
-        />
+        {connected && (
+          <InformationRow
+            label="Your Share of the Pool"
+            value={userPoolTokenBalance?.toLocaleString() || 'Loading...'}
+          />
+        )}
       </TabPanel>
       {/* Pool Description if whitelisted */}
       <TabPanel value={tab} index={1}>

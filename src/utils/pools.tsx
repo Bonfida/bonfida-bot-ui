@@ -402,12 +402,17 @@ export const usePoolUsdBalance = (
       if (!poolBalance) {
         return null;
       }
-      let _usdValue = 0;
-      for (let balance of poolBalance) {
-        const price = await getTokenPrice(balance.mint);
-        _usdValue += price * balance.tokenAmount.uiAmount;
+      try {
+        let _usdValue = 0;
+        for (let balance of poolBalance) {
+          const price = await getTokenPrice(balance.mint);
+          _usdValue += price * balance.tokenAmount.uiAmount;
+        }
+        setUsdValue(_usdValue);
+      } catch (err) {
+        console.warn(err);
+        return null;
       }
-      setUsdValue(_usdValue);
     };
     get();
   }, [connection, poolBalance]);

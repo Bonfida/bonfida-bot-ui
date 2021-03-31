@@ -37,7 +37,7 @@ export const getTokenPrice = async (mintAddress: string) => {
   const token = TOKEN_MINTS.find((a) => a.address.toBase58() === mintAddress);
 
   if (!token) {
-    return 0;
+    throw new Error('Token does not exist');
   }
 
   if (['USDC', 'USDT'].includes(token?.name || '')) {
@@ -58,7 +58,7 @@ export const getTokenPrice = async (mintAddress: string) => {
     return (bids[0].price + asks[0].price) / 2;
   } catch (err) {
     console.log(`Error getting midPrice err`);
-    return 0;
+    throw new Error('Error getting price');
   }
 };
 
