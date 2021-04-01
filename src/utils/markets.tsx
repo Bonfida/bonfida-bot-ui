@@ -49,11 +49,11 @@ export const getTokenPrice = async (mintAddress: string) => {
       `${BONFIDA_API_URL}orderbooks/${token.name}USDC`,
     );
     if (!result.success) {
-      return 0;
+      throw new Error('Error getting price');
     }
     const { bids, asks } = result.data;
     if (!bids || !asks) {
-      return 0;
+      throw new Error('Error getting price');
     }
     return (bids[0].price + asks[0].price) / 2;
   } catch (err) {
