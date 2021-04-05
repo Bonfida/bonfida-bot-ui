@@ -399,18 +399,34 @@ const PoolInformation = ({
           value={usdValue ? `$${roundToDecimal(usdValue, 2)}` : 'Loading...'}
         />
         <InformationRow
-          //
           label="Pool Token Value"
           value={
             usdValue
               ? `$${
                   poolBalance
                     ? roundToDecimal(usdValue / poolBalance[0]?.uiAmount, 3)
-                    : 0
+                    : null
                 }`
               : 'Loading...'
           }
         />
+        {pool && poolBalance && (
+          <InformationRow
+            label="Inception performance"
+            value={
+              usdValue
+                ? `${
+                    poolBalance
+                      ? roundToDecimal(
+                          100 * (usdValue / poolBalance[0]?.uiAmount - 1),
+                          2,
+                        )
+                      : null
+                  }%`
+                : 'Loading...'
+            }
+          />
+        )}
         <Typography variant="body1">Tokens in the pool:</Typography>
         {poolBalance &&
           poolBalance[1]?.map((asset) => {
