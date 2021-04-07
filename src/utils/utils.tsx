@@ -473,3 +473,12 @@ export const timeConverter = (time: number) => {
   const day = date.getDate();
   return `${day}/${month}/${year}`;
 };
+
+export const getPoolUrl = (x: string) => {
+  switch (x) {
+    case 'benson':
+      return 'GjrAkn4wu1ijif7SYhnQc4uDMxMdW5X8AW3MLig5X33t';
+    default:
+      return x;
+  }
+};
