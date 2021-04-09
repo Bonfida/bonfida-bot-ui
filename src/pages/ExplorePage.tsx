@@ -11,6 +11,8 @@ import { nanoid } from 'nanoid';
 import Modal from '../components/Modal';
 import { isValidPublicKey } from '../utils/utils';
 import Link from '../components/Link';
+import Trans from '../components/Translation';
+import { useTranslation } from 'react-i18next';
 
 export const RSI_STRATEGIES = USE_POOLS.filter(
   (p) => p.strategyType === STRATEGY_TYPES.RSI,
@@ -98,7 +100,9 @@ const CustomPoolDialog = () => {
     <div className={classes.dialogContainer}>
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid item className={classes.dialogGridItem}>
-          <Typography variant="body1">Custom Pool Seed</Typography>
+          <Typography variant="body1">
+            <Trans>Custom Pool Seed</Trans>
+          </Typography>
         </Grid>
         <Grid item className={classes.dialogGridItem}>
           <TextField
@@ -109,7 +113,9 @@ const CustomPoolDialog = () => {
           />
         </Grid>
         <Grid item className={classes.dialogGridItem}>
-          <CustomButton onClick={onClick}>Go</CustomButton>
+          <CustomButton onClick={onClick}>
+            <Trans>Go</Trans>
+          </CustomButton>
         </Grid>
       </Grid>
     </div>
@@ -170,8 +176,10 @@ const CreateYourOwn = () => {
   return (
     <>
       <Typography align="center" variant="h2" className={classes.createYourOwn}>
-        Cannot find your dream strategy?{' '}
-        <Link to="/create">Create your own</Link>
+        <Trans i18nKey="cannotFind">
+          Cannot find your dream strategy?{' '}
+          <Link to="/create">Create your own</Link>
+        </Trans>
       </Typography>
     </>
   );
@@ -181,6 +189,7 @@ const ExplorerPage = () => {
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -189,7 +198,7 @@ const ExplorerPage = () => {
           className={classes.addCustomPoolButton}
           onClick={() => setOpen(true)}
         >
-          Add Custom Pool
+          <Trans>Add Custom Pool</Trans>
         </CustomButton>
         <Modal open={open} setOpen={setOpen}>
           <CustomPoolDialog />
@@ -198,11 +207,11 @@ const ExplorerPage = () => {
           className={classes.addCustomPoolButton}
           onClick={() => history.push('/create')}
         >
-          Create Pool
+          <Trans>Create Pool</Trans>
         </CustomButton>
       </Typography>
       <StrategySection
-        h2="Sentiment Strategy Pro [Benson]"
+        h2={t('Sentiment Strategy Pro [Benson]')}
         strategiesArray={BENSON_STRATEGIES}
       />
       <StrategySection h2="RSI Strategies" strategiesArray={RSI_STRATEGIES} />

@@ -30,7 +30,7 @@ const InformationRow = ({
   isLink,
   linkText,
 }: {
-  label: string | number | undefined | null;
+  label: any;
   value: string | number | undefined | null;
   isExplorerLink?: boolean;
   isLink?: boolean;

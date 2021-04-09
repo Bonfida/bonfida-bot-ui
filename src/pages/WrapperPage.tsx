@@ -22,6 +22,8 @@ import { abbreviateString } from '../utils/utils';
 import { nanoid } from 'nanoid';
 import TextField from '@material-ui/core/TextField';
 import { notify } from '../utils/notifications';
+import { useTranslation } from 'react-i18next';
+import Trans from '../components/Translation';
 
 const useStyles = makeStyles({
   h2: {
@@ -63,6 +65,7 @@ const createWrappedNativeAccount = async (
 
 const SelectAmount = ({ amount, setAmount }) => {
   const { connected } = useWallet();
+  const { t } = useTranslation();
   const onChange = (e) => {
     const parsed = parseFloat(e.target.value.trim());
     if (!isFinite(parsed) || isNaN(parsed)) {
@@ -76,7 +79,7 @@ const SelectAmount = ({ amount, setAmount }) => {
         disabled={!connected}
         value={amount}
         onChange={onChange}
-        label="Amount to wrap"
+        label={t('Amount to wrap')}
       />
     </FormControl>
   );
@@ -119,7 +122,9 @@ const SolWrapper = () => {
           <SelectAmount amount={amount} setAmount={setAmount} />
         </Grid>
         <Grid item>
-          <CustomButton onClick={onClick}>Wrapp</CustomButton>
+          <CustomButton onClick={onClick}>
+            <Trans>Wrapp</Trans>
+          </CustomButton>
         </Grid>
       </Grid>
     </>
@@ -141,7 +146,7 @@ const SelectAccount = ({
     <>
       <FormControl style={{ minWidth: 200, width: '100%' }}>
         <InputLabel style={{ marginTop: 10, marginRight: 5 }} shrink>
-          Wrapped SOL Account
+          <Trans>Wrapped SOL Account</Trans>
         </InputLabel>
         <Select
           disabled={!connected || noWrappedAccount}
@@ -199,7 +204,7 @@ const SolUnwrapper = () => {
   return (
     <>
       <Typography className={classes.h3} align="center" variant="h3">
-        Unwrap
+        <Trans>Unwrap</Trans>
       </Typography>
       <Grid
         container
@@ -216,7 +221,9 @@ const SolUnwrapper = () => {
           />
         </Grid>
         <Grid item>
-          <CustomButton onClick={onClick}>Unwrap</CustomButton>
+          <CustomButton onClick={onClick}>
+            <Trans>Unwrap</Trans>
+          </CustomButton>
         </Grid>
       </Grid>
     </>
@@ -230,7 +237,7 @@ const WrapperPage = () => {
       <div className={classes.container}>
         <FloatingCard>
           <Typography className={classes.h2} variant="h2" align="center">
-            SOL Wrapper/Unwrapper
+            <Trans>SOL Wrapper/Unwrapper</Trans>
           </Typography>
           <Grid
             container

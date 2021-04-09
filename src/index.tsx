@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import BonfidaBot from './BonfidaBot';
 
+// import i18n (needs to be bundled ;))
+import './i18n';
+
 ReactDOM.render(
   <React.StrictMode>
     <BonfidaBot />

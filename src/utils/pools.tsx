@@ -29,6 +29,7 @@ import {
 } from './utils';
 import Link from '../components/Link';
 import HelpUrls from './HelpUrls';
+import { Trans } from 'react-i18next';
 
 export const TV_PASSWORD_STORAGE_PREFIX = 'tvAuth';
 export const CUSTOME_NAME_PREFIX = 'customName';
@@ -42,7 +43,6 @@ export interface Pool {
   mintAddress: PublicKey;
   mainAsset?: ASSETS;
   strategyType?: STRATEGY_TYPES;
-  // TODO Add ROI
 }
 
 export enum STRATEGY_TYPES {
@@ -74,21 +74,21 @@ const superTrendDescription = (
   if (short) {
     return (
       <>
-        <b style={styles.b}>{tf} Super Trend</b> strategy on{' '}
-        <b style={styles.b}>{marketName}</b>. Super Trend is a TradingView
+        <b style={styles.b}>{{ tf }} Super Trend</b> strategy on{' '}
+        <b style={styles.b}>{{ marketName }}</b>. Super Trend is a TradingView
         indicator, you can find more information about...
       </>
     );
   }
   return (
-    <>
+    <Trans i18nKey="superTrend">
       <b style={styles.b}>{tf} Super Trend</b> strategy on{' '}
       <b style={styles.b}>{marketName}</b>. Super Trend is a TradingView
       indicator, you can find more information about it on the{' '}
-      <Link external to={HelpUrls.strategies.superTrend}>
+      <Link external to="https://www.tradingview.com/script/P5Gu6F8k/">
         dedicated page
       </Link>
-    </>
+    </Trans>
   );
 };
 
@@ -107,15 +107,15 @@ const rsiDescription = (
     );
   }
   return (
-    <>
-      <b style={styles.b}>{tf} RSI</b> strategy on{' '}
-      <b style={styles.b}>{marketName}</b>. RSI is a momentum oscillator that
-      measures the speed and change of price movements, learn more about it on
-      the{' '}
-      <Link external to={HelpUrls.strategies.rsi}>
+    <Trans i18nKey="rsi">
+      <b style={styles.b}>{{ tf }} RSI</b> strategy on{' '}
+      <b style={styles.b}>{{ marketName }}</b>. RSI is a momentum oscillator
+      that measures the speed and change of price movements, learn more about it
+      on the{' '}
+      <Link external to="https://www.investopedia.com/terms/r/rsi.asp">
         dedicated page
       </Link>
-    </>
+    </Trans>
   );
 };
 
@@ -134,14 +134,17 @@ const macdDescription = (
     );
   }
   return (
-    <>
+    <Trans i18nKey="macd">
       <b style={styles.b}>{tf} MACD</b> strategy on{' '}
       <b style={styles.b}>{marketName}</b>. MACD is a trend-following momentum
       indicator, learn more about it on the{' '}
-      <Link external to={HelpUrls.strategies.macd}>
+      <Link
+        external
+        to="https://www.investopedia.com/articles/trading/08/macd-stochastic-double-cross.asp"
+      >
         dedicated page
       </Link>
-    </>
+    </Trans>
   );
 };
 
@@ -152,7 +155,7 @@ const bensonDescription = (short: boolean = false) => {
     );
   }
   return (
-    <>
+    <Trans i18nKey="benson">
       <div>
         The bot aggregates exchanges spot and future trading data from Binance,
         Coinbase, BitMEX, Bybit and FTX to identify the market sentiment.{' '}
@@ -160,17 +163,7 @@ const bensonDescription = (short: boolean = false) => {
         <b style={styles.b}>fear</b> and exit when the market is{' '}
         <b style={styles.b}>optimistic</b>.
       </div>
-      <div style={{ marginTop: 10 }}>
-        Join Benson's{' '}
-        <Link
-          external
-          to={HelpUrls.benson.telegram}
-          style={{ color: 'black', fontWeight: 600 }}
-        >
-          Telegram Group{' '}
-        </Link>
-      </div>
-    </>
+    </Trans>
   );
 };
 
@@ -192,7 +185,10 @@ const volExpansionDescription = (
       <b style={styles.b}>{tf} Volatility Expansion Close</b> strategy on{' '}
       <b style={styles.b}>{marketName}</b>. Use volatility to catch new trends
       in the market. Learn more about it on the{' '}
-      <Link external to={HelpUrls.strategies.volatilityExpan}>
+      <Link
+        external
+        to="https://www.forex.academy/volatility-expansion-strategy/#:~:text=The%20Strategy,as%20a%20measure%20of%20volatility."
+      >
         dedicated page
       </Link>
     </>

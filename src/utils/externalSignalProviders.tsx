@@ -1,6 +1,7 @@
 import { ExternalSignalProvider } from './types';
 import { PublicKey } from '@solana/web3.js';
 import { Typography } from '@material-ui/core';
+import Trans from '../components/Translation';
 
 export const MONTH = 30 * 24 * 60 * 60;
 export const FEES = 0.1;
@@ -46,15 +47,18 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
           variant="body1"
           style={styles.descriptionTitle}
         >
-          Weekly DCA strategy:
+          <Trans>Weekly DCA strategy:</Trans>
         </Typography>
         <Typography
           align="center"
           variant="body1"
           style={styles.descriptionText}
         >
-          Every Sunday at 08:00 UTC, the pool will use 10% of the quote currency
-          contained in the pool to perform a DCA strategy on each market.
+          <Trans>
+            Every Sunday at 08:00 UTC, the pool will use 10% of the quote
+            currency contained in the pool to perform a DCA strategy on each
+            market.
+          </Trans>
         </Typography>
       </>
     ),
@@ -70,16 +74,18 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
           variant="body1"
           style={styles.descriptionTitle}
         >
-          Monthly DCA strategy:
+          <Trans>Monthly DCA strategy:</Trans>
         </Typography>
         <Typography
           align="center"
           variant="body1"
           style={styles.descriptionText}
         >
-          On the 1st of each month 08:00 UTC, the pool will use 10% of the quote
-          currency contained in the pool to perform a DCA strategy on each
-          market.
+          <Trans>
+            On the 1st of each month 08:00 UTC, the pool will use 10% of the
+            quote currency contained in the pool to perform a DCA strategy on
+            each market.
+          </Trans>
         </Typography>
       </>
     ),
@@ -95,15 +101,17 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
           variant="body1"
           style={styles.descriptionTitle}
         >
-          Daily DCA strategy:
+          <Trans>Daily DCA strategy:</Trans>
         </Typography>
         <Typography
           align="center"
           variant="body1"
           style={styles.descriptionText}
         >
-          Every day at 08:00 UTC, the pool will use 10% of the quote currency
-          contained in the pool to perform a DCA strategy on each market.
+          <Trans>
+            Every day at 08:00 UTC, the pool will use 10% of the quote currency
+            contained in the pool to perform a DCA strategy on each market.
+          </Trans>
         </Typography>
       </>
     ),
@@ -119,14 +127,14 @@ export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
           variant="body1"
           style={styles.descriptionTitle}
         >
-          TradingView Alerts
+          <Trans>TradingView Alerts</Trans>
         </Typography>
         <Typography
           align="center"
           variant="body1"
           style={styles.descriptionText}
         >
-          Trade on Serum using your own custom TradingView Alerts
+          <Trans>Trade on Serum using your own custom TradingView Alerts</Trans>
         </Typography>
       </>
     ),

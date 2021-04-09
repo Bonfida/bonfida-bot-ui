@@ -12,6 +12,8 @@ import FloatingCard from '../components/FloatingCard';
 import CustomButton from '../components/CustomButton';
 import { notify } from '../utils/notifications';
 import CopyableDisplay from '../components/CopyableDisplay';
+import Trans from '../components/Translation';
+import { useTranslation } from 'react-i18next';
 
 const SIDES = [{ side: 'Buy' }, { side: 'Sell' }];
 
@@ -37,6 +39,7 @@ const Generator = () => {
   const [auth, setAuth] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [prettyMessage, setPrettyMessage] = useState<JSX.Element | null>(null);
+  const { t } = useTranslation();
 
   const onClick = () => {
     if (!side || !size || !marketName || !poolSeed || !auth) {
@@ -84,13 +87,13 @@ const Generator = () => {
       <Grid container direction="column" alignItems="center" justify="center">
         <Grid item className={classes.gridItem}>
           <TextField
-            label="Pool Seed"
+            label={t('Pool Seed')}
             onChange={(e) => setPoolSeed(e.target.value.trim())}
           />
         </Grid>
         <Grid item className={classes.gridItem}>
           <TextField
-            label="TradingView Password"
+            label={t('TradingView Password')}
             onChange={(e) => setAuth(e.target.value.trim())}
           />
         </Grid>
@@ -101,7 +104,11 @@ const Generator = () => {
             options={USE_MARKETS}
             getOptionLabel={(option: any) => option.name}
             renderInput={(params) => (
-              <TextField {...params} label="Market Name" variant="outlined" />
+              <TextField
+                {...params}
+                label={t('Market Name')}
+                variant="outlined"
+              />
             )}
           />
         </Grid>
@@ -112,18 +119,20 @@ const Generator = () => {
             options={SIDES}
             getOptionLabel={(option: any) => option.side}
             renderInput={(params) => (
-              <TextField {...params} label="Side" variant="outlined" />
+              <TextField {...params} label={t('Side')} variant="outlined" />
             )}
           />
         </Grid>
         <Grid item className={classes.gridItem}>
           <TextField
-            label="Size"
+            label={t('Size')}
             onChange={(e) => setSize(e.target.value.trim())}
           />
         </Grid>
         <Grid item className={classes.gridItem}>
-          <CustomButton onClick={onClick}>Generate</CustomButton>
+          <CustomButton onClick={onClick}>
+            <Trans>Generate</Trans>
+          </CustomButton>
         </Grid>
       </Grid>
       {message && (
@@ -158,7 +167,7 @@ const TradingViewMessageGeneratorPage = () => {
   return (
     <Grid container direction="column" alignItems="center" justify="center">
       <Typography align="center" variant="h2">
-        TradingView Message Generator
+        <Trans>TradingView Message Generator</Trans>
       </Typography>
       <div style={{ width: smallScreen ? '100%' : '30%' }}>
         <FloatingCard>

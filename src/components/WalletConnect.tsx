@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { useWallet } from '../utils/wallet';
 import { makeStyles } from '@material-ui/core/styles';
+import Trans from './Translation';
 
 const useStyles = makeStyles({
   button: {
@@ -33,7 +34,7 @@ export default function WalletConnect() {
         variant="contained"
         className={classes.button}
       >
-        {!connected ? <>Connect wallet</> : <>Disconnect</>}
+        {!connected ? <Trans>Connect wallet</Trans> : <Trans>Disconnect</Trans>}
       </Button>
     </React.Fragment>
   );

@@ -7,6 +7,7 @@ import { tokenNameFromMint } from '../utils/tokens';
 import getCoinIcon from '../utils/icons';
 import { useBalanceForMint } from '../utils/tokens';
 import { notify } from '../utils/notifications';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   root: {
@@ -104,7 +105,7 @@ const CoinInput = ({
 }) => {
   const classes = useStyles();
   const balance = useBalanceForMint(tokenAccounts, mint);
-
+  const { t } = useTranslation();
   const onChangeInput = (e) => {
     const parsed = parseFloat(e.target.value);
     if (parsed > balance) {
@@ -153,7 +154,7 @@ const CoinInput = ({
         </Grid>
         <Grid item>
           <Typography variant="body1" className={classes.inputLabel}>
-            Balance: {balance?.toLocaleString() || 0}
+            {t('Balance')}: {balance?.toLocaleString() || 0}
           </Typography>
           <RenderCoinRow name={tokenNameFromMint(mint) || ''} />
         </Grid>

@@ -5,6 +5,7 @@ import { useLocalStorageState } from '../../utils/utils';
 import { Typography, Grid } from '@material-ui/core';
 import CustomButton from '../CustomButton';
 import FloatingCard from '../FloatingCard';
+import Trans from '../Translation';
 
 const styles = {
   root: {
@@ -41,16 +42,18 @@ const Disclaimer = ({ setTerms }: { setTerms: (args: any) => void }) => {
           >
             <Grid item>
               <Typography variant="body1" align="center" style={styles.terms}>
-                No statement or warranty is provided in relation to the utility
-                of this program, the safety of its code or its suitability for
-                your use, and by using it, you agree to bear any risk associated
-                with such potential vulnerabilities, including, but not limited
-                to the potential loss of tokens.
+                <Trans>
+                  No statement or warranty is provided in relation to the
+                  utility of this program, the safety of its code or its
+                  suitability for your use, and by using it, you agree to bear
+                  any risk associated with such potential vulnerabilities,
+                  including, but not limited to the potential loss of tokens.
+                </Trans>
               </Typography>
             </Grid>
             <Grid item style={styles.agreeButton}>
               <CustomButton onClick={() => setTerms(true)}>
-                I Agree
+                <Trans>I Agree</Trans>
               </CustomButton>
             </Grid>
           </Grid>

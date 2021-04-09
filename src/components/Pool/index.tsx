@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { usePoolTokenSupply, USE_POOLS } from '../../utils/pools';
+import { USE_POOLS } from '../../utils/pools';
 import FloatingCard from '../FloatingCard';
 import DepositInput from '../DepositInput';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
@@ -63,6 +63,8 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import HelpUrls from '../../utils/HelpUrls';
 import { ExplorerLink } from '../Link';
 import Graph from './Graph';
+import Trans from '../Translation';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -162,7 +164,9 @@ const CustomNameDialog = ({
     <div className={classes.dialogContainer}>
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid item className={classes.dialogGridItem}>
-          <Typography variant="body1">Custom Pool Name</Typography>
+          <Typography variant="body1">
+            <Trans>Custom Pool Name</Trans>
+          </Typography>
         </Grid>
         <Grid item className={classes.dialogGridItem}>
           <TextField
@@ -173,7 +177,9 @@ const CustomNameDialog = ({
           />
         </Grid>
         <Grid item className={classes.dialogGridItem}>
-          <CustomButton onClick={onClick}>Save</CustomButton>
+          <CustomButton onClick={onClick}>
+            <Trans>Save</Trans>
+          </CustomButton>
         </Grid>
       </Grid>
     </div>
@@ -200,7 +206,7 @@ const PoolTitle = ({
         </Grid>
         <Grid item>
           <Typography variant="h1" className={classes.poolTitle}>
-            {poolName}
+            <Trans>{poolName}</Trans>
             {canEdit && (
               <EditIcon
                 className={classes.editIcon}
@@ -225,6 +231,7 @@ export const TradingViewSection = ({
   tradingViewPassword: string | undefined | null;
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
   const [showTvPassword, setShowTvPassword] = useState(false);
   if (!isCustomTradingView || !tradingViewPassword) {
     return null;
@@ -232,9 +239,11 @@ export const TradingViewSection = ({
   return (
     <>
       <Typography variant="body1" className={classes.tvSection} align="center">
-        TradingView
+        <Trans>TradingView</Trans>
       </Typography>
-      <InputLabel>TradingView Password</InputLabel>
+      <InputLabel>
+        <Trans>TradingView Password</Trans>
+      </InputLabel>
       <OutlinedInput
         disabled
         type={showTvPassword ? 'text' : 'password'}
@@ -265,7 +274,9 @@ export const TradingViewSection = ({
           </InputAdornment>
         }
       />
-      <InputLabel>Webhook URL</InputLabel>
+      <InputLabel>
+        <Trans>Webhook URL</Trans>
+      </InputLabel>
       <OutlinedInput
         disabled
         type="text"
@@ -289,7 +300,7 @@ export const TradingViewSection = ({
         }
       />
       <InformationRow
-        label="TradingView Message"
+        label={t('TradingView Message')}
         value="/tradingview-generator"
         isLink
         linkText="Message Generator"
@@ -311,7 +322,7 @@ const PerformanceSection = ({ poolSeed }: { poolSeed: string }) => {
         className={classes.subSectionPoolInformation}
         align="center"
       >
-        Pool Historical Performance:
+        <Trans>Pool Historical Performance:</Trans>
       </Typography>
       <div className={classes.performanceContainer}>
         <Graph data={performance} yKey="poolTokenUsdValue" xKey="time" />
@@ -327,6 +338,7 @@ const PoolInformation = ({
   poolSeed: PublicKey;
   tokenAccounts: any;
 }) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const { connected } = useWallet();
   const [poolKey] = usePublicKeyFromSeed(poolSeed);
@@ -384,22 +396,22 @@ const PoolInformation = ({
         onChange={handleTabChange}
         centered
       >
-        <Tab disableRipple label="Pool Content" />
-        <Tab disableRipple label="Pool Information" />
-        <Tab disableRipple label="Fee Schedule" />
+        <Tab disableRipple label={<Trans>Pool Content</Trans>} />
+        <Tab disableRipple label={<Trans>Pool Information</Trans>} />
+        <Tab disableRipple label={<Trans>Fee Schedule</Trans>} />
       </Tabs>
       {/* Content of the pool */}
       <TabPanel value={tab} index={0}>
         <InformationRow
-          label="Pool Token Supply"
+          label={t('Pool Token Supply')}
           value={poolBalance ? poolBalance[0]?.uiAmount : 'Loading...'}
         />
         <InformationRow
-          label="USD Value of the Pool"
+          label={t('USD Value of the Pool')}
           value={usdValue ? `$${roundToDecimal(usdValue, 2)}` : 'Loading...'}
         />
         <InformationRow
-          label="Pool Token Value"
+          label={t('Pool Token Value')}
           value={
             usdValue
               ? `$${
@@ -412,7 +424,7 @@ const PoolInformation = ({
         />
         {pool && poolBalance && (
           <InformationRow
-            label="Inception performance"
+            label={t('Inception performance')}
             value={
               usdValue
                 ? `${
@@ -427,7 +439,9 @@ const PoolInformation = ({
             }
           />
         )}
-        <Typography variant="body1">Tokens in the pool:</Typography>
+        <Typography variant="body1">
+          <Trans>Tokens in the pool</Trans>
+        </Typography>
         {poolBalance &&
           poolBalance[1]?.map((asset) => {
             return (
@@ -442,7 +456,7 @@ const PoolInformation = ({
           })}
         {connected && (
           <InformationRow
-            label="Your Share of the Pool"
+            label={t('Your Share of the Pool')}
             value={userPoolTokenBalance?.toLocaleString() || 'Loading...'}
           />
         )}
@@ -457,7 +471,7 @@ const PoolInformation = ({
           <>
             <Typography variant="body1">
               <Emoji emoji="⚠️" />
-              This pool is unverified, use at your own risk
+              <Trans>This pool is unverified, use at your own risk</Trans>
             </Typography>
           </>
         )}
@@ -466,25 +480,25 @@ const PoolInformation = ({
           className={classes.subSectionPoolInformation}
           align="center"
         >
-          Pool Keys:
+          <Trans>Pool Keys</Trans>
         </Typography>
         <InformationRow
-          label=" - Signal Provider:"
+          label={` - ${t('Signal Provider')}:`}
           value={poolInfo?.signalProvider.toBase58()}
           isExplorerLink
         />
         <InformationRow
-          label=" - Pool Seed"
+          label={` - ${t('Pool Seed')}`}
           value={poolSeed.toBase58()}
           isExplorerLink
         />
         <InformationRow
-          label=" - Pool PublicKey"
+          label={` - ${t('Pool PublicKey')}`}
           value={poolKey?.toBase58()}
           isExplorerLink
         />
         <InformationRow
-          label=" - Pool Token Mint"
+          label={` - ${t('Pool Token Mint')}`}
           value={poolInfo?.mintKey.toBase58()}
           isExplorerLink
         />
@@ -493,7 +507,7 @@ const PoolInformation = ({
           className={classes.subSectionPoolInformation}
           align="center"
         >
-          The pool can only trade on the following markets:
+          <Trans>The pool can only trade on the following markets</Trans>
         </Typography>
         <div style={{ margin: 10 }}>
           {poolMarkets?.map((m) => {
@@ -516,18 +530,20 @@ const PoolInformation = ({
           className={classes.subSectionPoolInformation}
           align="center"
         >
-          View the bot's trades on the{' '}
-          <ExplorerLink address={poolKey?.toBase58()}>
-            Solana Explorer
-          </ExplorerLink>
+          <Trans i18nKey="viewBotsTrade">
+            View the bot's trades on the{' '}
+            <ExplorerLink address={poolKey?.toBase58()}>
+              Solana Explorer
+            </ExplorerLink>
+          </Trans>
         </Typography>
       </TabPanel>
       <TabPanel value={tab} index={2}>
         {poolInfo && (
           <>
-            <InformationRow label="Fee Period" value={feePeriod} />
+            <InformationRow label={t('Fee Period')} value={feePeriod} />
             <InformationRow
-              label="Fee Ratio"
+              label={t('Fee Ratio')}
               value={
                 roundToDecimal(
                   (poolInfo?.feeRatio.toNumber() * 100) / Math.pow(2, 16),
@@ -545,7 +561,7 @@ const PoolInformation = ({
 export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const connection = useConnection();
   const { wallet, connected } = useWallet();
-
+  const { t } = useTranslation();
   const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
   const [poolInfo, poolInfoLoaded] = usePoolInfo(new PublicKey(poolSeed));
   const [poolBalance, poolBalanceLoaded] = usePoolBalance(
@@ -750,11 +766,11 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
           onChange={handleTabChange}
           centered
         >
-          <Tab label="Deposit" />
-          <Tab label="withdraw" />
+          <Tab label={t('Deposit')} />
+          <Tab label={t('withdraw')} />
         </Tabs>
         <DepositInput
-          amountLabel="Pool Token"
+          amountLabel={t('Pool Token')}
           mint={mint}
           amount={amount}
           setAmount={setAmount}
@@ -798,7 +814,13 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         />
         <Grid container justify="center">
           <CustomButton onClick={onSubmit}>
-            {loading ? <Spin size={20} /> : tab === 0 ? 'Deposit' : 'Withdraw'}
+            {loading ? (
+              <Spin size={20} />
+            ) : tab === 0 ? (
+              t('Deposit')
+            ) : (
+              t('Withdraw')
+            )}
           </CustomButton>
         </Grid>
 
@@ -816,13 +838,13 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
         {isAdmin && (
           <>
             <Typography align="center" variant="body1">
-              It looks like you own this pool
+              <Trans>It looks like you own this pool</Trans>
             </Typography>
             <Grid container justify="center" style={{ marginTop: 10 }}>
               <CustomButton
                 onClick={() => history.push(`/signal-provider/${poolSeed}`)}
               >
-                Admin Page
+                <Trans>Admin Page</Trans>
               </CustomButton>
             </Grid>
           </>

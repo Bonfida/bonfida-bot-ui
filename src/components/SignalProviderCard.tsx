@@ -51,6 +51,8 @@ import {
   useMarketPrice,
 } from '../utils/markets';
 import { nanoid } from 'nanoid';
+import Trans from './Translation';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -77,6 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const connection = useConnection();
   const { wallet } = useWallet();
@@ -131,9 +134,9 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
     >
       {poolInfo && (
         <>
-          <InformationRow label="Fee Period" value={feePeriod} />
+          <InformationRow label={t('Fee Period')} value={feePeriod} />
           <InformationRow
-            label="Fee Ratio"
+            label={t('Fee Ratio')}
             value={
               roundToDecimal(
                 (poolInfo?.feeRatio.toNumber() * 100) / Math.pow(2, 16),
@@ -144,13 +147,14 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
         </>
       )}
       <CustomButton onClick={onSubmit}>
-        {loading ? <Spin size={20} /> : 'Collect Fees'}
+        {loading ? <Spin size={20} /> : t('Collect Fees')}
       </CustomButton>
     </Grid>
   );
 };
 
 const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const connection = useConnection();
   const { wallet } = useWallet();
@@ -444,7 +448,9 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         />
       </Grid>
       {poolBalance && (
-        <Typography variant="body1">Tokens in the pool:</Typography>
+        <Typography variant="body1">
+          <Trans>Tokens in the pool</Trans>
+        </Typography>
       )}
       {poolBalance &&
         poolBalance[1]?.map((asset) => {
@@ -460,7 +466,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         })}
       {marketPrice && (
         <InformationRow
-          label="Current Market Price"
+          label={t('Current Market Price')}
           value={roundToDecimal(marketPrice, 3)}
         />
       )}
@@ -472,8 +478,8 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
           onChange={handleTabChange}
           centered
         >
-          <Tab label="Buy" />
-          <Tab label="Sell" />
+          <Tab label={t('Buy')} />
+          <Tab label={t('Sell')} />
         </Tabs>
         <TextField
           InputProps={{
@@ -482,7 +488,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
             },
           }}
           className={classes.textField}
-          label="Order Size (%)"
+          label={t('Order Size (%)')}
           value={size}
           onChange={onChangeSize}
         />
@@ -493,18 +499,18 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
             },
           }}
           className={classes.textField}
-          label="Limit price"
+          label={t('Limit price')}
           value={price}
           onChange={onChangePrice}
         />
       </Grid>
 
       <InformationRow
-        label="Expected slippage"
+        label={t('Expected slippage')}
         value={roundToDecimal((slippage || 0) * 100, 3)}
       />
       <InformationRow
-        label="Size in tokens"
+        label={t('Size in tokens')}
         value={roundToDecimal(
           ((tab === 0 ? poolBalanceQuote : poolBalanceBase) *
             parseFloat(size ? size : '0')) /
@@ -512,7 +518,7 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
           3,
         )}
       />
-      <InformationRow label="Size in % of the pool" value={size} />
+      <InformationRow label={t('Size in % of the pool')} value={size} />
 
       <Grid
         container
@@ -524,11 +530,13 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
       >
         <Grid item>
           <CustomButton onClick={onSubmit}>
-            {loading ? <Spin size={20} /> : 'Place Order'}
+            {loading ? <Spin size={20} /> : t('Place Order')}
           </CustomButton>
         </Grid>
         <Grid item>
-          <CustomButton onClick={onSubmitSettle}>Settle funds</CustomButton>
+          <CustomButton onClick={onSubmitSettle}>
+            <Trans>Settle funds</Trans>
+          </CustomButton>
         </Grid>
       </Grid>
     </>
@@ -544,7 +552,7 @@ const PoolTitle = ({ poolName }: { poolName: string | undefined }) => {
       </Grid>
       <Grid item>
         <Typography variant="h1" className={classes.poolTitle}>
-          {poolName}
+          <Trans>{poolName}</Trans>
         </Typography>
       </Grid>
     </Grid>
@@ -552,6 +560,7 @@ const PoolTitle = ({ poolName }: { poolName: string | undefined }) => {
 };
 
 const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
+  const { t } = useTranslation();
   const [tokenAccounts] = useTokenAccounts();
   const [poolBalance] = usePoolBalance(poolSeed);
   const [poolInfo] = usePoolInfo(poolSeed);
@@ -568,24 +577,26 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
   return (
     <>
       <InformationRow
-        label="Pool Address"
+        label={t('Pool Address')}
         value={poolInfo?.address.toBase58()}
         isExplorerLink
       />
       <InformationRow
-        label="Pool Token Mint"
+        label={t('Pool Token Mint')}
         value={poolInfo?.mintKey.toBase58()}
         isExplorerLink
       />
       <InformationRow
-        label="Pool Token Supply"
+        label={t('Pool Token Supply')}
         value={poolBalance ? poolBalance[0]?.uiAmount : 0}
       />
       <InformationRow
-        label="USD Value of the Pool"
+        label={t('USD Value of the Pool')}
         value={`$${roundToDecimal(usdValue, 2)}`}
       />
-      <Typography variant="body1">Tokens in the pool:</Typography>
+      <Typography variant="body1">
+        <Trans>Tokens in the pool</Trans>
+      </Typography>
       {poolBalance &&
         poolBalance[1]?.map((asset) => {
           return (
@@ -599,7 +610,7 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
           );
         })}
       <Typography variant="body1" style={{ marginBottom: 10, marginTop: 10 }}>
-        The pool can only trade on the following markets:
+        <Trans>The pool can only trade on the following markets:</Trans>
       </Typography>
       <div style={{ margin: 10 }}>
         {poolMarkets?.map((m) => {
@@ -614,7 +625,7 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
         })}
       </div>
       <InformationRow
-        label="Your Share of the Pool"
+        label={t('Your Share of the Pool')}
         value={
           poolBalance
             ? roundToDecimal(
@@ -657,7 +668,8 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
     return (
       <FloatingCard>
         <div className={classes.cardContainer}>
-          You do not own this pool <Emoji emoji="🤖" />
+          <Trans>You do not own this pool</Trans>
+          <Emoji emoji="🤖" />
         </div>
       </FloatingCard>
     );
@@ -683,7 +695,7 @@ const SignalProviderCard = ({ poolSeed }: { poolSeed: string }) => {
           </TabPanel>
           <TabPanel index={1} value={tab}>
             <Typography align="center" variant="body1">
-              Collect your fees
+              <Trans>Collect your fees</Trans>
             </Typography>
             <CollectFeesButton poolSeed={poolSeed} />
           </TabPanel>

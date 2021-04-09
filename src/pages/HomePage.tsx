@@ -12,6 +12,7 @@ import {
   SUPER_TRENDS_STRATEGIES,
   StrategySection,
 } from './ExplorePage';
+import Trans from '../components/Translation';
 
 const useStyles = makeStyles({
   root: {
@@ -71,7 +72,9 @@ const ExploreBanner = () => {
         >
           <Grid item>
             <Typography className={classes.title} variant="h1">
-              Create and automate your <br /> trading strategies on chain.
+              <Trans>Create and automate your</Trans>
+              <br />
+              <Trans>trading strategies on chain.</Trans>
             </Typography>
             <CustomButton
               style={{ marginLeft: 50, marginTop: 40 }}
@@ -79,7 +82,7 @@ const ExploreBanner = () => {
                 history.push('/explore');
               }}
             >
-              Explore strategy
+              <Trans>Explore strategy</Trans>
             </CustomButton>
           </Grid>
           {!smallScreen && (
@@ -107,7 +110,7 @@ const HomePage = () => {
         <StrategySection h2="RSI Strategies" strategiesArray={RSI_STRATEGIES} />
         <div className={classes.exploreContainer}>
           <CustomButton onClick={() => history.push('/explore')}>
-            Explore
+            <Trans>Explore</Trans>
           </CustomButton>
         </div>
       </div>

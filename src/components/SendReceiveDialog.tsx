@@ -18,6 +18,7 @@ import { sendSplToken } from '../utils/send';
 import { useWallet } from '../utils/wallet';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomButton from './CustomButton';
+import Trans from './Translation';
 
 const useStyles = makeStyles({
   centeredContainer: {
@@ -56,7 +57,9 @@ const DepositTab = ({ pubkey }: { pubkey: string }) => {
   const classes = useStyles();
   return (
     <>
-      <Typography>Your deposit address:</Typography>
+      <Typography>
+        <Trans>Your deposit address:</Trans>
+      </Typography>
       <ExplorerLink
         address={pubkey}
         // @ts-ignore
@@ -142,7 +145,9 @@ const SendTab = ({ pubkey, mint }: { pubkey: string; mint: string }) => {
   return (
     <>
       <form>
-        <label htmlFor="amount">Amount:</label>
+        <label htmlFor="amount">
+          <Trans>Amount:</Trans>
+        </label>
         <br />
         <input
           id="amount"
@@ -151,7 +156,9 @@ const SendTab = ({ pubkey, mint }: { pubkey: string; mint: string }) => {
           className={classes.input}
         />
         <br style={{ height: 20 }} />
-        <label htmlFor="destination">Destination:</label>
+        <label htmlFor="destination">
+          <Trans>Destination:</Trans>
+        </label>
         <br />
         <input
           id={`destination-${mint}`}

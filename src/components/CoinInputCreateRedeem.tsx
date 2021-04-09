@@ -9,6 +9,7 @@ import { USE_TOKENS } from '../utils/tokens';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import getCoinIcon from '../utils/icons';
 import { nanoid } from 'nanoid';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   root: {
@@ -110,7 +111,7 @@ const DepositInput = ({
   disabled?: boolean;
 }) => {
   const classes = useStyles();
-
+  const { t } = useTranslation();
   const onChangeInput = (e) => {
     const parsed = parseFloat(e.target.value);
     if (isNaN(parsed) || parsed < 0) {
@@ -158,7 +159,7 @@ const DepositInput = ({
             className={classes.inputLabel}
             onClick={() => setAmount(balance)}
           >
-            Balance: {balance?.toLocaleString()}
+            {t('Balance')}: {balance?.toLocaleString()}
           </Typography>
           <Select
             className={classes.select}

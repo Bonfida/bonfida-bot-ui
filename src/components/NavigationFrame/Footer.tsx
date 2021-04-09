@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Link from '../Link';
 import HelpUrls from '../../utils/HelpUrls';
 import { Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
+import Trans from '../Translation';
 
 const useStyles = makeStyles({
   root: {
@@ -47,6 +49,7 @@ const listElement: footerElementI[] = [
 
 const Footer = () => {
   const classes = useStyles();
+  const { t } = useTranslation();
   return (
     <>
       <footer className={classes.root}>
@@ -59,14 +62,16 @@ const Footer = () => {
                 to={e.link}
                 style={{ textDecoration: 'none' }}
               >
-                <li className={classes.listItem}>{e.name}</li>
+                <li className={classes.listItem}>{t(e.name)}</li>
               </Link>
             );
           })}
         </ul>
         <Typography variant="body1">
-          FIDA is not offered within the United States or prohibited
-          jurisdiction.
+          <Trans>
+            FIDA is not offered within the United States or prohibited
+            jurisdiction.
+          </Trans>
         </Typography>
       </footer>
     </>

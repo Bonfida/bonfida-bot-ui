@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
 import { USE_TOKENS } from '../utils/tokens';
 import Spin from './Spin';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   root: {
@@ -85,7 +86,7 @@ const CoinInput = ({
   disabled?: boolean;
 }) => {
   const classes = useStyles();
-
+  const { t } = useTranslation();
   const onChangeInput = (e) => {
     const parsed = parseFloat(e.target.value);
     if (isNaN(parsed) || parsed < 0) {
@@ -137,7 +138,7 @@ const CoinInput = ({
             className={classes.inputLabel}
             onClick={() => setAmount(balance)}
           >
-            Balance: {balance?.toLocaleString() || 0}
+            {t('Balance')}: {balance?.toLocaleString() || 0}
           </Typography>
         </Grid>
       </Grid>

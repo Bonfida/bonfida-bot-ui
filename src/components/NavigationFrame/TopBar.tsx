@@ -11,6 +11,8 @@ import WalletConnect from '../WalletConnect';
 import Settings from '../Settings';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
 import { nanoid } from 'nanoid';
+import ChangeLanguage from '../ChangeLanguage';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   root: {
@@ -112,6 +114,7 @@ const Logo = () => {
 };
 
 const TopBar = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
@@ -139,6 +142,7 @@ const TopBar = () => {
 
   return (
     <div className={classes.root}>
+      <ChangeLanguage />
       <AppBar className={classes.AppBar} position="static" elevation={0}>
         <Grid
           container
@@ -165,7 +169,7 @@ const TopBar = () => {
                     color: selectedIndex === e.name ? '#BA0202' : '#393939',
                   }}
                 >
-                  {e.name}
+                  {t(e.name)}
                 </Button>
               );
             })}

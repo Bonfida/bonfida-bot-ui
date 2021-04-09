@@ -45,6 +45,8 @@ import { useHistory } from 'react-router-dom';
 import { saveTradingViewPassword } from '../utils/pools';
 import { nanoid } from 'nanoid';
 import MouseOverPopOver from './MouseOverPopOver';
+import { useTranslation } from 'react-i18next';
+import Trans from './Translation';
 
 const useStyles = makeStyles({
   img: {
@@ -141,6 +143,7 @@ const TemplateStrategyCard = ({
   setTemplate: (e: any) => void;
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
   return (
     <div className={classes.templateStrategyContainer} onClick={setTemplate}>
       <FloatingCard>
@@ -149,7 +152,7 @@ const TemplateStrategyCard = ({
           align="center"
           className={classes.templateStrategy}
         >
-          {name}
+          {t(name)}
         </Typography>
       </FloatingCard>
     </div>
@@ -157,6 +160,7 @@ const TemplateStrategyCard = ({
 };
 
 const CreatePoolCard = () => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -440,7 +444,7 @@ const CreatePoolCard = () => {
             align="center"
             className={classes.templateStrategyTitle}
           >
-            Select a strategy template
+            <Trans>Select a strategy template</Trans>
           </Typography>
           <Grid
             container
@@ -468,7 +472,7 @@ const CreatePoolCard = () => {
               <>
                 <Grid container justify="center">
                   <Typography align="center" className={classes.subsection}>
-                    Signal Provider
+                    <Trans>Signal Provider</Trans>
                   </Typography>
                 </Grid>
                 {!checkedExtSigProvider && (
@@ -476,7 +480,7 @@ const CreatePoolCard = () => {
                     <TextField
                       disabled
                       id="sol-creator-address"
-                      label="Your SOL address"
+                      label={t('Your SOL address')}
                       className={classes.textField}
                       value={wallet?.publicKey}
                       InputProps={{
@@ -500,8 +504,10 @@ const CreatePoolCard = () => {
                       </Grid>
                       <Grid item>
                         <Typography variant="body1" align="center">
-                          If you select an external signal provider you will not
-                          be able to send trade orders yourself
+                          <Trans>
+                            If you select an external signal provider you will
+                            not be able to send trade orders yourself
+                          </Trans>
                         </Typography>
                       </Grid>
                     </Grid>
@@ -517,7 +523,7 @@ const CreatePoolCard = () => {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label="External Signal Provider"
+                            label={t('External Signal Provider')}
                             variant="outlined"
                           />
                         )}
@@ -532,7 +538,7 @@ const CreatePoolCard = () => {
                       >
                         <Grid item>
                           <Typography variant="body1">
-                            Transactions will be cranked by:
+                            <Trans>Transactions will be cranked by:</Trans>
                           </Typography>
                         </Grid>
                         <Grid item>
@@ -563,7 +569,7 @@ const CreatePoolCard = () => {
                   </Grid>
                   <Grid item>
                     <Typography variant="body1">
-                      Use an external signal provider
+                      <Trans>Use an external signal provider</Trans>
                     </Typography>
                   </Grid>
                 </Grid>
@@ -584,7 +590,7 @@ const CreatePoolCard = () => {
               marginLeft="auto"
             />
             <Typography align="center" className={classes.subsection}>
-              Serum Markets
+              <Trans>Serum Markets</Trans>
             </Typography>
             <Grid container justify="center">
               {marketAddresses.map((m, i) => {
@@ -621,7 +627,7 @@ const CreatePoolCard = () => {
                   ])
                 }
               >
-                Add Market
+                <Trans>Add Market</Trans>
               </CustomButton>
             </Grid>
             {/* Assets and min amount */}
@@ -635,7 +641,7 @@ const CreatePoolCard = () => {
               marginTop="20px"
             />
             <Typography align="center" className={classes.subsection}>
-              Initial Assets
+              <Trans>Initial Assets</Trans>
             </Typography>
             {assets.map((asset) => {
               return (
@@ -659,11 +665,16 @@ const CreatePoolCard = () => {
               marginTop="20px"
             />
             <MouseOverPopOver
-              popOverText="Fees are split 50/25/25 between the Signal Provider, insurance fund and FIDA buy and burn 🔥"
+              popOverText={
+                <Trans>
+                  Fees are split 50/25/25 between the Signal Provider, insurance
+                  fund and FIDA buy and burn 🔥
+                </Trans>
+              }
               textClassName={classes.mouseOverPopOverText}
             >
               <Typography align="center" className={classes.subsection}>
-                Fees
+                <Trans>Fees</Trans>
               </Typography>
             </MouseOverPopOver>
 
@@ -677,7 +688,7 @@ const CreatePoolCard = () => {
                 }}
                 className={classes.textField}
                 InputLabelProps={{ shrink: true }}
-                label={externalSigProvider ? null : 'Fee Collection Period'}
+                label={externalSigProvider ? null : t('Fee Collection Period')}
                 helperText="Must be in seconds"
                 value={!!externalSigProvider ? MONTH : feeCollectionPeriod}
                 onChange={onChangeFeeCollectionPeriod}
@@ -693,8 +704,12 @@ const CreatePoolCard = () => {
                 }}
                 InputLabelProps={{ shrink: true }}
                 className={classes.textField}
-                label={externalSigProvider ? null : 'Fee Ratio (%)'}
-                helperText="Percentage of the pool that will be deduced for fees each period"
+                label={externalSigProvider ? null : t('Fee Ratio (%)')}
+                helperText={t(
+                  t(
+                    'Percentage of the pool that will be deduced for fees each period',
+                  ),
+                )}
                 value={!!externalSigProvider ? FEES : feeRatio}
                 onChange={onChangeFeeRatio}
               />
@@ -713,7 +728,7 @@ const CreatePoolCard = () => {
             />
             <Grid container justify="center">
               <CustomButton onClick={onSubmit}>
-                {loading ? <Spin size={20} /> : 'Create'}
+                {loading ? <Spin size={20} /> : t('Create')}
               </CustomButton>
             </Grid>
           </form>
@@ -733,7 +748,7 @@ const CreatePoolCard = () => {
                 align="center"
                 style={{ marginTop: 20, marginBottom: 20 }}
               >
-                Created Pool Seed:
+                <Trans>Created Pool Seed:</Trans>
               </Typography>
               <Typography
                 align="center"
@@ -747,7 +762,8 @@ const CreatePoolCard = () => {
           {isTradingView && tradingViewCredentials && (
             <>
               <Typography align="center" className={classes.tvText}>
-                <Emoji emoji="🚨" /> TradingView Password: <Emoji emoji="🚨" />
+                <Emoji emoji="🚨" /> <Trans>TradingView Password:</Trans>{' '}
+                <Emoji emoji="🚨" />
               </Typography>
               <div className={classes.breakWord}>
                 <Typography align="center" className={classes.bold}>
@@ -755,8 +771,8 @@ const CreatePoolCard = () => {
                 </Typography>
               </div>
               <Typography align="center" className={classes.tvText}>
-                <Emoji emoji="💾" /> Make sure to save this password in a safe
-                place
+                <Emoji emoji="💾" />{' '}
+                <Trans>Make sure to save this password in a safe place</Trans>
               </Typography>
             </>
           )}

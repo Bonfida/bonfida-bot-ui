@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import lock from '../assets/lock.svg';
+import Trans from './Translation';
 
 const useStyles = makeStyles({
   button: {
@@ -30,7 +31,9 @@ const UnlockButton = () => {
   return (
     <Button variant="contained" className={classes.button} onClick={onClick}>
       <img src={lock} alt="locked" className={classes.lock} />
-      <Typography>Unlock wallet</Typography>
+      <Typography>
+        <Trans>Unlock wallet</Trans>
+      </Typography>
     </Button>
   );
 };
