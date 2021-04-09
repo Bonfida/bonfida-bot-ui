@@ -11,7 +11,6 @@ import WalletConnect from '../WalletConnect';
 import Settings from '../Settings';
 import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
 import { nanoid } from 'nanoid';
-import ChangeLanguage from '../ChangeLanguage';
 import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
@@ -142,7 +141,6 @@ const TopBar = () => {
 
   return (
     <div className={classes.root}>
-      <ChangeLanguage />
       <AppBar className={classes.AppBar} position="static" elevation={0}>
         <Grid
           container

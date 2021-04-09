@@ -7,11 +7,12 @@ import Typography from '@material-ui/core/Typography';
 import { useConnectionConfig } from '../utils/connection';
 import Grid from '@material-ui/core/Grid';
 import { useTranslation } from 'react-i18next';
+import ChangeLanguage from './ChangeLanguage';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      height: 100,
+      height: 150,
       margin: 10,
       width: 300,
     },
@@ -118,6 +119,11 @@ const Settings = (): JSX.Element => {
                     );
                   })}
                 </select>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography className={classes.text}>
+                Language: <ChangeLanguage />
               </Typography>
             </Grid>
           </Grid>
