@@ -41,7 +41,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "git pull --ff-only && yarn && yarn build",
-    "deploy": "ipfs-deploy build -d cloudflare",
+    "deploy": "ipfs-deploy build -d cloudflare -p pinata",
     "lint": "npm run pretty && eslint .",
     "lint:fix": "npm run pretty:fix",
     "pretty": "prettier --check '{,!(node_modules)/**/}*.[jt]sx'",
