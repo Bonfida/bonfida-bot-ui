@@ -5,11 +5,15 @@ import Grid from '@material-ui/core/Grid';
 import QUESTIONS_ANSWERS, {
   QnA,
   TV_TUTORIAL,
+  TV_TUTORIAL_ZH,
   Step,
+  QUESTIONS_ANSWERS_ZH,
 } from './QuestionsAndAnswers';
 import { nanoid } from 'nanoid';
 import ReactPlayer from 'react-player';
 import HelpUrls from '../../utils/HelpUrls';
+import { useTranslation } from 'react-i18next';
+import Trans from '../Translation';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,12 +70,14 @@ const TutorialRow = ({ tutorialRow }: { tutorialRow: Step }) => {
 
 const FaqCard = () => {
   const classes = useStyles();
+  const { i18n } = useTranslation();
+  const isZh = i18n.language === 'zh';
   return (
     <>
       <Typography variant="h1" className={classes.title} align="center">
         F.A.Q
       </Typography>
-      {QUESTIONS_ANSWERS.map((row) => {
+      {(isZh ? QUESTIONS_ANSWERS_ZH : QUESTIONS_ANSWERS).map((row) => {
         return <FaqRow faqRow={row} key={nanoid()} />;
       })}
     </>
@@ -82,17 +88,19 @@ export default FaqCard;
 
 export const TradingViewCard = () => {
   const classes = useStyles();
+  const { i18n } = useTranslation();
+  const isZh = i18n.language === 'zh';
   return (
     <>
       <div className={classes.breakWord}>
         <Typography variant="h1" className={classes.title} align="center">
-          Create a TradingView Pool
+          <Trans>Create a TradingView Pool</Trans>
         </Typography>
       </div>
       <Grid container justify="center">
         <ReactPlayer url={HelpUrls.youtubeTradingViewTutorial} />
       </Grid>
-      {TV_TUTORIAL.map((row) => {
+      {(isZh ? TV_TUTORIAL_ZH : TV_TUTORIAL).map((row) => {
         return <TutorialRow tutorialRow={row} key={nanoid()} />;
       })}
     </>

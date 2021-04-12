@@ -131,5 +131,7 @@
   "rsi": "<0>{{ tf }} RSI</0> strategy on <0>{{ marketName }}</0>. RSI是动量指标，用于衡量价格变化的速度, 进一步了解请前往 <3>dedicated page</3>",
   "macd": "<0>{{ tf }} MACD</0> strategy on <0>{{ marketName }}</0>. MACD是趋势跟踪指标, 进一步了解请前往 <3>dedicated page</3>",
   "volExpansion": "<0>{{ tf }} Volatility Expansion Close</0> strategy on <0>{{ marketName }}</0>. 利用波动来捕捉市场中的新趋势，进一步了解请前往 <3>dedicated page</3>",
-  "benson": "<0>该机器人从Binance,Coinbase, Bitmex, Bybit和FTX汇总现货和合约的交易数据，以识别市场情绪. 当市场恐惧时做多，当市场乐观时退出. </0>"
+  "benson": "<0>该机器人从Binance,Coinbase, Bitmex, Bybit和FTX汇总现货和合约的交易数据，以识别市场情绪. 当市场恐惧时做多，当市场乐观时退出. </0>",
+
+  "Create a TradingView Pool": "创建一个TradingView资金池"
 }

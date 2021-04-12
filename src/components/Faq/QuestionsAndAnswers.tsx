@@ -193,6 +193,142 @@ export const TV_TUTORIAL: Step[] = [
   },
 ];
 
+export const TV_TUTORIAL_ZH: Step[] = [
+  {
+    title: <>创建自定义资金池</>,
+    text: (
+      <>
+        第一步：创建一个自定义的资金池，前往
+        <Link to="/create">创建页面</Link>.
+        <ul style={styles.margin}>
+          <li style={styles.margin}>
+            勾选“使用外部信号提供者”，然后选择TradingView警报
+          </li>
+          <li style={styles.margin}>
+            选择您要交易的市场，例如FIDA /
+            USDC。请注意，您可以为一个资金池选择多个交易市场。
+            <Emoji emoji="⚠️" />
+            请注意您无法在创建后向资金池中添加新的交易对。
+          </li>
+          <li style={styles.margin}>
+            选择开始时要在池中存入的通证类别和数量。您可以随时存入更多通证，但是，初始存入的通证种类和数量将确定1枚池通证的初始组成。例如，如果您决定先存入100
+            USDC + 10 FIDA，则1枚池通证= 100 USDC + 10 FIDA。
+          </li>
+          <li style={styles.margin}>点击“创建”并且在钱包弹出窗口确认交易。</li>
+          <li style={styles.margin}>
+            旦交易被确认，用户会收到池种子以及Trading View Auth Token,
+            请将Trading View Auth Token保存于安全的地方。
+          </li>
+          <Grid
+            container
+            justify="center"
+            spacing={5}
+            direction="column"
+            alignItems="center"
+          >
+            <Grid item>
+              <img src={tv1} style={styles.img} alt="" />
+            </Grid>
+            <Grid item>
+              <img src={tv2} style={styles.img} alt="" />
+            </Grid>
+          </Grid>
+        </ul>
+      </>
+    ),
+  },
+  {
+    title: <>设置TradingView警报</>,
+    text: (
+      <>
+        现在，前往
+        <Link external to="https://tradingview.com">
+          TradingView
+        </Link>{' '}
+        图表页面选择你喜欢的交易指标。比如，我们选择MACD作为例子。
+        <ul style={styles.margin}>
+          <li style={styles.margin}>点击“警报”</li>
+          <li style={styles.margin}>
+            在“条件”选项栏选择交易指标。以MACD为例，交易策略是当直方图从负变为正的时候，做多标的资产
+          </li>
+          <li style={styles.margin}>选择”无限制“如果您希望策略永远生效</li>
+          <li style={styles.margin}>
+            在”警报操作“这里选择Webhook URL,
+            并且输入https://tradingview-cranker.bonfida.com/alerts
+          </li>
+          <li style={styles.margin}>给警报取个名字，比如说Bonfida Bot</li>
+          <li style={styles.margin}>
+            在”消息“这里，您需要输入有关的参数：marketName, auth, poolSeed,
+            side, size，并且完全遵照下面的格式
+            {'{'}
+            <br />
+            "poolSeed": "poolSeed", <br />
+            "size": "size of your order", <br />
+            "side": "side", <br />
+            "auth": "tradingViewAuthToken", <br />
+            "marketName": "marketName" <br />
+            {'}'}
+            <br />
+            <div style={{ marginTop: 20 }} />
+            For instance a valid message is: <br />
+            <div
+              style={{
+                marginTop: 20,
+                overflowWrap: 'break-word',
+                wordWrap: 'break-word',
+              }}
+            >
+              {'{'}
+              <br />
+              "poolSeed": "DhCEYSbw2uHdDBt2D7Xaxdy2LUUSKk11Kvpd1WJFEwGy", <br />
+              "size": 10, <br />
+              "side": "buy", <br />
+              "auth":
+              "3d7NfKp7ddFWXcuPd1BrJFkb2VEmo4EnNa9Yocus3Pf4vRy4ufvtKvuA2bmT595cgiaizMyZA1Ma1zAdQwH68oiT",{' '}
+              <br />
+              "marketName": "FIDA/USDC" <br />
+              {'}'}
+            </div>
+          </li>
+          <li style={styles.margin}>
+            <Emoji emoji="💡" />{' '}
+            <a href="/#/tradingview-generator">
+              您可以使用TradingView信息生成器 （建议使用）
+            </a>
+          </li>
+          <li style={styles.margin}>
+            <Emoji emoji="⚠️" />{' '}
+            side方向可以是“buy”买入或者”sell“卖出。请注意这一栏需要区分大小写，大写的BUY或者Buy都不可生效。
+          </li>
+          <li style={styles.margin}>
+            <Emoji emoji="⚠️" />
+            marketName需要是您的自定义资金池可以交易的正确且存在的Serum市场。这一栏也需要区分大小写，并遵循一定格式。请参考如下正确和不正确的格式：
+            <Emoji emoji="👇" />
+            <br />
+            <ul style={styles.margin}>
+              <li style={styles.margin}>
+                <b>Valid:</b> "BTC/USDC", "BTC/USDT", "ETH/USDC"
+              </li>
+              <li style={styles.margin}>
+                <b>Not valid:</b> "BTC/USD", "btc/usdc", "BTCUSDC", "BTC-USDC"
+              </li>
+            </ul>
+          </li>
+          <li style={styles.margin}>
+            <Emoji emoji="⚠️" />{' '}
+            Size订单规模需要基于0到100之间的数字，代表着用于执行订单的池内资金百分比。比如一个标记10的
+            ”买入“订单信号发送到一个拥有1000 USDC的资金池，该池会使用1000
+            USDC的10% —100 USDC来执行订单。
+          </li>
+        </ul>
+        <Grid container justify="center">
+          <img src={tv3} style={styles.img} alt="" />
+        </Grid>
+      </>
+    ),
+  },
+];
+
 const QUESTIONS_ANSWERS: QnA[] = [
   {
     question: <>What are Bonfida Bots?</>,
@@ -313,6 +449,115 @@ const QUESTIONS_ANSWERS: QnA[] = [
   {
     question: <>I am not a technical person, can I still send signals?</>,
     answer: <>Yes, it’s possible! Signals can be sent using a UI</>,
+  },
+];
+
+export const QUESTIONS_ANSWERS_ZH: QnA[] = [
+  {
+    question: <>什么是Bonfida程式交易机器人？</>,
+    answer: (
+      <>
+        Bonfida程式交易机器人是通过智能合约控制的一篮子通证，这个智能合约会跟随信号提供者的交易策略对标的资产进行对应的操作，从而达到自动化交易的目的。
+      </>
+    ),
+  },
+  {
+    question: <>如何在池子里存入通证</>,
+    answer: (
+      <>
+        用户可以使用UI或
+        <Link external to={HelpUrls.bonfidaBotDocs}>
+          Javascript SDK
+        </Link>
+        将通证存入池中。通证的存放比例必须与现有池中通证的比例相匹配。入金用户会收到代表入金证明的池子通证。例如1枚池子的通证为
+        10 USDC + 1 FIDA， 入金用户需要存入10 USDC +1
+        FIDA来获取对应的1枚池子通证。
+      </>
+    ),
+  },
+  {
+    question: <>如何从池中提取？</>,
+    answer: (
+      <>
+        池子通证的所有者可以随时从池中提取对应的标的通证。提取时，用户将收到与他们拥有的池通证相对应的标的通证。请注意，提取时一枚池通证的各组成可能与入金时的不同。
+      </>
+    ),
+  },
+  {
+    question: <>交易手续费包括了什么？</>,
+    answer: (
+      <>
+        资金池的费用由信号提供者在创建池子时设置。因此，所有的资金池有不同的费用结构。在入金某一个资金池时，请务必了解清楚对应的费用。
+      </>
+    ),
+  },
+  {
+    question: <>如何设置信号</>,
+    answer: (
+      <>
+        交易信号是由信号提供者通过UI手动，或者通过使用
+        <Link external to={HelpUrls.bonfidaBotDocs}>
+          Javascript SDK
+        </Link>
+        的命令发送的链上交易。
+      </>
+    ),
+  },
+  {
+    question: <>如何收集手续费</>,
+    answer: (
+      <>
+        当创建资金池时，信号提供者定义费用期限和费用比率。收费期是每次收费之间的时间间隔，收费比率是每个期间将要收取的资金池总量的比率。（如0.1%/每月，意味着每个月固定一天收取当日资金池内总金额的0.1%
+        ） 要收取费用时，信号提供者可以使用UI或调用
+        <Link external to={HelpUrls.bonfidaBotDocs}>
+          Javascript SDK
+        </Link>
+        的费用收取方法。
+      </>
+    ),
+  },
+  {
+    question: <>如何建立资金池</>,
+    answer: (
+      <>
+        创建加密货币资金池是没有权限要求的，可以通过UI或使用
+        <Link external to={HelpUrls.bonfidaBotDocs}>
+          Javascript SDK
+        </Link>
+        调用CreatePool方法来完成此操作。
+      </>
+    ),
+  },
+  {
+    question: <>交易策略一定需要上链吗？</>,
+    answer: (
+      <>
+        您的策略可以在链上或者链下运行，唯一必须在链上的是信号，即策略的输出。这意味着您不必公开Alpha。
+      </>
+    ),
+  },
+  {
+    question: <>其他用户会抢先交易我的策略吗？</>,
+    answer: (
+      <>
+        如果您决定在链上公开您的策略，的确存在抢先交易的风险。但是，如果您决定将交易策略保持在链下，则没有该风险。
+      </>
+    ),
+  },
+  {
+    question: <>哪里找到开发相关的资源？</>,
+    answer: (
+      <>
+        开发资源：
+        <Link external to={HelpUrls.bonfidaBotDocs}>
+          这里
+        </Link>
+      </>
+    ),
+  },
+  {
+    question: <>不是技术人员的话，仍旧可以设置交易信号吗？</>,
+    answer: <>是的，非技术开发人员可以使用UI设置交易信号。</>,
   },
 ];
 
