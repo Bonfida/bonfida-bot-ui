@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://bots.bonfida.com",
   "dependencies": {
-    "@dr497/awesome-serum-markets": "^1.1.16",
+    "@dr497/awesome-serum-markets": "^1.1.27",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",

@@ -1171,6 +1171,13 @@
   dependencies:
     "@solana/web3.js" "^0.87.1"
 
+"@dr497/awesome-serum-markets@^1.1.27":
+  version "1.1.27"
+  resolved "https://registry.yarnpkg.com/@dr497/awesome-serum-markets/-/awesome-serum-markets-1.1.27.tgz#44b773bad099bd43e22250618f14628dd20166ed"
+  integrity sha512-t3ETgfXbNgdXz5RMpqhIs9aaRJf+K4oguW/5b3SdU1IITjVs45mXoSRgdSZEhTVwk7/UmLsAcaUI+w+EYDco3Q==
+  dependencies:
+    "@solana/web3.js" "^0.87.1"
+
 "@emotion/hash@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
