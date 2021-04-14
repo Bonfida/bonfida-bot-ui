@@ -113,6 +113,14 @@ const CoinInput = ({
         message: 'Insufficient funds',
         variant: 'error',
       });
+      return;
+    }
+    if (parsed < 0) {
+      notify({
+        message: 'Invalid input',
+        variant: 'error',
+      });
+      return;
     }
     let newAssets = assets.map((asset) => {
       return {
@@ -120,9 +128,11 @@ const CoinInput = ({
         mint: asset.mint,
         amount:
           asset.mint === mint
-            ? isNaN(parsed) || parsed < 0
-              ? 0
-              : parsed
+            ? e.target.value[0] === '0' && e.target.value.length > 1
+              ? e.target.value.slice(1)
+              : isNaN(parsed)
+              ? '0'
+              : e.target.value
             : asset.amount,
       };
     });
