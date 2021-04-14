@@ -58,6 +58,32 @@ export function roundToDecimal(
   return decimals ? Math.round(value * 10 ** decimals) / 10 ** decimals : value;
 }
 
+export const roundToDecimal2 = (
+  value: number | undefined | null,
+  decimals: number | undefined | null,
+) => {
+  if (!value) {
+    return value;
+  }
+  const strValue = value.toString();
+  const indexZero = strValue.indexOf('.') + 1;
+  if (indexZero === -1) {
+    return roundToDecimal(value, decimals);
+  }
+  const sliced = strValue.slice(indexZero, -1);
+  let indexNonZero = 0;
+  for (let i = 0; i < sliced.length; i++) {
+    if (sliced[i] !== '0') {
+      indexNonZero = i;
+      break;
+    }
+  }
+  return roundToDecimal(
+    value,
+    decimals ? decimals + indexNonZero : indexNonZero,
+  );
+};
+
 export function getDecimalCount(value): number {
   if (
     !isNaN(value) &&

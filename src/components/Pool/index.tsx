@@ -37,6 +37,7 @@ import CustomButton from '../CustomButton';
 import InformationRow from '../InformationRow';
 import {
   roundToDecimal,
+  roundToDecimal2,
   formatSeconds,
   useLocalStorageState,
 } from '../../utils/utils';
@@ -621,7 +622,7 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
     for (let i = 0; i < poolBalance[1].length; i++) {
       let b = poolBalance[1][i];
       quoteAssets.push(
-        `${roundToDecimal(
+        `${roundToDecimal2(
           (b.tokenAmount.uiAmount / poolTokenSupply) * parseFloat(amount),
           3,
         )} ${tokenNameFromMint(b.mint)}`,
