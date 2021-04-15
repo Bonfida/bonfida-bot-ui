@@ -19,6 +19,7 @@ const HelpUrls = {
   benson: {
     telegram: 'https://t.me/BensonTradingDesk',
   },
+  compendium: 'https://compendium.finance/',
 };
 
 export default HelpUrls;

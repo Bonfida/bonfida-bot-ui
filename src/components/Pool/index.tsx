@@ -423,7 +423,7 @@ const PoolInformation = ({
               : 'Loading...'
           }
         />
-        {pool && poolBalance && (
+        {pool?.initialPoolTokenUsdValue && poolBalance && (
           <InformationRow
             label={t('Inception performance')}
             value={

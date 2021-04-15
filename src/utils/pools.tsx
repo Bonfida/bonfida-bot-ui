@@ -43,6 +43,7 @@ export interface Pool {
   mintAddress: PublicKey;
   mainAsset?: ASSETS;
   strategyType?: STRATEGY_TYPES;
+  initialPoolTokenUsdValue?: number;
 }
 
 export enum STRATEGY_TYPES {
@@ -51,6 +52,7 @@ export enum STRATEGY_TYPES {
   VOLATILITY_EXPANSION = 'Volatility Expansion',
   SUPER_TREND = 'Super Trend',
   SENTIMENT_BENSON = 'Sentiment Strategy Pro [Benson]',
+  COMPENDIUML = 'CompendiuML',
 }
 
 export enum ASSETS {
@@ -58,6 +60,7 @@ export enum ASSETS {
   ETH = 'ETH',
   FIDA = 'FIDA',
   SRM = 'SRM',
+  SOL = 'SOL',
 }
 
 const styles = {
@@ -195,6 +198,25 @@ const volExpansionDescription = (
   );
 };
 
+const compendiumDescription = () => {
+  return (
+    <>
+      <Link external to={HelpUrls.compendium}>
+        CompendiumFi
+      </Link>{' '}
+      bots are powered by Compendium proprietary machine learning algorithm:
+      CompendiuML.
+      <br />
+      CompendiuML looks at specific longer time frames like 4H candle charts.
+      <br />
+      The Bonfida integrations feature a specific version of this algorithm with
+      the main mission of growing overall user balance. The bot will hold the
+      main asset during bullish momentum and hedge to eventually grow overall
+      balance while bearish.
+    </>
+  );
+};
+
 export const USE_POOLS: Pool[] = [
   // Super Trend
   {
@@ -206,6 +228,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('BMTwkARS5jTygykkAukwL2GW15kt4pij1kqmBn4oNc62'),
     mainAsset: ASSETS.BTC,
     strategyType: STRATEGY_TYPES.SUPER_TREND,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'ETH Super Trend',
@@ -216,6 +239,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('BiZh12i7dXcGNBAP774zXoJthS3HhV8gdRXokhdMjdPw'),
     mainAsset: ASSETS.ETH,
     strategyType: STRATEGY_TYPES.SUPER_TREND,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'SRM Super Trend',
@@ -226,6 +250,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('3bysFcvbEDwqRKzRYpF6kXEwdwMYiBPWgyHfU3xJxRoN'),
     mainAsset: ASSETS.SRM,
     strategyType: STRATEGY_TYPES.SUPER_TREND,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'FIDA Super Trend',
@@ -236,6 +261,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('AwJYRT7ecgF18rZDatU9DpUGPwB3tYJ3u7jongCumsKA'),
     mainAsset: ASSETS.FIDA,
     strategyType: STRATEGY_TYPES.SUPER_TREND,
+    initialPoolTokenUsdValue: 1,
   },
   // Benson
   {
@@ -247,6 +273,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('C1a6WeNFZ3bXYP3gA2GKVQKyfHGZ5ecTS7V7m5ykmwLF'),
     mainAsset: ASSETS.BTC,
     strategyType: STRATEGY_TYPES.SENTIMENT_BENSON,
+    initialPoolTokenUsdValue: 1,
   },
   // Volatility Expanson
   {
@@ -258,6 +285,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('Caj7qWJDHNsjhP9EpcdeGwSeguST8cPwLGRjVdYW2RtH'),
     mainAsset: ASSETS.BTC,
     strategyType: STRATEGY_TYPES.VOLATILITY_EXPANSION,
+    initialPoolTokenUsdValue: 1,
   },
   // RSI
   {
@@ -269,6 +297,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('6GZoDMn1UFG16v9KjRUMao5kRZ978v1DGUzAg1ZjyzJu'),
     mainAsset: ASSETS.BTC,
     strategyType: STRATEGY_TYPES.RSI,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'RSI ETH',
@@ -279,6 +308,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('GNPF6P8DNBavyYkhhMMn53hKQVdz9dAJdpLwF7rgWRSe'),
     mainAsset: ASSETS.ETH,
     strategyType: STRATEGY_TYPES.RSI,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'RSI SRM',
@@ -289,6 +319,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('ERsY5zAYGyaMcPTGXZJdk5HKcpW7LQ5joiHbxunm7RzR'),
     mainAsset: ASSETS.SRM,
     strategyType: STRATEGY_TYPES.RSI,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'RSI FIDA',
@@ -299,6 +330,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('HTCjo4azj2x6F1eCWCgV6jr1XsxPu2ig9rQPBkT8p75S'),
     mainAsset: ASSETS.FIDA,
     strategyType: STRATEGY_TYPES.RSI,
+    initialPoolTokenUsdValue: 1,
   },
   // MACD Strategies
   {
@@ -310,6 +342,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('25XmCiAQX9diUfTA8KwSmUFQRbKByi57VDp2SddVEsZ1'),
     mainAsset: ASSETS.BTC,
     strategyType: STRATEGY_TYPES.MACD,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'MACD ETH',
@@ -320,6 +353,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('26ZS2DADN23Yqgi8hRA2bKXdZtqBz9t5uqC15gjpAP7Q'),
     mainAsset: ASSETS.ETH,
     strategyType: STRATEGY_TYPES.MACD,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'MACD SRM',
@@ -330,6 +364,7 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('4NDwbkYhwZDWbBkVsGUZVqFfok7S4KkoLqAP8y7QqNo2'),
     mainAsset: ASSETS.SRM,
     strategyType: STRATEGY_TYPES.MACD,
+    initialPoolTokenUsdValue: 1,
   },
   {
     name: 'MACD FIDA',
@@ -340,6 +375,28 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('DjYdPqYto61n1gBrhnc64s3tEawsLAmTRKwmSxZ5BLc6'),
     mainAsset: ASSETS.FIDA,
     strategyType: STRATEGY_TYPES.MACD,
+    initialPoolTokenUsdValue: 1,
+  },
+  // CompendiumFi
+  {
+    name: 'CompendiuML Bitcoin 4H',
+    poolSeed: new PublicKey('77WNkckkVG1vGePs35azez8C8PqcqwepExZG1kFzpm2m'),
+    illustration: null,
+    description: compendiumDescription(),
+    shortDescription: '',
+    mintAddress: new PublicKey('47KQ3vVPa9hRNyo5DkrGfM4Cuva6p1BZ2mi29KMJL4UA'),
+    mainAsset: ASSETS.BTC,
+    strategyType: STRATEGY_TYPES.COMPENDIUML,
+  },
+  {
+    name: 'CompendiuML SOL 4H',
+    poolSeed: new PublicKey('HLSW8oP7aCzUbkBYfYqXTmHNRx1KRGATKuoje1xG8pVb'),
+    illustration: null,
+    description: compendiumDescription(),
+    shortDescription: '',
+    mintAddress: new PublicKey('DHJiwcEsSXEhuwqycvUSj1Ja79jhwf46MjmdLdFMKG8x'),
+    mainAsset: ASSETS.SOL,
+    strategyType: STRATEGY_TYPES.COMPENDIUML,
   },
 ];
 
