@@ -11,6 +11,8 @@ import { SERUM_PROGRAM_ID } from 'bonfida-bot';
 import bs58 from 'bs58';
 import crypto from 'crypto';
 
+export const WRAPPED_SOL_MINT = 'So11111111111111111111111111111111111111112';
+
 const USE_MARKETS = [...MARKETS, ...AWESOME_MARKETS];
 
 const TOKENS = AWESOME_TOKENS.concat(TOKEN_MINTS);
