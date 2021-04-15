@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import { useSnackbar } from 'notistack';
 import SnackbarUtils from './utils/SnackbarUtils';
@@ -14,6 +14,21 @@ import MyPoolPage from './pages/MyPoolPage';
 import TradingViewPage from './pages/TradingViewPage';
 import TradingViewMessageGeneratorPage from './pages/TradingViewMessageGeneratorPage';
 import WrapperPage from './pages/WrapperPage';
+import { ASSETS, STRATEGY_TYPES, USE_POOLS } from './utils/pools';
+
+const COMPENDIUM_BTC = USE_POOLS.find(
+  (p) =>
+    p.strategyType === STRATEGY_TYPES.COMPENDIUML && p.mainAsset === ASSETS.BTC,
+);
+
+const COMPENDIUM_SOL = USE_POOLS.find(
+  (p) =>
+    p.strategyType === STRATEGY_TYPES.COMPENDIUML && p.mainAsset === ASSETS.SOL,
+);
+
+const BENSON = USE_POOLS.find(
+  (p) => p.strategyType === STRATEGY_TYPES.SENTIMENT_BENSON,
+);
 
 export default function Routes() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -44,6 +59,15 @@ export default function Routes() {
           <Route extact path="/my-pools" component={MyPoolPage} />
           <Route exact path="/pool/:poolSeed">
             <PoolPage />
+          </Route>
+          <Route exact path="/compendium-btc">
+            <Redirect to={`/pool/${COMPENDIUM_BTC?.poolSeed}`} />
+          </Route>
+          <Route exact path="/compendium-sol">
+            <Redirect to={`/pool/${COMPENDIUM_SOL?.poolSeed}`} />
+          </Route>
+          <Route exact path="/benson">
+            <Redirect to={`/pool/${BENSON?.poolSeed}`} />
           </Route>
         </Switch>
       </NavigationFrame>
