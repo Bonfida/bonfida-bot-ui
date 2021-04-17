@@ -1631,10 +1631,10 @@
     buffer-layout "^1.2.0"
     dotenv "8.2.0"
 
-"@solana/web3.js@1.2.2", "@solana/web3.js@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.2.2.tgz#0f1c27532f5e40ce0eb8b66c8ae8fc49b34daebe"
-  integrity sha512-LBp1qqMQtVS1mr1Jw/mnATP7qse2XaMIacrWAM1p9H8MfOBD61hZO/BkI2vJnmVDYJx1K97z8bguuDCnlU6A8Q==
+"@solana/web3.js@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.4.0.tgz#60870f49ba3336d5754a9cff2bfd775466b6a05f"
+  integrity sha512-xSTvgzgOf9+XHe8E09inlTbrHSYHVQ4uQlcd9M+0hpyQ9uLOtEhUcNnegtIC3Hpz6OQ0awVJU29ppFkxhzM3aw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     bn.js "^5.0.0"
@@ -1723,6 +1723,25 @@
   version "0.94.2"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.94.2.tgz#5e8a873a6041af2c6a2751bd9a5f5b861ab469a2"
   integrity sha512-enJZ9eVJMvNtpuXdygAZHBlPC+2Q3paLY+KforFhVUpi/bkBADDKJWd90RICyu3sPKiVt8YLAs9cIxriQpQqng==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    bn.js "^5.0.0"
+    bs58 "^4.0.1"
+    buffer "6.0.1"
+    buffer-layout "^1.2.0"
+    crypto-hash "^1.2.2"
+    jayson "^3.4.4"
+    js-sha3 "^0.8.0"
+    node-fetch "^2.6.1"
+    rpc-websockets "^7.4.2"
+    secp256k1 "^4.0.2"
+    superstruct "^0.14.2"
+    tweetnacl "^1.0.0"
+
+"@solana/web3.js@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.2.2.tgz#0f1c27532f5e40ce0eb8b66c8ae8fc49b34daebe"
+  integrity sha512-LBp1qqMQtVS1mr1Jw/mnATP7qse2XaMIacrWAM1p9H8MfOBD61hZO/BkI2vJnmVDYJx1K97z8bguuDCnlU6A8Q==
   dependencies:
     "@babel/runtime" "^7.12.5"
     bn.js "^5.0.0"
@@ -3201,10 +3220,10 @@ body-parser@1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bonfida-bot@^0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.4.3.tgz#af93c0034d4fc0561a2381c67cfad6e24c3b45ba"
-  integrity sha512-lhPR4DVA+wUxMihtyuj4gxIqcg6DxaHprkMzC7syPCHAqlfu3CRk9entqAf7/m3rtpsfEwTb9dLJzAKFztfUuQ==
+bonfida-bot@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.4.4.tgz#8d68d2843078b6d23a948ee8f94e7ad4faa1a00e"
+  integrity sha512-vWWLBtEbXK4R5zBh4lnFjWaXmkPeyYa1n/V3pWlPSCds3qo/eMe0RQjLN6h6up+u23WFJ2F39pZcYzpR/pxDDQ==
   dependencies:
     "@dr497/awesome-serum-markets" "^1.1.16"
     "@project-serum/serum" "^0.13.30"

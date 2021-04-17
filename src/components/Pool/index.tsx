@@ -711,19 +711,23 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
             new PublicKey(mint),
           );
           sourceAssetKeys.push(associatedTokenAccount);
-          notify({
-            message: `You don't have enough balances for ${tokenNameFromMint(
-              mint,
-            )}`,
-            variant: 'error',
-          });
-          return;
+          if (tab === 0) {
+            notify({
+              message: `You don't have enough balances for ${tokenNameFromMint(
+                mint,
+              )}`,
+              variant: 'error',
+            });
+            return;
+          }
         } else {
           const requiredBalance = balancesNeeded.get(mint);
           if (
-            requiredBalance &&
-            account.account.data.parsed.info.tokenAmount.uiAmount >
-              requiredBalance
+            (tab === 0 &&
+              requiredBalance &&
+              account.account.data.parsed.info.tokenAmount.uiAmount >
+                requiredBalance) ||
+            tab === 1
           ) {
             sourceAssetKeys.push(new PublicKey(account.pubkey));
           } else {
