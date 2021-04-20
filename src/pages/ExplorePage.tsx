@@ -38,6 +38,10 @@ const COMPENDIUM_STRATEGIES = USE_POOLS.filter(
   (p) => p.strategyType === STRATEGY_TYPES.COMPENDIUML,
 );
 
+const BARTBOT_STRATEGIES = USE_POOLS.filter(
+  (p) => p.strategyType === STRATEGY_TYPES.BART,
+);
+
 const useStyles = makeStyles({
   container: {
     marginTop: 50,
@@ -218,6 +222,7 @@ const ExplorerPage = () => {
         h2={t('Sentiment Strategy Pro [Benson]')}
         strategiesArray={BENSON_STRATEGIES}
       />
+      <StrategySection h2={t('BartBot')} strategiesArray={BARTBOT_STRATEGIES} />
       <StrategySection
         h2={t('CompendiuML')}
         strategiesArray={COMPENDIUM_STRATEGIES}

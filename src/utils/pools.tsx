@@ -53,6 +53,7 @@ export enum STRATEGY_TYPES {
   SUPER_TREND = 'Super Trend',
   SENTIMENT_BENSON = 'Sentiment Strategy Pro [Benson]',
   COMPENDIUML = 'CompendiuML',
+  BART = 'BartBot',
 }
 
 export enum ASSETS {
@@ -213,6 +214,16 @@ const compendiumDescription = () => {
       the main mission of growing overall user balance. The bot will hold the
       main asset during bullish momentum and hedge to eventually grow overall
       balance while bearish.
+    </>
+  );
+};
+
+const bartBotDescription = () => {
+  return (
+    <>
+      Bartbot is breakout/trend following strategy that aims to capture the
+      majority of the move while staying on the sidelines during ranging periods
+      to reduce drawdown as much as possible.
     </>
   );
 };
@@ -397,6 +408,16 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('DHJiwcEsSXEhuwqycvUSj1Ja79jhwf46MjmdLdFMKG8x'),
     mainAsset: ASSETS.SOL,
     strategyType: STRATEGY_TYPES.COMPENDIUML,
+  },
+  {
+    name: 'BartBot',
+    poolSeed: new PublicKey('HZyfPT9Dun8mSPX9m7ezbedasc8owdtPqHQVDzHtdE1U'),
+    illustration: null,
+    description: bartBotDescription(),
+    shortDescription: '',
+    mintAddress: new PublicKey('JCDk3AABR2FCj1WHvAGBBdV14pSy6wJhQFrhrjXMzA8N'),
+    mainAsset: ASSETS.BTC,
+    strategyType: STRATEGY_TYPES.BART,
   },
 ];
 
