@@ -30,6 +30,10 @@ const BENSON = USE_POOLS.find(
   (p) => p.strategyType === STRATEGY_TYPES.SENTIMENT_BENSON,
 );
 
+const BART_BTC = USE_POOLS.find(
+  (p) => p.strategyType === STRATEGY_TYPES.BART && p.mainAsset === ASSETS.BTC,
+);
+
 export default function Routes() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   useEffect(() => {
@@ -68,6 +72,9 @@ export default function Routes() {
           </Route>
           <Route exact path="/benson">
             <Redirect to={`/pool/${BENSON?.poolSeed}`} />
+          </Route>
+          <Route exact path="/bart-btc">
+            <Redirect to={`/pool/${BART_BTC?.poolSeed}`} />
           </Route>
         </Switch>
       </NavigationFrame>
