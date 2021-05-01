@@ -17,7 +17,7 @@ const GraphSection = ({ data, xKey, yKey }) => {
         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey={xKey} />
+        <XAxis dataKey={xKey} tick={false} />
         <YAxis dataKey={yKey} />
         <Tooltip />
         <Line type="monotone" dataKey={xKey} stroke="#8884d8" />

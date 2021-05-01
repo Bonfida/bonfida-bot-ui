@@ -32,7 +32,13 @@ import {
   useHistoricalPerformance,
 } from '../../utils/pools';
 import { useConnection } from '../../utils/connection';
-import { deposit, Numberu64, redeem } from 'bonfida-bot';
+import {
+  collectFees,
+  deposit,
+  Numberu64,
+  redeem,
+  settlePool,
+} from 'bonfida-bot';
 import CustomButton from '../CustomButton';
 import InformationRow from '../InformationRow';
 import {
@@ -68,6 +74,7 @@ import Graph from './Graph';
 import Trans from '../Translation';
 import { useTranslation } from 'react-i18next';
 import Link from '../Link';
+import bs58 from 'bs58';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -346,7 +353,9 @@ const PoolInformation = ({
 }) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const { connected } = useWallet();
+  const connection = useConnection();
+  const [loading, setLoading] = useState(false);
+  const { connected, wallet } = useWallet();
   const [poolKey] = usePublicKeyFromSeed(poolSeed);
   const [poolBalance] = usePoolBalance(poolSeed);
   const [poolInfo, poolInfoLoaded] = usePoolInfo(poolSeed);
@@ -392,6 +401,31 @@ const PoolInformation = ({
     TV_PASSWORD_STORAGE_PREFIX + poolSeed,
     null,
   );
+
+  const onClickCollectFees = async () => {
+    try {
+      setLoading(true);
+      if (!connected) {
+        return notify({
+          message: 'Connect your wallet',
+        });
+      }
+      const instruction = await collectFees(connection, [poolSeed.toBuffer()]);
+      await sendTransaction({
+        connection: connection,
+        transaction: new Transaction().add(...instruction),
+        wallet: wallet,
+      });
+    } catch (err) {
+      console.warn(`Error collecting fees - ${err}`);
+      notify({
+        message: `Error collectinng fees ${err}`,
+        variant: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -557,6 +591,13 @@ const PoolInformation = ({
                 ).toString() + ' %'
               }
             />
+            {connected && (
+              <Grid container justify="center">
+                <CustomButton onClick={onClickCollectFees}>
+                  {loading ? <Spin size={20} /> : 'Collect Fees'}
+                </CustomButton>
+              </Grid>
+            )}
           </>
         )}
       </TabPanel>
@@ -798,6 +839,29 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
     }
   };
 
+  const onClickSettle = async () => {
+    if (!connected) {
+      return notify({ message: 'Connect your wallet' });
+    }
+    try {
+      setLoading(true);
+      const instruction = await settlePool(connection, bs58.decode(poolSeed));
+      await sendTransaction({
+        connection: connection,
+        wallet: wallet,
+        transaction: new Transaction().add(...instruction),
+      });
+    } catch (err) {
+      console.warn(`Error settling pool ${err}`);
+      notify({
+        message: `Error settling pool ${err}`,
+        variant: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{ width: 700, padding: 20, margin: 20 }}>
       <FloatingCard>
@@ -876,16 +940,23 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
           marginBottom="10px"
           marginTop="10px"
         />
-        <Grid container justify="center">
-          <CustomButton onClick={onSubmit}>
-            {loading ? (
-              <Spin size={20} />
-            ) : tab === 0 ? (
-              t('Deposit')
-            ) : (
-              t('Withdraw')
-            )}
-          </CustomButton>
+        <Grid container justify="center" spacing={5}>
+          <Grid item>
+            <CustomButton onClick={onSubmit}>
+              {loading ? (
+                <Spin size={20} />
+              ) : tab === 0 ? (
+                t('Deposit')
+              ) : (
+                t('Withdraw')
+              )}
+            </CustomButton>
+          </Grid>
+          <Grid item>
+            <CustomButton onClick={onClickSettle}>
+              {loading ? <Spin size={20} /> : 'Settle'}
+            </CustomButton>
+          </Grid>
         </Grid>
 
         {/* Admin Page */}
