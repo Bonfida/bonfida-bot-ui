@@ -627,7 +627,7 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
       <InformationRow
         label={t('Your Share of the Pool')}
         value={
-          poolBalance
+          poolBalance && poolBalance[0]?.uiAmount
             ? roundToDecimal(
                 (100 * userPoolTokenBalance?.toLocaleString()) /
                   poolBalance[0]?.uiAmount,

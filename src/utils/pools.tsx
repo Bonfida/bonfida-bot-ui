@@ -480,7 +480,9 @@ export const usePoolUsdBalance = (
         let _usdValue = 0;
         for (let balance of poolBalance) {
           const price = await getTokenPrice(balance.mint);
-          _usdValue += price * balance.tokenAmount.uiAmount;
+          if (balance.tokenAmount.uiAmount) {
+            _usdValue += price * balance.tokenAmount.uiAmount;
+          }
         }
         setUsdValue(_usdValue);
       } catch (err) {

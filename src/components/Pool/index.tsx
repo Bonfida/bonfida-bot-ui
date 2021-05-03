@@ -455,7 +455,7 @@ const PoolInformation = ({
           value={
             usdValue
               ? `$${
-                  poolBalance
+                  poolBalance && poolBalance[0] && poolBalance[0]?.uiAmount
                     ? roundToDecimal(usdValue / poolBalance[0]?.uiAmount, 3)
                     : null
                 }`
@@ -468,7 +468,7 @@ const PoolInformation = ({
             value={
               usdValue
                 ? `${
-                    poolBalance
+                    poolBalance && poolBalance[0] && poolBalance[0]?.uiAmount
                       ? roundToDecimal(
                           100 * (usdValue / poolBalance[0]?.uiAmount - 1),
                           2,
@@ -679,12 +679,14 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
     const poolTokenSupply = poolBalance[0].uiAmount;
     for (let i = 0; i < poolBalance[1].length; i++) {
       let b = poolBalance[1][i];
-      quoteAssets.push(
-        `${roundToDecimal2(
-          (b.tokenAmount.uiAmount / poolTokenSupply) * parseFloat(amount),
-          3,
-        )} ${tokenNameFromMint(b.mint)}`,
-      );
+      if (b.tokenAmount.uiAmount && poolTokenSupply) {
+        quoteAssets.push(
+          `${roundToDecimal2(
+            (b.tokenAmount.uiAmount / poolTokenSupply) * parseFloat(amount),
+            3,
+          )} ${tokenNameFromMint(b.mint)}`,
+        );
+      }
     }
     setQuote(
       quoteAssets.length > 0 ? newQuote + quoteAssets.join(' + ') : null,
@@ -730,10 +732,12 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
       const poolTokenSupply = poolBalance[0].uiAmount;
       for (let i = 0; i < poolBalance[1].length; i++) {
         let b = poolBalance[1][i];
-        balancesNeeded.set(
-          b.mint,
-          (b.tokenAmount.uiAmount / poolTokenSupply) * parsedAmount,
-        );
+        if (b.tokenAmount.uiAmount && poolTokenSupply) {
+          balancesNeeded.set(
+            b.mint,
+            (b.tokenAmount.uiAmount / poolTokenSupply) * parsedAmount,
+          );
+        }
       }
 
       for (let mint of poolAssetsMints) {
