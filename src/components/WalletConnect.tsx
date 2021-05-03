@@ -30,7 +30,7 @@ export default function WalletConnect() {
     <React.Fragment>
       <Button
         disableRipple
-        onClick={connected ? wallet.disconnect : wallet.connect}
+        onClick={connected ? wallet?.disconnect : wallet?.connect}
         variant="contained"
         className={classes.button}
       >
