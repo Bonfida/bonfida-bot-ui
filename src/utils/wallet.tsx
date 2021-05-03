@@ -204,7 +204,7 @@ export function WalletProvider({ children = null as any }) {
                   <Grid container justify="space-around" alignItems="center">
                     <Grid item>{provider.name}</Grid>
                     <Grid item>
-                      <img src={provider.icon} className={classes.img} />
+                      <img src={provider.icon} className={classes.img} alt="" />
                     </Grid>
                   </Grid>
                 </Button>
