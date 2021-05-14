@@ -1171,10 +1171,10 @@
   dependencies:
     "@solana/web3.js" "^0.87.1"
 
-"@dr497/awesome-serum-markets@^1.1.27":
-  version "1.1.27"
-  resolved "https://registry.yarnpkg.com/@dr497/awesome-serum-markets/-/awesome-serum-markets-1.1.27.tgz#44b773bad099bd43e22250618f14628dd20166ed"
-  integrity sha512-t3ETgfXbNgdXz5RMpqhIs9aaRJf+K4oguW/5b3SdU1IITjVs45mXoSRgdSZEhTVwk7/UmLsAcaUI+w+EYDco3Q==
+"@dr497/awesome-serum-markets@^1.1.36":
+  version "1.1.36"
+  resolved "https://registry.yarnpkg.com/@dr497/awesome-serum-markets/-/awesome-serum-markets-1.1.36.tgz#a2b6bbd9f224c8660878803cb4811b75822bc1e1"
+  integrity sha512-S+3JhK0y8/dIGhmnLUlXbAKycqbeyt6DcbBGH1sAbx6osgd1Gv3PeGfxQohnkRTafY+W9Q+2aEYAH6nFWypPVQ==
   dependencies:
     "@solana/web3.js" "^0.87.1"
 
@@ -1583,6 +1583,15 @@
   version "0.13.30"
   resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.30.tgz#81396282f98eac2fab97dea657858cc6810c8477"
   integrity sha512-TfP25GQQaIfJ85zZv4qR3EC/a9J2PS9+C9LfRCFpFuKKjCL6wn0cmpWjUDqWD4yr3ij0zCTA8ZL03XAb/Dkw3g==
+  dependencies:
+    "@solana/web3.js" "^0.90.0"
+    bn.js "^5.1.2"
+    buffer-layout "^1.2.0"
+
+"@project-serum/serum@^0.13.34":
+  version "0.13.34"
+  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.34.tgz#c76477c27e14d975afa38b6c352b3abe92af6e52"
+  integrity sha512-vOeusQUW8nDS339eb5lNB/H6UvLxGTmFiJuWKG31krlJmkD7TFgDEFaDP6grgs2Yr1HrJABnFohM242MG5FV3Q==
   dependencies:
     "@solana/web3.js" "^0.90.0"
     bn.js "^5.1.2"
