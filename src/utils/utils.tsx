@@ -450,7 +450,6 @@ export const postTradingViewCredentials = async (
     },
     {
       'content-type': 'application/json',
-      'Access-Control-Allow-Origin': 'https://bots.bonfida.com',
     },
   );
 };
