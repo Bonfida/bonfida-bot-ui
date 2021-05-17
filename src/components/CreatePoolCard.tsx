@@ -18,7 +18,7 @@ import {
 } from '../utils/tokens';
 import CoinInput from './CoinInputCreatePool';
 import { Transaction, PublicKey } from '@solana/web3.js';
-import { createPool, Numberu64 } from 'bonfida-bot';
+import { createPool, Numberu64 } from '@bonfida/bot';
 import { notify } from '../utils/notifications';
 import { decimalsFromMint } from '../utils/tokens';
 import { FIDA_USDC_MARKET_ADDRESS } from '../utils/markets';
@@ -174,24 +174,19 @@ const CreatePoolCard = () => {
 
   // Fees
   const [feeRatio, setFeeRatio] = useState<string | null>('0.1');
-  const [feeCollectionPeriod, setFeeCollectionPeriod] = useState<string | null>(
-    '604800',
-  );
+  const [feeCollectionPeriod, setFeeCollectionPeriod] =
+    useState<string | null>('604800');
 
   // External Signal Provider
   // Set Fees by default
-  const [externalSigProvider, setExternalSigProvider] = useState<string | null>(
-    null,
-  );
+  const [externalSigProvider, setExternalSigProvider] =
+    useState<string | null>(null);
   const [checkedExtSigProvider, setCheckedExtSigProvider] = useState(false);
-  const [
-    extSigProviderDescription,
-    setExtSigProviderDesciption,
-  ] = useState<JSX.Element | null>(null);
+  const [extSigProviderDescription, setExtSigProviderDesciption] =
+    useState<JSX.Element | null>(null);
   const [isTradingView, setIsTradingView] = useState(false);
-  const [tradingViewCredentials, setTradingViewCredentials] = useState<
-    string | null
-  >(null);
+  const [tradingViewCredentials, setTradingViewCredentials] =
+    useState<string | null>(null);
 
   const [assets, setAssets] = useState(
     getAssetsFromMarkets(marketAddresses).map((e) => {

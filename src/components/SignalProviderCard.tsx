@@ -17,7 +17,7 @@ import {
   OrderType,
   SelfTradeBehavior,
   settleFunds,
-} from 'bonfida-bot';
+} from '@bonfida/bot';
 import { notify } from '../utils/notifications';
 import Spin from './Spin';
 import { sendTransaction } from '../utils/send';

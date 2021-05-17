@@ -38,7 +38,7 @@ import {
   Numberu64,
   redeem,
   settlePool,
-} from 'bonfida-bot';
+} from '@bonfida/bot';
 import CustomButton from '../CustomButton';
 import InformationRow from '../InformationRow';
 import {
@@ -626,9 +626,8 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const balance = useBalanceForMint(tokenAccounts, mint);
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState<string | null>(null);
-  const [hasWrappedSol, setHasWrappedSol] = useState<undefined | boolean>(
-    false,
-  );
+  const [hasWrappedSol, setHasWrappedSol] =
+    useState<undefined | boolean>(false);
 
   const isAdmin = useMemo(
     () =>

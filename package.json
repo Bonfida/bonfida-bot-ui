@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@bonfida/bot": "^0.5.1",
     "@dr497/awesome-serum-markets": "^1.1.36",
     "@ledgerhq/hw-transport-webusb": "^5.50.0",
     "@material-ui/core": "^4.11.2",
@@ -17,7 +18,6 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "bn.js": "^5.1.3",
-    "bonfida-bot": "^0.4.4",
     "bs58": "^4.0.1",
     "clsx": "^1.1.1",
     "dotenv": "^8.2.0",

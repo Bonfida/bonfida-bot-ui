@@ -10,7 +10,7 @@ import {
   getPoolOrderInfos,
   PoolOrderInfo,
   BONFIDABOT_PROGRAM_ID,
-} from 'bonfida-bot';
+} from '@bonfida/bot';
 import { useConnection } from './connection';
 import tuple from 'immutable-tuple';
 import dca from '../assets/icons/illustrations/control.svg';

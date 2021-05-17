@@ -1146,6 +1146,22 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@bonfida/bot@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@bonfida/bot/-/bot-0.5.1.tgz#a4d75346b68d52f8c3faa5216bf973d8d8a18083"
+  integrity sha512-7OfcifzTmiMWpHgA66w14UIuavPHZ+WKzWFhINdo9bCaDQ5LAXNMPe03IaIPoo2zwlKLs6VHaRwFDAi0jr2KXQ==
+  dependencies:
+    "@dr497/awesome-serum-markets" "^1.1.36"
+    "@project-serum/serum" "^0.13.30"
+    "@project-serum/sol-wallet-adapter" "^0.1.5"
+    "@solana/spl-token" "0.0.13"
+    "@solana/web3.js" "^0.94.2"
+    bip32 "^2.0.6"
+    bn.js "^5.1.3"
+    bs58 "4.0.1"
+    buffer-layout "^1.2.0"
+    tweetnacl "^1.0.3"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -1163,13 +1179,6 @@
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
-
-"@dr497/awesome-serum-markets@^1.1.16":
-  version "1.1.16"
-  resolved "https://registry.yarnpkg.com/@dr497/awesome-serum-markets/-/awesome-serum-markets-1.1.16.tgz#35b8c18306ea91d12f8301134fcb2a7c01cf8cf6"
-  integrity sha512-rd4CbEgEWJ8wJN5bnjtC+uIEh3BX5f1ppBcs9oypAyxRqagSJ4TIFIvNDcycQsldsn5lU6xYTTntuliMzkcFbQ==
-  dependencies:
-    "@solana/web3.js" "^0.87.1"
 
 "@dr497/awesome-serum-markets@^1.1.36":
   version "1.1.36"
@@ -3267,22 +3276,6 @@ body-parser@1.19.0:
     qs "6.7.0"
     raw-body "2.4.0"
     type-is "~1.6.17"
-
-bonfida-bot@^0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/bonfida-bot/-/bonfida-bot-0.4.4.tgz#8d68d2843078b6d23a948ee8f94e7ad4faa1a00e"
-  integrity sha512-vWWLBtEbXK4R5zBh4lnFjWaXmkPeyYa1n/V3pWlPSCds3qo/eMe0RQjLN6h6up+u23WFJ2F39pZcYzpR/pxDDQ==
-  dependencies:
-    "@dr497/awesome-serum-markets" "^1.1.16"
-    "@project-serum/serum" "^0.13.30"
-    "@project-serum/sol-wallet-adapter" "^0.1.5"
-    "@solana/spl-token" "0.0.13"
-    "@solana/web3.js" "^0.94.2"
-    bip32 "^2.0.6"
-    bn.js "^5.1.3"
-    bs58 "4.0.1"
-    buffer-layout "^1.2.0"
-    tweetnacl "^1.0.3"
 
 bonjour@^3.5.0:
   version "3.5.0"
