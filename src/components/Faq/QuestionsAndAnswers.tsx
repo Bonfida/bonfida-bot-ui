@@ -143,7 +143,7 @@ export const TV_TUTORIAL: Step[] = [
               {'{'}
               <br />
               "poolSeed": "DhCEYSbw2uHdDBt2D7Xaxdy2LUUSKk11Kvpd1WJFEwGy", <br />
-              "size": 10, <br />
+              "size": "10", <br />
               "side": "buy", <br />
               "auth":
               "3d7NfKp7ddFWXcuPd1BrJFkb2VEmo4EnNa9Yocus3Pf4vRy4ufvtKvuA2bmT595cgiaizMyZA1Ma1zAdQwH68oiT",{' '}
