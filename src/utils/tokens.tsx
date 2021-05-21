@@ -263,6 +263,12 @@ export const useBalanceForAddress = (
   if (!address) {
     return null;
   }
+  tokenAccounts = tokenAccounts?.sort((a, b) => {
+    return (
+      b.account.data.parsed.info.tokenAmount.uiAmount -
+      a.account.data.parsed.info.tokenAmount.uiAmount
+    );
+  });
   const balance = tokenAccounts?.find((acc) => acc.pubkey === address)?.account
     .data.parsed.info.tokenAmount.uiAmount;
   return balance;
@@ -275,6 +281,12 @@ export const useBalanceForMint = (
   if (!mint) {
     return null;
   }
+  tokenAccounts = tokenAccounts?.sort((a, b) => {
+    return (
+      b.account.data.parsed.info.tokenAmount.uiAmount -
+      a.account.data.parsed.info.tokenAmount.uiAmount
+    );
+  });
   const balance = tokenAccounts?.find(
     (acc) => acc.account.data.parsed.info.mint === mint,
   )?.account.data.parsed.info.tokenAmount.uiAmount;
