@@ -90,12 +90,16 @@ export const useTokenAccounts = (mint?: string) => {
       return null;
     }
     let accounts = await getProgramAccounts(wallet?.publicKey);
-    accounts = accounts?.sort((a, b) => {
-      return (
-        b.account.data.parsed.info.tokenAmount.uiAmount -
-        a.account.data.parsed.info.tokenAmount.uiAmount
+    let associatedAccounts: any[] = [];
+    for (let acc of accounts) {
+      const associatedAcc = await findAssociatedTokenAddress(
+        wallet.publicKey,
+        new PublicKey(acc.account.data.parsed.info.mint),
       );
-    });
+      if (acc.pubkey === associatedAcc.toBase58()) {
+        associatedAccounts.push(acc);
+      }
+    }
     if (mint) {
       return accounts.filter((e) => e.account.data.parsed.info.mint === mint);
     }
@@ -263,12 +267,6 @@ export const useBalanceForAddress = (
   if (!address) {
     return null;
   }
-  tokenAccounts = tokenAccounts?.sort((a, b) => {
-    return (
-      b.account.data.parsed.info.tokenAmount.uiAmount -
-      a.account.data.parsed.info.tokenAmount.uiAmount
-    );
-  });
   const balance = tokenAccounts?.find((acc) => acc.pubkey === address)?.account
     .data.parsed.info.tokenAmount.uiAmount;
   return balance;
@@ -281,12 +279,6 @@ export const useBalanceForMint = (
   if (!mint) {
     return null;
   }
-  tokenAccounts = tokenAccounts?.sort((a, b) => {
-    return (
-      b.account.data.parsed.info.tokenAmount.uiAmount -
-      a.account.data.parsed.info.tokenAmount.uiAmount
-    );
-  });
   const balance = tokenAccounts?.find(
     (acc) => acc.account.data.parsed.info.mint === mint,
   )?.account.data.parsed.info.tokenAmount.uiAmount;
