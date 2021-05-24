@@ -15,6 +15,7 @@ import TradingViewPage from './pages/TradingViewPage';
 import TradingViewMessageGeneratorPage from './pages/TradingViewMessageGeneratorPage';
 import WrapperPage from './pages/WrapperPage';
 import { ASSETS, STRATEGY_TYPES, USE_POOLS } from './utils/pools';
+import CompetitionPage from './pages/CompetitionPage';
 
 const COMPENDIUM_BTC = USE_POOLS.find(
   (p) =>
@@ -76,6 +77,7 @@ export default function Routes() {
           <Route exact path="/bart-btc">
             <Redirect to={`/pool/${BART_BTC?.poolSeed}`} />
           </Route>
+          <Route exact path="/competition" component={CompetitionPage} />
         </Switch>
       </NavigationFrame>
     </HashRouter>

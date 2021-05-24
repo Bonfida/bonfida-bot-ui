@@ -470,7 +470,11 @@ const PoolInformation = ({
                 ? `${
                     poolBalance && poolBalance[0] && poolBalance[0]?.uiAmount
                       ? roundToDecimal(
-                          100 * (usdValue / poolBalance[0]?.uiAmount - 1),
+                          100 *
+                            (usdValue /
+                              poolBalance[0]?.uiAmount /
+                              pool?.initialPoolTokenUsdValue -
+                              1),
                           2,
                         )
                       : null

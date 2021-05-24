@@ -30,6 +30,7 @@ import {
 import Link from '../components/Link';
 import HelpUrls from './HelpUrls';
 import { Trans } from 'react-i18next';
+import { COMPETITION_BOTS } from './competition/bots';
 
 export const TV_PASSWORD_STORAGE_PREFIX = 'tvAuth';
 export const CUSTOME_NAME_PREFIX = 'customName';
@@ -54,6 +55,7 @@ export enum STRATEGY_TYPES {
   SENTIMENT_BENSON = 'Sentiment Strategy Pro [Benson]',
   COMPENDIUML = 'CompendiuML',
   BART = 'BartBot',
+  CUSTOM = 'Custom',
 }
 
 export enum ASSETS {
@@ -419,6 +421,7 @@ export const USE_POOLS: Pool[] = [
     mainAsset: ASSETS.BTC,
     strategyType: STRATEGY_TYPES.BART,
   },
+  ...COMPETITION_BOTS,
 ];
 
 export const usePoolInfo = (poolSeed: PublicKey) => {

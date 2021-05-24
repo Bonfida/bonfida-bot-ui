@@ -1146,13 +1146,13 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bonfida/bot@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@bonfida/bot/-/bot-0.5.1.tgz#a4d75346b68d52f8c3faa5216bf973d8d8a18083"
-  integrity sha512-7OfcifzTmiMWpHgA66w14UIuavPHZ+WKzWFhINdo9bCaDQ5LAXNMPe03IaIPoo2zwlKLs6VHaRwFDAi0jr2KXQ==
+"@bonfida/bot@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@bonfida/bot/-/bot-0.5.3.tgz#3a15253ad83351937aba5daefefa891600cb140e"
+  integrity sha512-h+Twa/8JxgZ7oUzw0sfYoHhSg4IcqaoJxOzmzXJkB5G1PriniOyzK6Qn815e5ea6c8y0sqZrA5WijvlZ/dNhKg==
   dependencies:
-    "@dr497/awesome-serum-markets" "^1.1.36"
-    "@project-serum/serum" "^0.13.30"
+    "@dr497/awesome-serum-markets" "^1.1.41"
+    "@project-serum/serum" "^0.13.37"
     "@project-serum/sol-wallet-adapter" "^0.1.5"
     "@solana/spl-token" "0.0.13"
     "@solana/web3.js" "^0.94.2"
@@ -1180,10 +1180,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@dr497/awesome-serum-markets@^1.1.36":
-  version "1.1.36"
-  resolved "https://registry.yarnpkg.com/@dr497/awesome-serum-markets/-/awesome-serum-markets-1.1.36.tgz#a2b6bbd9f224c8660878803cb4811b75822bc1e1"
-  integrity sha512-S+3JhK0y8/dIGhmnLUlXbAKycqbeyt6DcbBGH1sAbx6osgd1Gv3PeGfxQohnkRTafY+W9Q+2aEYAH6nFWypPVQ==
+"@dr497/awesome-serum-markets@^1.1.41":
+  version "1.1.41"
+  resolved "https://registry.yarnpkg.com/@dr497/awesome-serum-markets/-/awesome-serum-markets-1.1.41.tgz#6867f2971ef9f3f68cc3bed6d10b42532cb026cb"
+  integrity sha512-a2Cxul4S1DI7rN63X5K0x3zLSQpOSLYV4+kPkUgB2B5ytdec6+RFjbQ6oZHWwRi5rsb1ih1lf4YHa8pVEs/nmw==
   dependencies:
     "@solana/web3.js" "^0.87.1"
 
@@ -1588,19 +1588,10 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@project-serum/serum@^0.13.30":
-  version "0.13.30"
-  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.30.tgz#81396282f98eac2fab97dea657858cc6810c8477"
-  integrity sha512-TfP25GQQaIfJ85zZv4qR3EC/a9J2PS9+C9LfRCFpFuKKjCL6wn0cmpWjUDqWD4yr3ij0zCTA8ZL03XAb/Dkw3g==
-  dependencies:
-    "@solana/web3.js" "^0.90.0"
-    bn.js "^5.1.2"
-    buffer-layout "^1.2.0"
-
-"@project-serum/serum@^0.13.34":
-  version "0.13.34"
-  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.34.tgz#c76477c27e14d975afa38b6c352b3abe92af6e52"
-  integrity sha512-vOeusQUW8nDS339eb5lNB/H6UvLxGTmFiJuWKG31krlJmkD7TFgDEFaDP6grgs2Yr1HrJABnFohM242MG5FV3Q==
+"@project-serum/serum@^0.13.37":
+  version "0.13.37"
+  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.37.tgz#18cc2613a655a8e782e14c4d55a2707a79fbc625"
+  integrity sha512-Bt7D/0P0M1b+xyygCU9z1p7Pec6vontzy4Q92TgIg33/J1qiAR/899HXGlr7oho/NntGNwIlbEU22nqsWWuAiA==
   dependencies:
     "@solana/web3.js" "^0.90.0"
     bn.js "^5.1.2"
