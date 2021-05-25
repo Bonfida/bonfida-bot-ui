@@ -18,7 +18,7 @@ export const COMPETITION_BOTS: Pool[] = [
     description:
       'Earthshaker is a multi-strategy trading algorithm, utilizing a balanced mix of technical indicators and pattern recognition. The strategy trades on strong signals from the market based on volume, price action, and on-chain analysis. It uses dynamic stop losses in order to preserve capital, while also maximize gains.',
     mintAddress: new PublicKey('8PBnSc3QGMQTS4AugvvQmBtD4kyj9EY4SfL8R4J5pDRD'),
-    initialPoolTokenUsdValue: 4.11,
+    initialPoolTokenUsdValue: 64.91,
   },
   {
     name: `Overhead Gains (Dreamcatcher)`,
@@ -27,7 +27,7 @@ export const COMPETITION_BOTS: Pool[] = [
     description:
       'Earthshaker is a multi-strategy trading algorithm, utilizing a balanced mix of technical indicators and pattern recognition. The strategy trades on strong signals from the market based on volume, price action, and on-chain analysis. It uses dynamic stop losses in order to preserve capital, while also maximize gains.',
     mintAddress: new PublicKey('2airCsQwvmUsnSpRF6dt2vm254hfQJqX3kS2oaUYwm4F'),
-    initialPoolTokenUsdValue: 3.18,
+    initialPoolTokenUsdValue: 120,
   },
   {
     name: `Overhead Gains (Fireshaper)`,
@@ -36,7 +36,7 @@ export const COMPETITION_BOTS: Pool[] = [
     description:
       'Fireshaper  is a multi-strategy trading algorithm, utilizing a balanced mix of technical indicators and pattern recognition. The strategy trades on strong signals from the market based on volume, price action, and on-chain analysis. It uses dynamic stop losses in order to preserve capital, while also maximize gains.',
     mintAddress: new PublicKey('HBBt2JpaYcd6zQZVa55FQn5hTT4LENXBXJvedCtLbyFa'),
-    initialPoolTokenUsdValue: 1.19,
+    initialPoolTokenUsdValue: 42,
   },
   {
     name: `FTT/USDC - Super Guppy 2H TF`,
@@ -337,6 +337,14 @@ export const COMPETITION_BOTS: Pool[] = [
     illustration: null,
     description: 'buy low and sell high - 高抛低吸',
     mintAddress: new PublicKey('HKHMPT2Etr28c2TLRirLziKxzm5t65y6eNmxKGQMB8x8'),
+    initialPoolTokenUsdValue: 1,
+  },
+  {
+    name: `9seed_trade_bot`,
+    poolSeed: new PublicKey('Eh1ox13JMCtSVVLPFcVSb48hEh5GAk8o6gQwPuBgZDWD'),
+    illustration: null,
+    description: 'Reverse Strategy',
+    mintAddress: new PublicKey('8Z1rNPEsZpKgmdq4Q7TRmqfGnKJCrnLdNg7gfHG9sgVq'),
     initialPoolTokenUsdValue: 1,
   },
 ];

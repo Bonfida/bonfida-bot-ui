@@ -56,15 +56,14 @@ const CompetitionTableRow = ({ pool }: { pool: Pool }) => {
       <TableCell>
         {pool.initialPoolTokenUsdValue && poolSupplyUiAmount && (
           <>
-            {`${
-              roundToDecimal(
-                1 -
-                  poolUsdBalance /
-                    poolSupplyUiAmount /
-                    pool.initialPoolTokenUsdValue,
-                2,
-              ) * 100
-            }%`}
+            {`${roundToDecimal(
+              100 *
+                (poolUsdBalance /
+                  poolSupplyUiAmount /
+                  pool.initialPoolTokenUsdValue -
+                  1),
+              2,
+            )}%`}
           </>
         )}
       </TableCell>

@@ -127,7 +127,7 @@ const CompetitionBanner = () => {
                   variant="body1"
                   className={classes.competitionDetails}
                 >
-                  <strong>Registration:</strong> 17th May - 22nd May
+                  <strong>Registration:</strong> Open until 17th June
                 </Typography>
               </li>
               <li style={{ marginTop: 5 }}>
