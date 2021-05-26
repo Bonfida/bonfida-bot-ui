@@ -7,14 +7,17 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Pool, usePoolBalance, usePoolUsdBalance } from '../utils/pools';
-import { COMPETITION_BOTS } from '../utils/competition/bots';
 import { nanoid } from 'nanoid';
 import { roundToDecimal } from '../utils/utils';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import FloatingCard from './FloatingCard';
 import Button from './CustomButton';
 import { useHistory } from 'react-router-dom';
+import {
+  useBotCompetitionPerformance,
+  BotWithPerf,
+} from '../utils/competition/hooks';
+import Spin from '../components/Spin';
 
 const useStyles = makeStyles({
   root: {
@@ -40,36 +43,20 @@ const CompetitionTableHead = () => {
   );
 };
 
-const CompetitionTableRow = ({ pool }: { pool: Pool }) => {
-  const [poolBalance] = usePoolBalance(pool.poolSeed);
-  const poolUsdBalance = usePoolUsdBalance(poolBalance && poolBalance[1]);
+const CompetitionTableRow = ({ pool }: { pool: BotWithPerf | undefined }) => {
   const history = useHistory();
-  const poolSupplyUiAmount = poolBalance && poolBalance[0]?.uiAmount;
+  if (!pool) {
+    return <Spin size={20} />;
+  }
   return (
     <TableRow>
-      <TableCell>{pool.name}</TableCell>
-      <TableCell>{pool.description}</TableCell>
-      <TableCell>
-        {poolSupplyUiAmount &&
-          roundToDecimal(poolUsdBalance / poolSupplyUiAmount, 2)}
-      </TableCell>
-      <TableCell>
-        {pool.initialPoolTokenUsdValue && poolSupplyUiAmount && (
-          <>
-            {`${roundToDecimal(
-              100 *
-                (poolUsdBalance /
-                  poolSupplyUiAmount /
-                  pool.initialPoolTokenUsdValue -
-                  1),
-              2,
-            )}%`}
-          </>
-        )}
-      </TableCell>
+      <TableCell>{pool?.name}</TableCell>
+      <TableCell>{pool?.description}</TableCell>
+      <TableCell>{roundToDecimal(pool?.tokenValue, 2)}</TableCell>
+      <TableCell>{`${roundToDecimal(pool.performance, 2)}%`}</TableCell>
       <TableCell>
         <Button
-          onClick={() => history.push(`/pool/${pool.poolSeed.toBase58()}`)}
+          onClick={() => history.push(`/pool/${pool.poolSeed?.toBase58()}`)}
         >
           Trade
         </Button>
@@ -80,6 +67,19 @@ const CompetitionTableRow = ({ pool }: { pool: Pool }) => {
 
 const CompetitionTable = () => {
   const classes = useStyles();
+  const [bots, botsLoaded] = useBotCompetitionPerformance();
+  if (!botsLoaded || !bots) {
+    return (
+      <>
+        <Typography variant="body1" align="center">
+          Loading all bots...
+        </Typography>
+        <Grid container justify="center">
+          <Spin size={40} />
+        </Grid>
+      </>
+    );
+  }
   return (
     <Grid container justify="center">
       <div className={classes.root}>
@@ -88,9 +88,12 @@ const CompetitionTable = () => {
             <Table className={classes.table}>
               <CompetitionTableHead />
               <TableBody>
-                {COMPETITION_BOTS.map((b) => {
-                  return <CompetitionTableRow key={nanoid()} pool={b} />;
-                })}
+                {bots
+                  // @ts-ignore
+                  ?.sort((a, b) => b?.performance - a?.performance)
+                  ?.map((b) => {
+                    return <CompetitionTableRow key={nanoid()} pool={b} />;
+                  })}
               </TableBody>
             </Table>
           </TableContainer>

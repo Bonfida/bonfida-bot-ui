@@ -155,7 +155,7 @@ export const COMPETITION_BOTS: Pool[] = [
     illustration: null,
     description:
       'Moving average along a RSI, filtered by a DCA 2% take profit and 3% deviation',
-    mintAddress: new PublicKey('6h1YoLDV3MKJ4FdgDGjXhUSFRKayqvquuPogpGtebSxg'),
+    mintAddress: new PublicKey('6h1YoLDV3MKJ4FdgDGjXhUSFRKayqvquuogpGtebSxg'),
     initialPoolTokenUsdValue: 96.25,
   },
   {
@@ -184,12 +184,12 @@ export const COMPETITION_BOTS: Pool[] = [
   },
   {
     name: `Aruza-Cenk-28`,
-    poolSeed: new PublicKey('3wjcwLwc1UifSgTAn19qvpKqU6aNYxUvKwmg4NnbLuWe'),
+    poolSeed: new PublicKey('3QppyVyApA3e9sfmiNkfJjgmateBDjN528nNxTCqZT33'),
     illustration: null,
     description:
       'First time im setting up bot with ema scalper. My bot commands with 2 signals and work with TradingView web hook.',
     mintAddress: new PublicKey('2RNedNZs9TaqwuVyEbazUtfe7tr9zJXKwkFuBLepzfd5'),
-    initialPoolTokenUsdValue: 9.04,
+    initialPoolTokenUsdValue: 0.809,
   },
   {
     name: `CsakCakk`,
@@ -324,7 +324,7 @@ export const COMPETITION_BOTS: Pool[] = [
     initialPoolTokenUsdValue: 0.81,
   },
   {
-    name: `Na`,
+    name: `Na Bot`,
     poolSeed: new PublicKey('HTEkF3QLXce6fDNoWrgWFpbYHRV22jYGqChTJjfuugnr'),
     illustration: null,
     description: '',
