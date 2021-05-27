@@ -371,4 +371,21 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('J2BbHdN9SvPP17Yvg6zCfqgYZ7f9Y1XPf7QfaiJTj4Dw'),
     initialPoolTokenUsdValue: 5.87,
   },
+  {
+    name: `MultiContrarianStrategy`,
+    poolSeed: new PublicKey('7xYcH8kCRYFchGbDWkHbte9dh5Mg6egFNgSdzrkbLCb6'),
+    illustration: null,
+    description: 'Extreme contrarian',
+    mintAddress: new PublicKey('8Tz6xRg4X5uLfLrbuezjhZJhg95qUV1y6RuQerVavGig'),
+    initialPoolTokenUsdValue: 10,
+  },
+  {
+    name: `SOL-69`,
+    poolSeed: new PublicKey('6Bd3jE8A9RaTf7pKPAT43k1XhFhzH2Ptr3Y2UoFYmJqi'),
+    illustration: null,
+    description:
+      'SOL bot with placebo strategy which may work unbelievably in the long term',
+    mintAddress: new PublicKey('ENd5qR6Xa2KK3YVwEumbVhZdxr1mgfUagzhaEpiMDyPy'),
+    initialPoolTokenUsdValue: 167.058,
+  },
 ];
