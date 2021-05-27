@@ -347,4 +347,28 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('8Z1rNPEsZpKgmdq4Q7TRmqfGnKJCrnLdNg7gfHG9sgVq'),
     initialPoolTokenUsdValue: 1,
   },
+  {
+    name: `DBC TK Strategy`,
+    poolSeed: new PublicKey('CyWBGZLmZDaJXir3ZNgFgfKCypWdvw899G8rWQ9arkEA'),
+    illustration: null,
+    description: 'It trades ichi TK crosses.',
+    mintAddress: new PublicKey('7j9qh1qS3HKrb96abb2Ug5B9C3iQfGDcv2ij4XFoa9y7'),
+    initialPoolTokenUsdValue: 0.952,
+  },
+  {
+    name: `Solmate`,
+    poolSeed: new PublicKey('GHfAXZMWeqxKrXBCSxEWgTcqyUwSEzkhVUod3MLDAiYm'),
+    illustration: null,
+    description: 'All in SOL',
+    mintAddress: new PublicKey('Hboi9dHvbddoxWHJ3DtFwoMUPZZ8AQseyQgTgZ1sM5M5'),
+    initialPoolTokenUsdValue: 317.951,
+  },
+  {
+    name: `Liuchaojin`,
+    poolSeed: new PublicKey('4vEh7YN4mQu28CWaBJnrhyNAcmFx4vqQ6KzB3idUeFHn'),
+    illustration: null,
+    description: '',
+    mintAddress: new PublicKey('J2BbHdN9SvPP17Yvg6zCfqgYZ7f9Y1XPf7QfaiJTj4Dw'),
+    initialPoolTokenUsdValue: 5.87,
+  },
 ];

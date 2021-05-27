@@ -83,6 +83,10 @@ const topBarElement = [
     name: 'tradingview',
     href: '/tradingview',
   },
+  {
+    name: 'competition',
+    href: '/competition',
+  },
 ];
 
 const Logo = () => {
