@@ -388,4 +388,13 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('ENd5qR6Xa2KK3YVwEumbVhZdxr1mgfUagzhaEpiMDyPy'),
     initialPoolTokenUsdValue: 167.058,
   },
+  {
+    name: `Final TF Bot`,
+    poolSeed: new PublicKey('BVxdr99VgYXAPcYnxqKJWUpWwyhyJzijP6ZatPTMDq9G'),
+    illustration: null,
+    description:
+      'Mean reversion strategy base on a unique way to calculate trend.',
+    mintAddress: new PublicKey('5AuGjWVsGkFFsKUE1842doiV1FcjoYPfd3fMyp26gHhF'),
+    initialPoolTokenUsdValue: 480.568,
+  },
 ];
