@@ -397,4 +397,12 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('5AuGjWVsGkFFsKUE1842doiV1FcjoYPfd3fMyp26gHhF'),
     initialPoolTokenUsdValue: 480.568,
   },
+  {
+    name: `TENDON`,
+    poolSeed: new PublicKey('48cRebYNkoBfxGWWoeLouAAhTRDBDdKaNdiLCfnm3zbP'),
+    illustration: null,
+    description: '黃金交叉',
+    mintAddress: new PublicKey('LpBHudWbCr9Yt8MHPt3ypL72w6rfLNZfXV9HrAbujMM'),
+    initialPoolTokenUsdValue: 20,
+  },
 ];

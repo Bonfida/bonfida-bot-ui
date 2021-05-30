@@ -15,8 +15,8 @@ export const ENDPOINTS: EndpointInfo[] = [
   },
   { name: 'localnet', endpoint: 'http://127.0.0.1:8899', custom: false },
   {
-    name: 'vip',
-    endpoint: 'https://vip-api-3d71nw8x7c.mainnet-beta.solana.com/',
+    name: 'bonfida',
+    endpoint: 'https://bonfida.rpcpool.com',
     custom: false,
   },
 ];
@@ -29,7 +29,7 @@ const ConnectionContext: React.Context<null | ConnectionContextValues> =
 export function ConnectionProvider({ children }) {
   const [endpoint, setEndpoint] = useLocalStorageState<string>(
     'connectionEndpts',
-    ENDPOINTS[0].endpoint,
+    ENDPOINTS[2].endpoint,
   );
   const [customEndpoints, setCustomEndpoints] = useLocalStorageState<
     EndpointInfo[]
