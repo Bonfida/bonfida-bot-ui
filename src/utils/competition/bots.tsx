@@ -413,4 +413,13 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('EpX4A91ghpzeXb7mid8xyixggRdxS6ZchXQPPFixprap'),
     initialPoolTokenUsdValue: 20,
   },
+  {
+    name: `srmbot`,
+    poolSeed: new PublicKey('CJbrB4zPL6wRLRSFfLewqUXuKH6a1jGBTwajw7SHcZbr'),
+    illustration: null,
+    description:
+      'SRMUSDT, 1D 下穿(Crossing Down) 移动平均线(Moving Average) (21, close, 0)--Sell；SRMUSDT, 1D 上穿(Crossing Up) 移动平均线(Moving Average) (21, close, 0)--Buy',
+    mintAddress: new PublicKey('Ajnazvnwd4CRj8GMsP3V9ZhPBHvJKo8QYQ2hRwP47THs'),
+    initialPoolTokenUsdValue: 104.264,
+  },
 ];
