@@ -405,4 +405,12 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('LpBHudWbCr9Yt8MHPt3ypL72w6rfLNZfXV9HrAbujMM'),
     initialPoolTokenUsdValue: 20,
   },
+  {
+    name: `Doka`,
+    poolSeed: new PublicKey('ErGsNXDMtmCNrTUTpj5GqMY5KRafyNuSzKhsy9QWt8Sr'),
+    illustration: null,
+    description: 'DCA Daily',
+    mintAddress: new PublicKey('EpX4A91ghpzeXb7mid8xyixggRdxS6ZchXQPPFixprap'),
+    initialPoolTokenUsdValue: 20,
+  },
 ];
