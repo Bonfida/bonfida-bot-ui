@@ -422,4 +422,12 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('Ajnazvnwd4CRj8GMsP3V9ZhPBHvJKo8QYQ2hRwP47THs'),
     initialPoolTokenUsdValue: 104.264,
   },
+  {
+    name: `TEMPERA`,
+    poolSeed: new PublicKey('C4coStn5iLbDVwNtXYQ17TZLMrUkTnNsHxhDTxbLaGC6'),
+    illustration: null,
+    description: 'solo aleph',
+    mintAddress: new PublicKey('7pzqvSpdPbaFAJ757Zj3RS8UYRaugV21XzLiiYv6chFP'),
+    initialPoolTokenUsdValue: 279.442,
+  },
 ];
