@@ -430,4 +430,12 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('7pzqvSpdPbaFAJ757Zj3RS8UYRaugV21XzLiiYv6chFP'),
     initialPoolTokenUsdValue: 279.442,
   },
+  {
+    name: `goodluck`,
+    poolSeed: new PublicKey('8o6MsppAT7yzjkXd5zMPgqByqE6KZJNtnHDk8FX1KyCF'),
+    illustration: null,
+    description: 'TV',
+    mintAddress: new PublicKey('5zuzKnZqpR9Nz51nUgejrX4Z3Mnrfxn7zXkYX1cXNqnz'),
+    initialPoolTokenUsdValue: 10.724,
+  },
 ];
