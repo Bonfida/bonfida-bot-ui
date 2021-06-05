@@ -462,4 +462,20 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('128VhBmMJ8n4BCRk4BWMyUTTTdnQAmRVxiniUh36kivB'),
     initialPoolTokenUsdValue: 6212,
   },
+  {
+    name: `Ryto Granville Signal`,
+    poolSeed: new PublicKey('E6oU7AiKvJHvusTXKGvQgvxSbdid2BcSe3JUT2VTC2fg'),
+    illustration: null,
+    description: 'A Bot trades by Granville rules.',
+    mintAddress: new PublicKey('6guYuHQqc68vY8fqtd6KYSgPqqfagGSPYWu98E72fvA9'),
+    initialPoolTokenUsdValue: 1,
+  },
+  {
+    name: `Na Bot 2`,
+    poolSeed: new PublicKey('AkVrQXYdR11sh6sB9exxBwioDchggGM2k6gXjjKU9emb'),
+    illustration: null,
+    description: 'Simple + Smart = Na Bot 2',
+    mintAddress: new PublicKey('3VBDeEvNTEMhW3jDbAbQFfacaWqt66Tj2WNW3seyN4SD'),
+    initialPoolTokenUsdValue: 100.171,
+  },
 ];
