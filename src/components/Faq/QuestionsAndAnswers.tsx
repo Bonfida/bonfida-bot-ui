@@ -46,7 +46,7 @@ export const TV_TUTORIAL: Step[] = [
           </li>
           <li style={styles.margin}>
             Select the markets on which you want to trade, e.g <b>FIDA/USDC</b>.
-            Note that you can select several markets for a signle pool.{' '}
+            Note that you can select several markets for a single pool.{' '}
             <Emoji emoji="⚠️" />
             You cannot add a market to the pool after its creation.
           </li>

@@ -501,6 +501,14 @@ export const COMPETITION_BOTS: Pool[] = [
     description:
       'System to trade like I trade on FTX and BINANCE, buy and sell everything if time seams to me appropriate.',
     mintAddress: new PublicKey('2Kyiefimwb1zRoNxgrPVKWyp1wAJh9zSnBAX2AvAgYNz'),
-    initialPoolTokenUsdValue: 0.305,
+    initialPoolTokenUsdValue: 0.886,
+  },
+  {
+    name: `OldSchool 2`,
+    poolSeed: new PublicKey('CpAkcyejcYjRnQLvGBGebPpgg9bDK5kzmN3MetyRoJp5'),
+    illustration: null,
+    description: 'System to manage my investment in UBXT by trades',
+    mintAddress: new PublicKey('A6VcpLWtefrTKApnKLdBZgosS65dEHVJSpBnfgnaYPJv'),
+    initialPoolTokenUsdValue: 700.634,
   },
 ];
