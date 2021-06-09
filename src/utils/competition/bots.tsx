@@ -511,4 +511,12 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('A6VcpLWtefrTKApnKLdBZgosS65dEHVJSpBnfgnaYPJv'),
     initialPoolTokenUsdValue: 700.634,
   },
+  {
+    name: `迪迦奥特`,
+    poolSeed: new PublicKey('Hca2zb6HaHvJ4frssfpizrfKh9TCzDyAUo9GmXAFBaSZ'),
+    illustration: null,
+    description: '要保护好Solana星球，用光和我们的双手',
+    mintAddress: new PublicKey('54qmJcfpsJqZkLTcxPEX9k4GKN3c7VP9eweBwFPi4j99'),
+    initialPoolTokenUsdValue: 257.8,
+  },
 ];
