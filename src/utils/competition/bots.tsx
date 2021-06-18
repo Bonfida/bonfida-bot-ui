@@ -551,4 +551,12 @@ export const COMPETITION_BOTS: Pool[] = [
     mintAddress: new PublicKey('4Nv9CM7tTWmmqDL8P98qksTK7UX39Yi37vKqcy8doF22'),
     initialPoolTokenUsdValue: 147.816,
   },
+  {
+    name: `Yuan Bot(BTC/USDC)`,
+    poolSeed: new PublicKey('DoqG6MSS9Re5WYZgxjkSeiwzN1sWMCF59LFLyEddGCAJ'),
+    illustration: null,
+    description: `基于Super Trend趋势，结合StochRSI信号过滤。`,
+    mintAddress: new PublicKey('AtsnGXTnrdM4VsvsbR3oRvoyhB3Z3K4toutjpzfvtRL'),
+    initialPoolTokenUsdValue: 99,
+  },
 ];
