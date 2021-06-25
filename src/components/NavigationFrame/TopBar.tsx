@@ -77,15 +77,11 @@ const topBarElement = [
   },
   {
     name: 'help',
-    href: '/help',
+    href: 'https://docs.bonfida.org/help/bonfida-bots/faq',
   },
   {
     name: 'tradingview',
-    href: '/tradingview',
-  },
-  {
-    name: 'competition',
-    href: '/competition',
+    href: 'https://docs.bonfida.org/help/bonfida-bots/faq-bonfida-bots',
   },
 ];
 
@@ -166,7 +162,11 @@ const TopBar = () => {
                   disableFocusRipple
                   key={nanoid()}
                   className={classes.button}
-                  onClick={() => history.push(e.href)}
+                  onClick={() =>
+                    e.href.includes('https')
+                      ? window.open(e.href, '_blank')
+                      : history.push(e.href)
+                  }
                   style={{
                     color: selectedIndex === e.name ? '#BA0202' : '#393939',
                   }}
