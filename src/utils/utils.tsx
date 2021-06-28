@@ -1,21 +1,36 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Market, TOKEN_MINTS, MARKETS } from '@project-serum/serum';
-import { PublicKey, Connection, Account } from '@solana/web3.js';
+import {
+  PublicKey,
+  Connection,
+  Account,
+  TransactionInstruction,
+  SystemProgram,
+  SYSVAR_RENT_PUBKEY,
+} from '@solana/web3.js';
 import BN from 'bn.js';
 import { MAINNET_ENDPOINT } from './connection';
 import { AWESOME_TOKENS, AWESOME_MARKETS } from '@dr497/awesome-serum-markets';
 import { USE_POOLS } from './pools';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import useTheme from '@material-ui/core/styles/useTheme';
-import { SERUM_PROGRAM_ID } from '@bonfida/bot';
+import { SERUM_PROGRAM_ID, findAssociatedTokenAddress } from '@bonfida/bot';
 import bs58 from 'bs58';
 import crypto from 'crypto';
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 
 export const WRAPPED_SOL_MINT = 'So11111111111111111111111111111111111111112';
 
 const USE_MARKETS = [...MARKETS, ...AWESOME_MARKETS];
 
 const TOKENS = AWESOME_TOKENS.concat(TOKEN_MINTS);
+
+export const BUY_AND_BURN = new PublicKey(
+  '3oQzjfjzUkJ5qHsERk2JPEpAKo34dxAQjUriBqursfxU',
+);
+export const INSURANCE_FUND = new PublicKey(
+  '31LVSggbVz4VcwBSPdtK8HJ3Lt1cKTJUVQTRNNYMfqBq',
+);
 
 export const BONFIDA_API_URL = process.env.REACT_APP_BONFIDA_API_URL;
 export const BONFIDA_API_URL_PERFORMANCE =
@@ -508,4 +523,77 @@ export const getPoolUrl = (x: string) => {
     default:
       return x;
   }
+};
+
+export const ASSOCIATED_TOKEN_PROGRAM_ID: PublicKey = new PublicKey(
+  'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+);
+
+export const createAssociatedTokenAccount = async (
+  fundingAddress: PublicKey,
+  walletAddress: PublicKey,
+  splTokenMintAddress: PublicKey,
+): Promise<TransactionInstruction> => {
+  const associatedTokenAddress = await findAssociatedTokenAddress(
+    walletAddress,
+    splTokenMintAddress,
+  );
+  const keys = [
+    {
+      pubkey: fundingAddress,
+      isSigner: true,
+      isWritable: true,
+    },
+    {
+      pubkey: associatedTokenAddress,
+      isSigner: false,
+      isWritable: true,
+    },
+    {
+      pubkey: walletAddress,
+      isSigner: false,
+      isWritable: false,
+    },
+    {
+      pubkey: splTokenMintAddress,
+      isSigner: false,
+      isWritable: false,
+    },
+    {
+      pubkey: SystemProgram.programId,
+      isSigner: false,
+      isWritable: false,
+    },
+    {
+      pubkey: TOKEN_PROGRAM_ID,
+      isSigner: false,
+      isWritable: false,
+    },
+    {
+      pubkey: SYSVAR_RENT_PUBKEY,
+      isSigner: false,
+      isWritable: false,
+    },
+  ];
+  return new TransactionInstruction({
+    keys,
+    programId: ASSOCIATED_TOKEN_PROGRAM_ID,
+    data: Buffer.from([]),
+  });
+};
+
+export const findAssociatedTokenAccountAndCreate = async (
+  connection: Connection,
+  fundingAddress: PublicKey,
+  owner: PublicKey,
+  mint: PublicKey,
+  instructions: TransactionInstruction[],
+) => {
+  const associated = await findAssociatedTokenAddress(owner, mint);
+  const info = await connection.getAccountInfo(associated);
+  if (!!info) return instructions;
+  instructions.push(
+    await createAssociatedTokenAccount(fundingAddress, owner, mint),
+  );
+  return instructions;
 };

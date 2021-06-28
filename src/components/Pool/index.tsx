@@ -47,6 +47,9 @@ import {
   formatSeconds,
   useLocalStorageState,
   WRAPPED_SOL_MINT,
+  findAssociatedTokenAccountAndCreate,
+  BUY_AND_BURN,
+  INSURANCE_FUND,
 } from '../../utils/utils';
 import Emoji from '../Emoji';
 import { notify } from '../../utils/notifications';
@@ -410,10 +413,40 @@ const PoolInformation = ({
           message: 'Connect your wallet',
         });
       }
-      const instruction = await collectFees(connection, [poolSeed.toBuffer()]);
+      if (!poolInfo?.signalProvider || !poolInfo?.mintKey) {
+        return notify({ message: 'Try again' });
+      }
+
+      let instructions: TransactionInstruction[] = [];
+      // Check if accounts exist
+      instructions = await findAssociatedTokenAccountAndCreate(
+        connection,
+        wallet.publicKey,
+        poolInfo?.signalProvider,
+        poolInfo?.mintKey,
+        instructions,
+      );
+      instructions = await findAssociatedTokenAccountAndCreate(
+        connection,
+        wallet.publicKey,
+        BUY_AND_BURN,
+        poolInfo?.mintKey,
+        instructions,
+      );
+      instructions = await findAssociatedTokenAccountAndCreate(
+        connection,
+        wallet.publicKey,
+        INSURANCE_FUND,
+        poolInfo?.mintKey,
+        instructions,
+      );
+      const instructionsFees = await collectFees(connection, [
+        poolSeed.toBuffer(),
+      ]);
+      instructions.push(...instructionsFees);
       await sendTransaction({
         connection: connection,
-        transaction: new Transaction().add(...instruction),
+        transaction: new Transaction().add(...instructions),
         wallet: wallet,
       });
     } catch (err) {
@@ -630,8 +663,9 @@ export const PoolPanel = ({ poolSeed }: { poolSeed: string }) => {
   const balance = useBalanceForMint(tokenAccounts, mint);
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState<string | null>(null);
-  const [hasWrappedSol, setHasWrappedSol] =
-    useState<undefined | boolean>(false);
+  const [hasWrappedSol, setHasWrappedSol] = useState<undefined | boolean>(
+    false,
+  );
 
   const isAdmin = useMemo(
     () =>
