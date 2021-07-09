@@ -13,7 +13,6 @@ import {
   StrategySection,
 } from './ExplorePage';
 import Trans from '../components/Translation';
-import Emoji from '../components/Emoji';
 
 const useStyles = makeStyles({
   root: {
@@ -101,79 +100,13 @@ const ExploreBanner = () => {
   );
 };
 
-const CompetitionBanner = () => {
-  const classes = useStyles();
-  const smallScreen = useSmallScreen('lg');
-
-  return (
-    <FloatingCard>
-      <div className={classes.exploreBanner}>
-        <Grid
-          container
-          direction="row"
-          justify="space-around"
-          alignItems="center"
-          style={{ marginTop: 30 }}
-        >
-          <Grid item>
-            <Typography className={classes.title} variant="h1">
-              Bonfida x Serum
-              <br />
-              Trading Bot Competition
-            </Typography>
-            <ul style={{ marginLeft: 30 }}>
-              <li style={{ marginTop: 5 }}>
-                <Typography
-                  variant="body1"
-                  className={classes.competitionDetails}
-                >
-                  <strong>Registration:</strong> Open until 17th June
-                </Typography>
-              </li>
-              <li style={{ marginTop: 5 }}>
-                <Typography
-                  variant="body1"
-                  className={classes.competitionDetails}
-                >
-                  <strong>Competition:</strong> 24th May - 24th June
-                </Typography>
-              </li>
-              <li style={{ marginTop: 5 }}>
-                <Typography
-                  variant="body1"
-                  className={classes.competitionDetails}
-                >
-                  <strong>Prizes:</strong> 10K FIDA + 3K SRM + Solana Swag
-                </Typography>
-              </li>
-            </ul>
-            <CustomButton
-              onClick={() =>
-                (window.location.href = 'https://discord.gg/cj2jPQjZ')
-              }
-              style={{ marginLeft: 50, marginTop: 40 }}
-            >
-              Join the Discord
-            </CustomButton>
-          </Grid>
-          {!smallScreen && (
-            <Grid item>
-              <Emoji emoji="🏆" style={{ fontSize: 200 }} />
-            </Grid>
-          )}
-        </Grid>
-      </div>
-    </FloatingCard>
-  );
-};
-
 const HomePage = () => {
   const classes = useStyles();
   const history = useHistory();
   return (
     <>
       <div className={classes.root}>
-        <CompetitionBanner />
+        <ExploreBanner />
         <StrategySection
           h2="Super Trend Strategies"
           strategiesArray={SUPER_TRENDS_STRATEGIES}
