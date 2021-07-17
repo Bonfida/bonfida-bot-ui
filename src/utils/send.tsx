@@ -80,20 +80,37 @@ export async function sendTransaction({
   successMessage?: string;
   timeout?: number;
 }) {
-  const signedTransaction = await signTransaction({
-    transaction,
-    wallet,
-    signers,
-    connection,
-  });
-  return await sendSignedTransaction({
-    signedTransaction,
-    connection,
-    sendingMessage,
-    sentMessage,
-    successMessage,
-    timeout,
-  });
+  if (wallet.isProgramWallet) {
+    const signedTransaction = await covertToProgramWalletTransaction({
+      transaction,
+      wallet,
+      signers,
+      connection
+    });
+    return await sendSignedTransaction({
+      signedTransaction,
+      connection,
+      sendingMessage,
+      sentMessage,
+      successMessage,
+      timeout,
+    });
+  } else {
+    const signedTransaction = await signTransaction({
+      transaction,
+      wallet,
+      signers,
+      connection,
+    });
+    return await sendSignedTransaction({
+      signedTransaction,
+      connection,
+      sendingMessage,
+      sentMessage,
+      successMessage,
+      timeout,
+    });
+  }
 }
 
 export async function signTransaction({
@@ -115,6 +132,29 @@ export async function signTransaction({
     transaction.partialSign(...signers);
   }
   return await wallet.signTransaction(transaction);
+}
+
+async function covertToProgramWalletTransaction({
+  transaction,
+  wallet,
+  signers = [],
+  connection,
+
+}: {
+  transaction: Transaction,
+  wallet: any,
+  signers: Array<Account>;
+  connection: Connection,
+}) {
+  transaction.recentBlockhash = (
+    await connection.getRecentBlockhash("max")
+  ).blockhash;
+  transaction.feePayer = wallet.publicKey;
+  if (signers.length > 0) {
+    transaction = await wallet.convertToProgramWalletTransaction(transaction);
+    transaction.partialSign(...signers);
+  }
+  return transaction;
 }
 
 export async function signTransactions({

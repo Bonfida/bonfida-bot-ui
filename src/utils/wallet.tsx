@@ -13,12 +13,14 @@ import {
   LedgerWalletAdapter,
   SolongWalletAdapter,
   PhantomWalletAdapter,
+  BloctoWalletAdapter,
   MathWalletAdapter,
 } from '../wallet-adapters';
 import { useConnectionConfig } from '../utils/connection';
 import { useLocalStorageState } from '../utils/utils';
 import { notify } from '../utils/notifications';
 import { makeStyles } from '@material-ui/core/styles';
+import blocto from "../assets/wallets/blocto.png";
 
 const useStyles = makeStyles({
   button: {
@@ -51,6 +53,12 @@ export const WALLET_PROVIDERS = [
     url: 'https://www.phantom.app',
     icon: `https://www.phantom.app/img/logo.png`,
     adapter: PhantomWalletAdapter,
+  },
+  {
+    name: "Blocto",
+    url: "https://blocto.portto.io//",
+    icon: blocto,
+    adapter: BloctoWalletAdapter,
   },
   {
     name: 'sollet.io',
