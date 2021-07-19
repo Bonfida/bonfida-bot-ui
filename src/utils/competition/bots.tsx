@@ -1,5 +1,6 @@
 import { Pool } from '../pools';
 import { PublicKey } from '@solana/web3.js';
+import { ASSETS } from '../pools';
 
 export const COMPETITION_BOTS: Pool[] = [
   {
@@ -19,6 +20,7 @@ export const COMPETITION_BOTS: Pool[] = [
       'Earthshaker is a multi-strategy trading algorithm, utilizing a balanced mix of technical indicators and pattern recognition. The strategy trades on strong signals from the market based on volume, price action, and on-chain analysis. It uses dynamic stop losses in order to preserve capital, while also maximize gains.',
     mintAddress: new PublicKey('8PBnSc3QGMQTS4AugvvQmBtD4kyj9EY4SfL8R4J5pDRD'),
     initialPoolTokenUsdValue: 64.91,
+    mainAsset: 'BTC' as ASSETS,
   },
   {
     name: `Overhead Gains (Dreamcatcher)`,
@@ -28,6 +30,7 @@ export const COMPETITION_BOTS: Pool[] = [
       'Earthshaker is a multi-strategy trading algorithm, utilizing a balanced mix of technical indicators and pattern recognition. The strategy trades on strong signals from the market based on volume, price action, and on-chain analysis. It uses dynamic stop losses in order to preserve capital, while also maximize gains.',
     mintAddress: new PublicKey('2airCsQwvmUsnSpRF6dt2vm254hfQJqX3kS2oaUYwm4F'),
     initialPoolTokenUsdValue: 120,
+    mainAsset: 'ETH' as ASSETS,
   },
   {
     name: `Overhead Gains (Fireshaper)`,

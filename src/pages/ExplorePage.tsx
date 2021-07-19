@@ -42,6 +42,10 @@ const BARTBOT_STRATEGIES = USE_POOLS.filter(
   (p) => p.strategyType === STRATEGY_TYPES.BART,
 );
 
+export const OVERHEAD_STRATEGIES = USE_POOLS.filter(
+  (p) => p.name.includes('Dreamcatcher') || p.name.includes('Earthshaker'),
+);
+
 const useStyles = makeStyles({
   container: {
     marginTop: 50,
@@ -218,6 +222,10 @@ const ExplorerPage = () => {
           <Trans>Create Pool</Trans>
         </CustomButton>
       </Typography>
+      <StrategySection
+        h2={t('Overhead Strategies')}
+        strategiesArray={OVERHEAD_STRATEGIES}
+      />
       <StrategySection
         h2={t('Sentiment Strategy Pro [Benson]')}
         strategiesArray={BENSON_STRATEGIES}

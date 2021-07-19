@@ -11,6 +11,7 @@ import {
   RSI_STRATEGIES,
   SUPER_TRENDS_STRATEGIES,
   StrategySection,
+  OVERHEAD_STRATEGIES,
 } from './ExplorePage';
 import Trans from '../components/Translation';
 
@@ -107,6 +108,10 @@ const HomePage = () => {
     <>
       <div className={classes.root}>
         <ExploreBanner />
+        <StrategySection
+          h2="Overhead Strategies"
+          strategiesArray={OVERHEAD_STRATEGIES}
+        />
         <StrategySection
           h2="Super Trend Strategies"
           strategiesArray={SUPER_TRENDS_STRATEGIES}
