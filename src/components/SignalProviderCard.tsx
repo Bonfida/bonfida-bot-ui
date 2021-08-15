@@ -141,7 +141,7 @@ const CollectFeesButton = ({ poolSeed }: { poolSeed: string }) => {
               roundToDecimal(
                 (poolInfo?.feeRatio.toNumber() * 100) / Math.pow(2, 16),
                 3,
-              ).toString() + ' %'
+              )?.toString() + ' %'
             }
           />
         </>
@@ -366,10 +366,12 @@ const TradePanel = ({ poolSeed }: { poolSeed: string }) => {
         side,
         new Numberu64(
           market
-            .priceNumberToLots(roundToDecimal(parsedPrice, priceDecimalCount))
+            .priceNumberToLots(
+              roundToDecimal(parsedPrice, priceDecimalCount) || 0,
+            )
             .toNumber(),
         ),
-        roundToDecimal(parsedSize, sizeDecimalCount),
+        roundToDecimal(parsedSize, sizeDecimalCount) || 0,
         OrderType.ImmediateOrCancel,
         new Numberu64(0),
         SelfTradeBehavior.DecrementTake,
@@ -632,7 +634,7 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
                 (100 * userPoolTokenBalance?.toLocaleString()) /
                   poolBalance[0]?.uiAmount,
                 2,
-              ).toString() + '%'
+              )?.toString() + '%'
             : 0
         }
       />

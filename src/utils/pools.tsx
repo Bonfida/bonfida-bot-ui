@@ -18,7 +18,7 @@ import bs58 from 'bs58';
 import { getTokenPrice } from './markets';
 import { useEffect, useState } from 'react';
 import { useWallet } from './wallet';
-import { useTokenAccounts } from './tokens';
+import { useTokenAccounts, tokenNameFromMint } from './tokens';
 import { poolTitleForExtSigProvider } from './externalSignalProviders';
 import { abbreviateString, apiGet, timeConverter } from './utils';
 import { USE_MARKETS } from './markets';
@@ -233,7 +233,7 @@ const bartBotDescription = () => {
 export const USE_POOLS: Pool[] = [
   // Super Trend
   {
-    name: 'BTC Super Trend',
+    name: 'Super Trend',
     poolSeed: new PublicKey('CmGfYkZD7sXp3tCUNKdiUHV2cg2KscqAoY6EMKehNM4S'),
     illustration: null,
     description: superTrendDescription('BTC/USDC', '4H'),
@@ -244,7 +244,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'ETH Super Trend',
+    name: 'Super Trend',
     poolSeed: new PublicKey('Fm9m2muT5pSSsugiq8Ro7XVBnQoPopZpQVLDKgqY71LJ'),
     illustration: null,
     description: superTrendDescription('ETH/USDC', '4H'),
@@ -255,7 +255,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'SRM Super Trend',
+    name: 'Super Trend',
     poolSeed: new PublicKey('8uSTbreQ9ywGw3AYA7yP74KBsa78Y3wEEiDfnBKDFss'),
     illustration: null,
     description: superTrendDescription('SRM/USDC', '4H'),
@@ -266,7 +266,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'FIDA Super Trend',
+    name: 'Super Trend',
     poolSeed: new PublicKey('9Wrpzph39RPbkKtgap3xak4Dga7SgHedLwWEcTF2zSpV'),
     illustration: null,
     description: superTrendDescription('FIDA/USDC', '4H'),
@@ -290,7 +290,7 @@ export const USE_POOLS: Pool[] = [
   },
   // Volatility Expanson
   {
-    name: 'Volatility Expansion BTC',
+    name: 'Volatility Expansion',
     poolSeed: new PublicKey('5tLDije3S75K8wgwnuk941cQuJGKu6EVAgEwN6jB6WVk'),
     illustration: dca,
     description: volExpansionDescription('4H', 'BTC/USDC'),
@@ -302,7 +302,7 @@ export const USE_POOLS: Pool[] = [
   },
   // RSI
   {
-    name: 'RSI BTC',
+    name: 'RSI',
     poolSeed: new PublicKey('CShN6X5S8vKkbECJzZj6M1cKBiMGxKkZyJBmzkBRbUJA'),
     illustration: dca,
     description: rsiDescription('BTC/USDC', '4H'),
@@ -313,7 +313,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'RSI ETH',
+    name: 'RSI',
     poolSeed: new PublicKey('HgBwzZPEQi1fmj9UKdDuHMry15seykh9KQiTnMR5ZkF7'),
     illustration: dca,
     description: rsiDescription('ETH/USDC', '4H'),
@@ -324,7 +324,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'RSI SRM',
+    name: 'RSI',
     poolSeed: new PublicKey('69aKAxbteNuPYeEamWSSsY3QQ58SxW275xftRJHW9wmX'),
     illustration: dca,
     description: rsiDescription('SRM/USDC', '4H'),
@@ -335,7 +335,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'RSI FIDA',
+    name: 'RSI',
     poolSeed: new PublicKey('Bv3Acsiojxtj15f2tADwRA2VyLsQVm6CQqpaRsH8wHiN'),
     illustration: dca,
     description: rsiDescription('FIDA/USDC', '4H'),
@@ -347,7 +347,7 @@ export const USE_POOLS: Pool[] = [
   },
   // MACD Strategies
   {
-    name: 'MACD BTC',
+    name: 'MACD',
     poolSeed: new PublicKey('CwAcCoFZRxUppbwU1xp5qv8hUqNvDWasuRdAibKLXnj8'),
     illustration: dca,
     description: macdDescription('BTC/USDC', 'Daily'),
@@ -358,7 +358,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'MACD ETH',
+    name: 'MACD',
     poolSeed: new PublicKey('7nmoqCBGzHcFgpiDCx25kJp4zLnUMdEnb1k3kAN36YuK'),
     illustration: dca,
     description: macdDescription('ETH/USDC', 'Daily'),
@@ -369,7 +369,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'MACD SRM',
+    name: 'MACD',
     poolSeed: new PublicKey('2ekyVKS2Sq54mPUwx4eybA3gnrHKR9nBZP6DFRDcZn9j'),
     illustration: dca,
     description: macdDescription('SRM/USDC', 'Daily'),
@@ -380,7 +380,7 @@ export const USE_POOLS: Pool[] = [
     initialPoolTokenUsdValue: 1,
   },
   {
-    name: 'MACD FIDA',
+    name: 'MACD',
     poolSeed: new PublicKey('3u6zrpaW9uRfpVqZYwCAiQLvQpiY1JmCCdvZV8ydro4r'),
     illustration: dca,
     description: macdDescription('FIDA/USDC', 'Daily'),
@@ -392,7 +392,7 @@ export const USE_POOLS: Pool[] = [
   },
   // CompendiumFi
   {
-    name: 'CompendiuML Bitcoin 4H',
+    name: 'CompendiuML 4H',
     poolSeed: new PublicKey('77WNkckkVG1vGePs35azez8C8PqcqwepExZG1kFzpm2m'),
     illustration: null,
     description: compendiumDescription(),
@@ -402,7 +402,7 @@ export const USE_POOLS: Pool[] = [
     strategyType: STRATEGY_TYPES.COMPENDIUML,
   },
   {
-    name: 'CompendiuML SOL 4H',
+    name: 'CompendiuML 4H',
     poolSeed: new PublicKey('HLSW8oP7aCzUbkBYfYqXTmHNRx1KRGATKuoje1xG8pVb'),
     illustration: null,
     description: compendiumDescription(),
@@ -659,4 +659,41 @@ export const useHistoricalPerformance = (
     });
   };
   return useAsyncData(get, `getHistoricalPerformance-${poolSeed}`);
+};
+
+export const usePoolStats = (pool: Pool) => {
+  const [poolBalance, poolBalanceLoaded] = usePoolBalance(pool.poolSeed);
+  const poolUsdValue = usePoolUsdBalance(poolBalance ? poolBalance[1] : null);
+  let tokenSupply;
+  let poolTokenValue;
+  let inceptionPerformance;
+  let assets;
+  if (
+    poolBalance &&
+    poolBalance[0] &&
+    poolBalance[0]?.uiAmount &&
+    poolBalance[1]
+  ) {
+    tokenSupply = poolBalance[0]?.uiAmount;
+    poolTokenValue = poolUsdValue / poolBalance[0]?.uiAmount;
+    assets = poolBalance[1].map(
+      (asset) => tokenNameFromMint(asset.mint) || asset.mint,
+    );
+    if (pool?.initialPoolTokenUsdValue) {
+      inceptionPerformance =
+        100 *
+        (poolUsdValue /
+          poolBalance[0]?.uiAmount /
+          pool?.initialPoolTokenUsdValue -
+          1);
+    }
+  }
+
+  return {
+    tokenSupply: tokenSupply,
+    poolTokenValue: poolTokenValue,
+    usdValue: poolUsdValue,
+    inceptionPerformance: inceptionPerformance,
+    assets: assets,
+  };
 };

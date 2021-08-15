@@ -625,7 +625,7 @@ const PoolInformation = ({
                 roundToDecimal(
                   (poolInfo?.feeRatio.toNumber() * 100) / Math.pow(2, 16),
                   3,
-                ).toString() + ' %'
+                )?.toString() + ' %'
               }
             />
             {connected && (

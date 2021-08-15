@@ -8,13 +8,6 @@ import FloatingCard from '../FloatingCard';
 import Trans from '../Translation';
 
 const styles = {
-  root: {
-    display: 'flex',
-    minHeight: '100vh',
-    flexDirection: 'column',
-    overflowY: 'scroll',
-    overflowX: 'hidden',
-  } as React.CSSProperties,
   terms: {
     fontWeight: 600,
   },
@@ -70,11 +63,20 @@ const NavigationFrame = ({ children }: { children: React.ReactNode }) => {
   }
   return (
     <>
-      <div style={styles.root}>
-        <TopBar />
-        <div style={{ flexGrow: 1 }}>{children}</div>
-        <Footer />
+      <TopBar />
+      <div
+        style={{
+          flexGrow: 1,
+          overflowX: 'hidden',
+          overflowY: 'hidden',
+          width: '100%',
+        }}
+      >
+        {children}
       </div>
+      <footer>
+        <Footer />
+      </footer>
     </>
   );
 };

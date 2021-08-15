@@ -69,9 +69,10 @@ export function floorToDecimal(
 }
 
 export function roundToDecimal(
-  value: number,
+  value: number | undefined | null,
   decimals: number | undefined | null,
 ) {
+  if (!value) return null;
   return decimals ? Math.round(value * 10 ** decimals) / 10 ** decimals : value;
 }
 
