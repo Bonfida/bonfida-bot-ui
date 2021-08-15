@@ -72,7 +72,7 @@ const useStyles = makeStyles({
   topLight: {
     position: 'absolute',
     filter: 'blur(40px)',
-    top: -290,
+    top: -90,
     left: -150,
     zIndex: -1,
   },
@@ -292,13 +292,17 @@ const AssetAndIcon = ({ asset }: { asset: string }) => {
 const RowOneAsset = ({ pool }: { pool: Pool }) => {
   const classes = useStyles();
   const poolStats = usePoolStats(pool);
+  const history = useHistory();
   const perf = roundToDecimal(poolStats?.inceptionPerformance, 1);
   const assets = poolStats?.assets?.filter((a) => a !== 'USDC');
   if (!assets) {
     return null;
   }
   return (
-    <tr className={classes.tr}>
+    <tr
+      className={classes.tr}
+      onClick={() => history.push(`pool/${pool.poolSeed.toBase58()}`)}
+    >
       <td className={classes.td}>
         <Typography className={classes.rowText}>{pool.name}</Typography>
       </td>
@@ -366,6 +370,7 @@ const MultiAssetsRow = ({
 
 const MultiAssetInnerRow = ({ pool }: { pool: Pool }) => {
   const classes = useStyles();
+  const history = useHistory();
   const poolStats = usePoolStats(pool);
   const perf = roundToDecimal(poolStats?.inceptionPerformance, 1);
   const assets = poolStats?.assets?.filter((a) => a !== 'USDC');
@@ -373,7 +378,10 @@ const MultiAssetInnerRow = ({ pool }: { pool: Pool }) => {
     return null;
   }
   return (
-    <tr className={classes.trMultipleAssets}>
+    <tr
+      className={classes.trMultipleAssets}
+      onClick={() => history.push(`pool/${pool.poolSeed.toBase58()}`)}
+    >
       <td className={classes.tdMultipleAssets}></td>
       <td className={classes.tdMultipleAssets}>
         <Typography className={classes.rowText}>
@@ -408,7 +416,6 @@ const MultiAssetInnerRow = ({ pool }: { pool: Pool }) => {
 
 const ExplorerPage = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   return (
     <>
