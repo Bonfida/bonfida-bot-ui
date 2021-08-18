@@ -1,5 +1,4 @@
 import React from 'react';
-import FloatingCard from '../components/FloatingCard';
 import { TradingViewCard } from '../components/Faq/FaqCard';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -17,9 +16,7 @@ const TradingViewPage = () => {
   return (
     <Grid container direction="row" justify="center">
       <div className={classes.container}>
-        <FloatingCard>
-          <TradingViewCard />
-        </FloatingCard>
+        <TradingViewCard />
       </div>
     </Grid>
   );

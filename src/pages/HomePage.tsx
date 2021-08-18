@@ -10,7 +10,6 @@ import bottomLight from '../assets/components/Homepage/light-bottom.svg';
 import robot from '../assets/icons/illustrations/robot.svg';
 import Link from '../components/Link';
 import { USE_POOLS, Pool, usePoolStats } from '../utils/pools';
-import CreatePoolCard from '../components/CreatePoolCard';
 
 const SELECTED_POOL = USE_POOLS.find((p) => p.name.includes('Dreamcatcher'));
 

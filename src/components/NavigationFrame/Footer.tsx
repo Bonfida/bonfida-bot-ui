@@ -39,9 +39,9 @@ const useStyles = makeStyles({
 });
 
 const INTERNAL_LINKS = [
-  { name: 'Trade', url: '/trade/BTCUSDC' },
-  { name: 'Nodes', url: '/nodes' },
-  { name: 'Leaderboard', url: '/leaderboard' },
+  { name: 'Home', url: '/' },
+  { name: 'Explore', url: '/explore' },
+  { name: 'My pools', url: '/my-pools' },
 ];
 
 const EXTERNAL_LINKS = [

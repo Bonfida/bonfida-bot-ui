@@ -6,7 +6,6 @@ import { PublicKey, Connection, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { useWallet } from '../utils/wallet';
 import { sendTransaction } from '../utils/send';
 import Wallet from '@project-serum/sol-wallet-adapter';
-import CustomButton from '../components/CustomButton';
 import {
   makeCloseAccountTransaction,
   makeCreateWrappedNativeAccountTransaction,
@@ -15,28 +14,32 @@ import { useTokenAccounts } from '../utils/tokens';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
-import FloatingCard from '../components/FloatingCard';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Typography, Grid } from '@material-ui/core';
 import { abbreviateString } from '../utils/utils';
 import { nanoid } from 'nanoid';
-import TextField from '@material-ui/core/TextField';
 import { notify } from '../utils/notifications';
 import { useTranslation } from 'react-i18next';
 import Trans from '../components/Translation';
+import '../index.css';
+import { CssTextField } from '../components/MarketInput';
 
 const useStyles = makeStyles({
   h2: {
     fontSize: 26,
+    color: 'white',
   },
   select: {
     width: '100%',
     paddingTop: 14,
+    border: '1px solid',
+    borderColor: '#C8CCD6',
   },
   h3: {
     fontSize: 20,
     marginTop: 30,
     marginBottom: 20,
+    color: 'white',
   },
   container: {
     width: '50%',
@@ -75,7 +78,8 @@ const SelectAmount = ({ amount, setAmount }) => {
   };
   return (
     <FormControl>
-      <TextField
+      <CssTextField
+        variant="outlined"
         disabled={!connected}
         value={amount}
         onChange={onChange}
@@ -122,9 +126,9 @@ const SolWrapper = () => {
           <SelectAmount amount={amount} setAmount={setAmount} />
         </Grid>
         <Grid item>
-          <CustomButton onClick={onClick}>
+          <button onClick={onClick}>
             <Trans>Wrapp</Trans>
-          </CustomButton>
+          </button>
         </Grid>
       </Grid>
     </>
@@ -149,6 +153,7 @@ const SelectAccount = ({
           <Trans>Wrapped SOL Account</Trans>
         </InputLabel>
         <Select
+          variant="outlined"
           disabled={!connected || noWrappedAccount}
           className={classes.select}
           value={selectedAccount}
@@ -156,7 +161,8 @@ const SelectAccount = ({
         >
           {tokenAccounts?.map((e) => {
             const pubkey = e.pubkey;
-            const balance = e.account.data.parsed.info.tokenAmount.uiAmount;
+            const balance =
+              e?.account?.data?.parsed?.info?.tokenAmount?.uiAmount;
             return (
               <MenuItem key={nanoid()} value={pubkey}>
                 {abbreviateString(e.pubkey)} ({balance})
@@ -173,7 +179,7 @@ const SolUnwrapper = () => {
   const classes = useStyles();
   const connection = useConnection();
   const { wallet, connected } = useWallet();
-  const [tokenAccounts] = useTokenAccounts([NATIVE_MINT]);
+  const tokenAccounts = useTokenAccounts([NATIVE_MINT]);
   const [selectedAccount, setSelectedAccount] = useState<null | string>(null);
 
   const onClick = async () => {
@@ -221,9 +227,9 @@ const SolUnwrapper = () => {
           />
         </Grid>
         <Grid item>
-          <CustomButton onClick={onClick}>
+          <button onClick={onClick}>
             <Trans>Unwrap</Trans>
-          </CustomButton>
+          </button>
         </Grid>
       </Grid>
     </>
@@ -234,8 +240,8 @@ const WrapperPage = () => {
   const classes = useStyles();
   return (
     <Grid container justify="center">
-      <div className={classes.container}>
-        <FloatingCard>
+      <div className={classes.container} style={{ margin: 40 }}>
+        <div className="fancy-card" style={{ padding: 20 }}>
           <Typography className={classes.h2} variant="h2" align="center">
             <Trans>SOL Wrapper/Unwrapper</Trans>
           </Typography>
@@ -253,7 +259,7 @@ const WrapperPage = () => {
               <SolUnwrapper />
             </Grid>
           </Grid>
-        </FloatingCard>
+        </div>
       </div>
     </Grid>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Input, TextField } from '@material-ui/core';
+import { Input, Select, TextField } from '@material-ui/core';
 import { USE_MARKETS } from '../utils/markets';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 

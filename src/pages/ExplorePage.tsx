@@ -124,9 +124,6 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    '&:hover': {
-      cursor: 'pointer',
-    },
   },
   assetContainer: {
     display: 'flex',
