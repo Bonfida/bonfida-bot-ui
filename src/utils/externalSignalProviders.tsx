@@ -38,106 +38,42 @@ export const getSignalProviderByName = (name: string) => {
 export const EXTERNAL_SIGNAL_PROVIDERS: ExternalSignalProvider[] = [
   {
     name: 'Weekly DCA (8km...hqa)',
-    displayName: 'Custom Weekly DCA',
+    displayName: 'DCA weekly',
     pubKey: new PublicKey('8km6prR9BNjvZFVGRh7YoU2PnsQPn7XnVeYKJfWJvhqa'),
     description: (
       <>
-        <Typography
-          align="center"
-          variant="body1"
-          style={styles.descriptionTitle}
-        >
-          <Trans>Weekly DCA strategy:</Trans>
-        </Typography>
-        <Typography
-          align="center"
-          variant="body1"
-          style={styles.descriptionText}
-        >
-          <Trans>
-            Every Sunday at 08:00 UTC, the pool will use 10% of the quote
-            currency contained in the pool to perform a DCA strategy on each
-            market.
-          </Trans>
-        </Typography>
+        Every Sunday at 08:00 UTC, the pool will use 10% of the quote currency
+        contained in the pool to perform a DCA strategy on each market.
       </>
     ),
   },
   {
     name: 'Monthly DCA (9vs...eCP)',
-    displayName: 'Custom Monthly DCA',
+    displayName: 'DCA monthly',
     pubKey: new PublicKey('9vsePNS3HfZtLHoP4tPCpa16wdq19DJWzifuMjX7keCP'),
     description: (
       <>
-        <Typography
-          align="center"
-          variant="body1"
-          style={styles.descriptionTitle}
-        >
-          <Trans>Monthly DCA strategy:</Trans>
-        </Typography>
-        <Typography
-          align="center"
-          variant="body1"
-          style={styles.descriptionText}
-        >
-          <Trans>
-            On the 1st of each month 08:00 UTC, the pool will use 10% of the
-            quote currency contained in the pool to perform a DCA strategy on
-            each market.
-          </Trans>
-        </Typography>
+        On the 1st of each month 08:00 UTC, the pool will use 10% of the quote
+        currency contained in the pool to perform a DCA strategy on each market.
       </>
     ),
   },
   {
     name: 'Daily DCA (Fuk...Z4x)',
-    displayName: 'Custom Daily DCA',
+    displayName: 'DCA daily',
     pubKey: new PublicKey('FukKpDC8AX76sHjU8p717qUneDgpR35nHyFjqT8LaZ4x'),
     description: (
       <>
-        <Typography
-          align="center"
-          variant="body1"
-          style={styles.descriptionTitle}
-        >
-          <Trans>Daily DCA strategy:</Trans>
-        </Typography>
-        <Typography
-          align="center"
-          variant="body1"
-          style={styles.descriptionText}
-        >
-          <Trans>
-            Every day at 08:00 UTC, the pool will use 10% of the quote currency
-            contained in the pool to perform a DCA strategy on each market.
-          </Trans>
-        </Typography>
+        Every day at 08:00 UTC, the pool will use 10% of the quote currency
+        contained in the pool to perform a DCA strategy on each market.
       </>
     ),
   },
   {
     name: 'TradingView Alerts',
-    displayName: 'Custom TradingView Alert',
+    displayName: 'TradingView',
     pubKey: new PublicKey('3hhmaQycsGNEocctmkCnTLgZboNeF7bM3DARB63N2BeA'),
-    description: (
-      <>
-        <Typography
-          align="center"
-          variant="body1"
-          style={styles.descriptionTitle}
-        >
-          <Trans>TradingView Alerts</Trans>
-        </Typography>
-        <Typography
-          align="center"
-          variant="body1"
-          style={styles.descriptionText}
-        >
-          <Trans>Trade on Serum using your own custom TradingView Alerts</Trans>
-        </Typography>
-      </>
-    ),
+    description: <>Trade on Serum using your own custom TradingView Alerts</>,
   },
 ];
 

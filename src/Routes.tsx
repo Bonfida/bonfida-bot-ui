@@ -5,17 +5,12 @@ import { useSnackbar } from 'notistack';
 import SnackbarUtils from './utils/SnackbarUtils';
 import NavigationFrame from './components/NavigationFrame';
 import PoolPage from './pages/PoolPage';
-import FaqPage from './pages/FaqPage';
-import BalancesPage from './pages/BalancesPage';
 import ExplorePage from './pages/ExplorePage';
-import CreatePoolPage from './pages/CreatePoolPage';
-import SignalProviderPage from './pages/SignalProviderPage';
 import MyPoolPage from './pages/MyPoolPage';
 import TradingViewPage from './pages/TradingViewPage';
 import TradingViewMessageGeneratorPage from './pages/TradingViewMessageGeneratorPage';
 import WrapperPage from './pages/WrapperPage';
 import { ASSETS, STRATEGY_TYPES, USE_POOLS } from './utils/pools';
-import CompetitionPage from './pages/CompetitionPage';
 
 const COMPENDIUM_BTC = USE_POOLS.find(
   (p) =>
@@ -45,22 +40,14 @@ export default function Routes() {
       <NavigationFrame>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/help" component={FaqPage} />
-          <Route extact path="/balances" component={BalancesPage} />
           <Route extact path="/explore" component={ExplorePage} />
-          <Route extact path="/create" component={CreatePoolPage} />
           <Route exact path="/tradingview" component={TradingViewPage} />
           <Route exact path="/wrapper" component={WrapperPage} />
-          <Route
+          {/* <Route
             exact
             path="/tradingview-generator"
             component={TradingViewMessageGeneratorPage}
-          />
-          <Route
-            extact
-            path="/signal-provider/:poolSeed"
-            component={SignalProviderPage}
-          />
+          /> */}
           <Route extact path="/my-pools" component={MyPoolPage} />
           <Route exact path="/pool/:poolSeed">
             <PoolPage />
@@ -77,7 +64,6 @@ export default function Routes() {
           <Route exact path="/bart-btc">
             <Redirect to={`/pool/${BART_BTC?.poolSeed}`} />
           </Route>
-          <Route exact path="/competition" component={CompetitionPage} />
         </Switch>
       </NavigationFrame>
     </HashRouter>

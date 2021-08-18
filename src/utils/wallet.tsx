@@ -13,6 +13,7 @@ import {
   LedgerWalletAdapter,
   SolongWalletAdapter,
   PhantomWalletAdapter,
+  SolflareExtensionWalletAdapter,
   BloctoWalletAdapter,
   MathWalletAdapter,
 } from '../wallet-adapters';
@@ -20,18 +21,24 @@ import { useConnectionConfig } from '../utils/connection';
 import { useLocalStorageState } from '../utils/utils';
 import { notify } from '../utils/notifications';
 import { makeStyles } from '@material-ui/core/styles';
-import blocto from "../assets/wallets/blocto.png";
+import blockto from '../assets/wallets/blocto.png';
+import solflare from '../assets/wallets/solflare.svg';
 
 const useStyles = makeStyles({
-  button: {
-    color: 'white',
-    background: 'transparent',
-    borderRadius: 5,
-    height: '50px',
-    border: '2px solid',
-    borderColor: '#5C1864',
+  buttonContainer: {
+    background: 'linear-gradient(135deg, #60C0CB 18.23%, #6868FC 100%)',
+    borderRadius: 25,
     width: 250,
-    padding: 4,
+  },
+  button: {
+    background: 'linear-gradient(135deg, rgba(19, 30, 48, 0.5) 0%, #0F0F11 0%)',
+    margin: 1,
+    borderRadius: 25,
+    width: 248,
+    '&:hover': {
+      background:
+        'linear-gradient(135deg, rgba(19, 30, 48, 0.5) 0%, #0F0F11 0%)',
+    },
   },
   modalTitle: {
     color: 'white',
@@ -42,6 +49,17 @@ const useStyles = makeStyles({
   img: {
     height: 30,
     marginTop: 4,
+  },
+  coloredText: {
+    textTransform: 'capitalize',
+    fontWeight: 400,
+    backgroundImage: 'linear-gradient(135deg, #60C0CB 18.23%, #6868FC 100%)',
+    backgroundClip: 'text',
+    color: '#60C0CB',
+    '-webkit-background-clip': 'text',
+    '-moz-background-clip': 'text',
+    '-webkit-text-fill-color': 'transparent',
+    '-moz-text-fill-color': 'transparent',
   },
 });
 
@@ -55,9 +73,9 @@ export const WALLET_PROVIDERS = [
     adapter: PhantomWalletAdapter,
   },
   {
-    name: "Blocto",
-    url: "https://blocto.portto.io//",
-    icon: blocto,
+    name: 'Blocto',
+    url: 'https://blocto.portto.io//',
+    icon: blockto,
     adapter: BloctoWalletAdapter,
   },
   {
@@ -68,25 +86,13 @@ export const WALLET_PROVIDERS = [
   {
     name: 'Solflare',
     url: 'https://solflare.com/access-wallet',
-    icon: `${ASSET_URL}/solflare.svg`,
+    icon: solflare,
   },
   {
-    name: 'Ledger',
-    url: 'https://www.ledger.com',
-    icon: `${ASSET_URL}/ledger.svg`,
-    adapter: LedgerWalletAdapter,
-  },
-  {
-    name: 'Solong',
-    url: 'https://www.solong.com',
-    icon: `${ASSET_URL}/solong.png`,
-    adapter: SolongWalletAdapter,
-  },
-  {
-    name: 'MathWallet',
-    url: 'https://www.mathwallet.org',
-    icon: `${ASSET_URL}/mathwallet.svg`,
-    adapter: MathWalletAdapter,
+    name: 'Solflare Extension',
+    url: 'https://www.solflare.com',
+    icon: solflare,
+    adapter: SolflareExtensionWalletAdapter,
   },
 ];
 
@@ -188,7 +194,7 @@ export function WalletProvider({ children = null as any }) {
       }}
     >
       {children}
-      <Modal open={isModalVisible} setOpen={setIsModalVisible}>
+      <Modal openModal={isModalVisible} setOpen={setIsModalVisible}>
         <Typography className={classes.modalTitle} align="center">
           Connect to a wallet
         </Typography>
@@ -199,7 +205,7 @@ export function WalletProvider({ children = null as any }) {
           direction="column"
           spacing={2}
         >
-          {WALLET_PROVIDERS.map((provider) => {
+          {WALLET_PROVIDERS.map((provider, i) => {
             const onClick = function () {
               setProviderUrl(provider.url);
               setAutoConnect(true);
@@ -207,15 +213,25 @@ export function WalletProvider({ children = null as any }) {
             };
 
             return (
-              <Grid item>
-                <Button className={classes.button} onClick={onClick}>
-                  <Grid container justify="space-around" alignItems="center">
-                    <Grid item>{provider.name}</Grid>
-                    <Grid item>
-                      <img src={provider.icon} className={classes.img} alt="" />
+              <Grid item key={`wallet-provider-${provider.name}`}>
+                <div className={classes.buttonContainer}>
+                  <Button className={classes.button} onClick={onClick}>
+                    <Grid container justify="space-around" alignItems="center">
+                      <Grid item>
+                        <Typography className={classes.coloredText}>
+                          {provider.name}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img
+                          src={provider.icon}
+                          className={classes.img}
+                          alt=""
+                        />
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Button>
+                  </Button>
+                </div>
               </Grid>
             );
           })}

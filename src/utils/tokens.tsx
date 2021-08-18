@@ -16,6 +16,8 @@ import { sendTransaction, createTokenAccountTransaction } from './send';
 import { rpcRequest } from './utils';
 import { TOKEN_MINTS } from '@project-serum/serum';
 import { AWESOME_TOKENS } from '@dr497/awesome-serum-markets';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export let USE_TOKENS = TOKEN_MINTS;
 
@@ -81,35 +83,6 @@ export const useSolBalance = () => {
   };
 
   return useAsyncData(getSolBalance, tuple('getSolBalance', wallet, connected));
-};
-
-export const useTokenAccounts = (mint?: string) => {
-  const { wallet, connected } = useWallet();
-  const getTokenAccounts = async () => {
-    if (!connected) {
-      return null;
-    }
-    let accounts = await getProgramAccounts(wallet?.publicKey);
-    let associatedAccounts: any[] = [];
-    for (let acc of accounts) {
-      const associatedAcc = await findAssociatedTokenAddress(
-        wallet.publicKey,
-        new PublicKey(acc.account.data.parsed.info.mint),
-      );
-      if (acc.pubkey === associatedAcc.toBase58()) {
-        associatedAccounts.push(acc);
-      }
-    }
-    if (mint) {
-      return accounts.filter((e) => e.account.data.parsed.info.mint === mint);
-    }
-    return accounts;
-  };
-
-  return useAsyncData(
-    getTokenAccounts,
-    tuple('getTokenAccounts', wallet, connected),
-  );
 };
 
 export const findUserAccountsForMint = (tokenAccounts: any, mint: string) => {
@@ -273,16 +246,29 @@ export const useBalanceForAddress = (
 };
 
 export const useBalanceForMint = (
-  tokenAccounts: any,
+  owner: string | null | undefined,
   mint: string | null | undefined,
 ) => {
-  if (!mint) {
-    return null;
-  }
-  const balance = tokenAccounts?.find(
-    (acc) => acc.account.data.parsed.info.mint === mint,
-  )?.account.data.parsed.info.tokenAmount.uiAmount;
-  return balance;
+  const connection = useConnection();
+
+  const fn = async () => {
+    if (!mint || !owner) {
+      return;
+    }
+    const tokenAccount = await findAssociatedTokenAddress(
+      new PublicKey(owner),
+      new PublicKey(mint),
+    );
+    const tokenAccountInfo = await connection.getParsedAccountInfo(
+      tokenAccount,
+    );
+    if (!tokenAccountInfo.value?.data) {
+      return 0;
+    }
+    // @ts-ignore
+    return tokenAccountInfo.value?.data.parsed.info.tokenAmount.uiAmount;
+  };
+  return useAsyncData(fn, tuple('useBalanceForMint', mint, owner));
 };
 
 export const decimalsFromMint = async (
@@ -296,4 +282,57 @@ export const decimalsFromMint = async (
     throw new Error('Invalid mint');
   }
   return decimals;
+};
+
+// export const useTokenAccounts = (mint?: string) => {
+//   const { wallet, connected } = useWallet();
+//   const getTokenAccounts = async () => {
+//     if (!connected) {
+//       return null;
+//     }
+//     let accounts = await getProgramAccounts(wallet?.publicKey);
+//     let associatedAccounts: any[] = [];
+//     for (let acc of accounts) {
+//       const associatedAcc = await findAssociatedTokenAddress(
+//         wallet.publicKey,
+//         new PublicKey(acc.account.data.parsed.info.mint),
+//       );
+//       if (acc.pubkey === associatedAcc.toBase58()) {
+//         associatedAccounts.push(acc);
+//       }
+//     }
+//     if (mint) {
+//       return accounts.filter((e) => e.account.data.parsed.info.mint === mint);
+//     }
+//     return accounts;
+//   };
+
+//   return useAsyncData(
+//     getTokenAccounts,
+//     tuple('getTokenAccounts', wallet, connected),
+//   );
+// };
+
+export const useTokenAccounts = (mints: PublicKey[] | undefined | null) => {
+  const { wallet, connected } = useWallet();
+  const [accounts, setAccounts] = useState<
+    { address: PublicKey; mint: PublicKey }[]
+  >([]);
+  useEffect(() => {
+    const fn = async () => {
+      if (!connected || !mints || mints.length === 0) {
+        return;
+      }
+      const accounts = await Promise.all(
+        mints.map((m) => findAssociatedTokenAddress(wallet.publicKey, m)),
+      );
+      let results: { address: PublicKey; mint: PublicKey }[] = [];
+      for (let i = 0; i < mints.length; i++) {
+        results.push({ address: accounts[i], mint: mints[i] });
+      }
+      setAccounts(results);
+    };
+    fn();
+  }, [mints]);
+  return accounts;
 };

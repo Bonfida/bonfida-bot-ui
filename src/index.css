@@ -11,3 +11,36 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.fancy-card {
+  position: relative;
+}
+.fancy-card::before {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  padding: 1px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  box-shadow: 0px 4px 22px rgba(0, 0, 0, 0.17), 0px 15px 25px rgba(0, 0, 0, 0.1);
+  background-blend-mode: soft-light;
+  border: 1px solid;
+  background: linear-gradient(
+    135deg,
+    #6ffbff 0%,
+    rgba(167, 253, 255, 0.25) 54.69%,
+    rgba(255, 150, 252, 0.25) 66.15%,
+    #ff72f9 100%
+  );
+}
+
+@font-face {
+  font-family: 'Rota';
+  src: local('Rota'), url(./assets/fonts/rota-regular.ttf) format('truetype');
+}

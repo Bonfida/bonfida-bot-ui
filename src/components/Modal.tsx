@@ -1,30 +1,68 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import MuiModal from '@material-ui/core/Modal';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
-const useStyles = makeStyles({
-  modal: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    background: '#1C274F',
-    border: '1px solid #1C274F',
-    boxShadow: '0px 4px 12px rgba(19, 26, 53, 0.25)',
-    borderRadius: 4,
-  },
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      borderRadius: 4,
+      backgroundColor: '#202430',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }),
+);
 
-const Modal = ({ children, open, setOpen }) => {
+const CustomModal = ({
+  openModal,
+  setOpen,
+  children,
+  disableBackdropClick,
+  noPadding,
+}: {
+  openModal: boolean;
+  setOpen: (args: boolean) => void;
+  children: React.ReactNode;
+  noPadding?: boolean;
+  disableBackdropClick?;
+}) => {
   const classes = useStyles();
+  console.log();
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <>
-      <MuiModal open={open} onClose={() => setOpen(false)}>
-        <div className={classes.modal}>{children}</div>
-      </MuiModal>
-    </>
+    <div>
+      <Modal
+        className={classes.modal}
+        open={openModal}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        disableBackdropClick={!!disableBackdropClick}
+      >
+        <Fade in={openModal}>
+          <div
+            className={classes.paper}
+            style={{ padding: noPadding ? 0 : undefined }}
+          >
+            {children}
+          </div>
+        </Fade>
+      </Modal>
+    </div>
   );
 };
 
-export default Modal;
+export default CustomModal;

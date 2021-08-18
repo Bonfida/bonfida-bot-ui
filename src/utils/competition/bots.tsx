@@ -23,7 +23,7 @@ export const COMPETITION_BOTS: Pool[] = [
     mainAsset: 'BTC' as ASSETS,
   },
   {
-    name: `Overhead Gains (Dreamcatcher)`,
+    name: `Overhead Gains - Dreamcatcher`,
     poolSeed: new PublicKey('GB2EUdLbQHbYw3mbm8GLzLHKsyo6LE7BqpmEVHAr8XcJ'),
     illustration: null,
     description:
@@ -33,7 +33,7 @@ export const COMPETITION_BOTS: Pool[] = [
     mainAsset: 'ETH' as ASSETS,
   },
   {
-    name: `Overhead Gains (Fireshaper)`,
+    name: `Overhead Gains - Fireshaper`,
     poolSeed: new PublicKey('6nbesY9CGoA4yxTvw3ADHKVgjVkuabr181BdJCnobwDY'),
     illustration: null,
     description:

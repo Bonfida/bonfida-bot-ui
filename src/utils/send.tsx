@@ -85,7 +85,7 @@ export async function sendTransaction({
       transaction,
       wallet,
       signers,
-      connection
+      connection,
     });
     return await sendSignedTransaction({
       signedTransaction,
@@ -139,15 +139,14 @@ async function covertToProgramWalletTransaction({
   wallet,
   signers = [],
   connection,
-
 }: {
-  transaction: Transaction,
-  wallet: any,
+  transaction: Transaction;
+  wallet: any;
   signers: Array<Account>;
-  connection: Connection,
+  connection: Connection;
 }) {
   transaction.recentBlockhash = (
-    await connection.getRecentBlockhash("max")
+    await connection.getRecentBlockhash('max')
   ).blockhash;
   transaction.feePayer = wallet.publicKey;
   if (signers.length > 0) {

@@ -1,29 +1,22 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import useTheme from '@material-ui/core/styles/useTheme';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import { useHistory, useLocation } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import WalletConnect from '../WalletConnect';
-import Settings from '../Settings';
-import robot from '../../assets/icons/illustrations/robot-top-bar.svg';
-import { nanoid } from 'nanoid';
-import { useTranslation } from 'react-i18next';
+import { useSmallScreen } from '../../utils/utils';
+import fida from '../../assets/icons/crypto/fida.svg';
+import { useHistory } from 'react-router-dom';
+import Link from '../Link';
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-  },
-  AppBar: {
-    marginTop: '40px',
-    background: 'transparent',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 10,
   },
   logo: {
-    paddingLeft: '100px',
-    cursor: 'pointer',
+    width: 33,
   },
   buttonContainer: {
     paddingRight: '100px',
@@ -32,167 +25,99 @@ const useStyles = makeStyles({
     fontSize: '18px',
     fontWeight: 900,
     textTransform: 'capitalize',
-    color: '#393939',
+    color: '#FFFFFF',
   },
-  button: {
-    color: '#838383',
-    paddingLeft: '25px',
-    paddingRight: '25px',
-    paddingTop: '10px',
-    paddingButton: '10px',
-    fontWeight: 'bold',
-    backgroundColor: 'transparent',
+  tab: {
+    color: 'black',
+    fontSize: 20,
+  },
+  indicator: {
+    backgroundColor: '#5C1864',
+  },
+  topBarText: {
+    fontWeight: 600,
+    fontSize: 18,
+    margin: 10,
+    color: '#FFFFFF',
     '&:hover': {
-      backgroundColor: 'unset',
-      color: '#BA0202',
+      cursor: 'pointer',
     },
   },
-  bonfidaBot: {
-    color: '#393939',
-    fontSize: 20,
-    fontWeight: 500,
+  linkContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 
-const topBarElement = [
+const topBarElements = [
   {
-    name: 'home',
-    href: '/',
+    name: 'Home',
+    link: '/',
   },
   {
-    name: 'explore',
-    href: '/explore',
+    name: 'Explore',
+    link: '/explore',
   },
   {
-    name: 'balances',
-    href: '/balances',
+    name: 'My Pools',
+    link: '/my-pools',
   },
   {
-    name: 'pools',
-    href: '/my-pools',
-  },
-  {
-    name: 'create',
-    href: '/create',
-  },
-  {
-    name: 'help',
-    href: 'https://docs.bonfida.org/help/bonfida-bots/faq',
-  },
-  {
-    name: 'tradingview',
-    href: 'https://docs.bonfida.org/help/bonfida-bots/faq-bonfida-bots',
+    name: 'FAQ',
+    link: 'https://docs.bonfida.org/help/bonfida-bots/faq-bonfida-bots',
   },
 ];
 
+const LinkSection = () => {
+  const classes = useStyles();
+  const smallScreen = useSmallScreen();
+  const history = useHistory();
+  if (smallScreen) {
+    return <Logo />;
+  }
+  return (
+    <div className={classes.linkContainer}>
+      <div style={{ marginRight: 20 }}>
+        <Logo />
+      </div>
+      {topBarElements.map((e, i) => {
+        return (
+          <Link
+            external={e.link.includes('https')}
+            to={e.link}
+            style={{ textDecoration: 'none' }}
+          >
+            <div key={`top-bar-el-${i}`} className={classes.topBarText}>
+              {e.name}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
+
 const Logo = () => {
   const classes = useStyles();
-
   return (
     <>
-      <Grid
-        container
-        direction="row"
-        justify="space-between"
-        alignItems="center"
-        spacing={5}
-      >
-        <Grid item>
-          <img
-            src={robot}
-            style={{ fontSize: 40, marginLeft: 80, height: 40 }}
-            alt=""
-          />
-        </Grid>
-        <Grid item>
-          <Typography className={classes.bonfidaBot}>BonfidaBot</Typography>
-        </Grid>
-      </Grid>
+      <img src={fida} className={classes.logo} />
     </>
   );
 };
 
 const TopBar = () => {
-  const { t } = useTranslation();
-  const history = useHistory();
-  const location = useLocation();
   const classes = useStyles();
-  let theme = useTheme();
-  let smallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [selectedIndex, setSelectedIndex] = React.useState<string | null>(null);
-
-  useEffect(() => {
-    if (location.pathname.includes('explore')) {
-      setSelectedIndex('explore');
-    } else if (location.pathname.includes('help')) {
-      setSelectedIndex('help');
-    } else if (location.pathname.includes('balances')) {
-      setSelectedIndex('balances');
-    } else if (location.pathname.includes('create')) {
-      setSelectedIndex('create');
-    } else if (location.pathname.includes('pools')) {
-      setSelectedIndex('pools');
-    } else if (location.pathname.includes('tradingview')) {
-      setSelectedIndex('tradingview');
-    } else {
-      setSelectedIndex('home');
-    }
-  }, [location]);
-
+  const smallScreen = useSmallScreen();
   return (
     <div className={classes.root}>
-      <AppBar className={classes.AppBar} position="static" elevation={0}>
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-          {!smallScreen && (
-            <>
-              <Grid item>
-                <Logo />
-              </Grid>
-            </>
-          )}
-          <Grid item>
-            {topBarElement.map((e, i) => {
-              return (
-                <Button
-                  disableFocusRipple
-                  key={nanoid()}
-                  className={classes.button}
-                  onClick={() =>
-                    e.href.includes('https')
-                      ? window.open(e.href, '_blank')
-                      : history.push(e.href)
-                  }
-                  style={{
-                    color: selectedIndex === e.name ? '#BA0202' : '#393939',
-                  }}
-                >
-                  {t(e.name)}
-                </Button>
-              );
-            })}
-          </Grid>
-          <Grid item className={classes.buttonContainer}>
-            <Grid
-              container
-              direction="row"
-              justify="space-around"
-              alignItems="center"
-            >
-              <Grid item style={{ paddingRight: 20 }}>
-                <WalletConnect />
-              </Grid>
-              <Grid item>
-                <Settings />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </AppBar>
+      <div>
+        <LinkSection />
+      </div>
+      <div>
+        <WalletConnect />
+      </div>
     </div>
   );
 };

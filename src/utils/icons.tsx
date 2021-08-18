@@ -93,11 +93,11 @@ const getImageSource = (symbol) => {
     case 'TRUMPLOSE':
       return require('../assets/icons/crypto/trumplose.png').default;
     case 'SRM':
-      return require('../assets/icons/crypto/srm.svg').default;
+      return require('../assets/icons/crypto/srm.png').default;
     case 'MSRM':
       return require('../assets/icons/crypto/msrm.svg').default;
     case 'SRM_LOCKED':
-      return require('../assets/icons/crypto/srm.svg').default;
+      return require('../assets/icons/crypto/srm.png').default;
     case 'MSRM_LOCKED':
       return require('../assets/icons/crypto/msrm.svg').default;
     case 'SXP':

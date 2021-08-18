@@ -8,8 +8,6 @@ import {
   isValidPublicKey,
   useSmallScreen,
 } from '../utils/utils';
-import FloatingCard from '../components/FloatingCard';
-import CustomButton from '../components/CustomButton';
 import { notify } from '../utils/notifications';
 import CopyableDisplay from '../components/CopyableDisplay';
 import Trans from '../components/Translation';
@@ -130,9 +128,9 @@ const Generator = () => {
           />
         </Grid>
         <Grid item className={classes.gridItem}>
-          <CustomButton onClick={onClick}>
+          <button onClick={onClick}>
             <Trans>Generate</Trans>
-          </CustomButton>
+          </button>
         </Grid>
       </Grid>
       {message && (
@@ -170,9 +168,7 @@ const TradingViewMessageGeneratorPage = () => {
         <Trans>TradingView Message Generator</Trans>
       </Typography>
       <div style={{ width: smallScreen ? '100%' : '30%' }}>
-        <FloatingCard>
-          <Generator />
-        </FloatingCard>
+        <Generator />
       </div>
     </Grid>
   );

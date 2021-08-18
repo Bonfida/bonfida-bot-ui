@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
-import { USE_POOLS, STRATEGY_TYPES, Pool } from '../utils/pools';
-import Grid from '@material-ui/core/Grid';
+import React from 'react';
+import { USE_POOLS, STRATEGY_TYPES, Pool, usePoolStats } from '../utils/pools';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, TextField } from '@material-ui/core';
-import CustomButton from '../components/CustomButton';
+import { Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { notify } from '../utils/notifications';
-import StrategyCard from '../components/StrategyCard';
-import { nanoid } from 'nanoid';
-import Modal from '../components/Modal';
-import { isValidPublicKey } from '../utils/utils';
-import Link from '../components/Link';
-import Trans from '../components/Translation';
-import { useTranslation } from 'react-i18next';
+import { roundToDecimal, useSmallScreen } from '../utils/utils';
+import bottomLight from '../assets/components/ExplorePage/bottom-light.svg';
+import topLight from '../assets/components/ExplorePage/top-light.svg';
+import getImageSource from '../utils/icons';
+import '../index.css';
+import { PublicKey } from '@solana/web3.js';
 
 export const RSI_STRATEGIES = USE_POOLS.filter(
   (p) => p.strategyType === STRATEGY_TYPES.RSI,
@@ -26,11 +22,11 @@ export const SUPER_TRENDS_STRATEGIES = USE_POOLS.filter(
   (p) => p.strategyType === STRATEGY_TYPES.SUPER_TREND,
 );
 
-const VOLATILITY_EXPANSION_STRATEGIES = USE_POOLS.filter(
+const VOLATILITY_EXPANSION_STRATEGIES = USE_POOLS.find(
   (p) => p.strategyType === STRATEGY_TYPES.VOLATILITY_EXPANSION,
 );
 
-const BENSON_STRATEGIES = USE_POOLS.filter(
+const BENSON_STRATEGIES = USE_POOLS.find(
   (p) => p.strategyType === STRATEGY_TYPES.SENTIMENT_BENSON,
 );
 
@@ -38,7 +34,7 @@ const COMPENDIUM_STRATEGIES = USE_POOLS.filter(
   (p) => p.strategyType === STRATEGY_TYPES.COMPENDIUML,
 );
 
-const BARTBOT_STRATEGIES = USE_POOLS.filter(
+const BARTBOT_STRATEGIES = USE_POOLS.find(
   (p) => p.strategyType === STRATEGY_TYPES.BART,
 );
 
@@ -47,207 +43,450 @@ export const OVERHEAD_STRATEGIES = USE_POOLS.filter(
 );
 
 const useStyles = makeStyles({
-  container: {
-    marginTop: 50,
-    marginBottom: 50,
+  root: {
+    display: 'flex',
+    paddingTop: '5%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
-  item: {
-    padding: 30,
+  bottomLigt: {
+    position: 'absolute',
+    transform: 'matrix(-1, 0, 0, 1, 0, 0)',
+    filter: 'blur(40px)',
+    right: -600,
+    top: -200,
+    zIndex: -1,
   },
-  addCustomPool: {
-    fontSize: 20,
-    marginRight: '25%',
-    marginTop: 40,
+  bottomLightContainer: {
+    position: 'relative',
   },
-  addCustomPoolButton: {
-    backgroundColor: '#2178f3',
-    color: 'white',
-    borderRadius: 0,
-    '&:hover': {
-      backgroundColor: '#2178f3',
-      color: 'white',
-    },
+  topLight: {
+    position: 'absolute',
+    filter: 'blur(40px)',
+    top: -90,
+    left: -150,
+    zIndex: -1,
+  },
+  topLightContainer: {
+    position: 'relative',
+  },
+  h1: {
+    color: '#FFFFFF',
+    textShadow:
+      '0px 2px 13px rgba(119, 227, 239, 0.28), 0px 4px 26px rgba(119, 227, 239, 0.34)',
+    fontSize: 68,
     margin: 10,
+    fontWeight: 600,
+    lineHeight: '107%',
+    maxWidth: 1017,
   },
-  dialogGridItem: {
-    marginTop: 10,
-    marginBottom: 10,
+  headText: {
+    fontWeight: 700,
+    fontSize: 18,
+    lineHeight: '115%',
+    color: '#7C7CFF',
   },
-  dialogContainer: {
-    padding: 25,
-    background: 'white',
+  rowText: {
+    fontWeight: 400,
+    fontSize: 18,
+    lineHeight: '115%',
+    color: '#FFFFFF',
   },
-  input: {
-    fontSize: 15,
+  up: {
+    color: '#4EDC76',
+    fontWeight: 400,
+    fontSize: 18,
+    lineHeight: '115%',
   },
-  createYourOwn: {
-    fontSize: 30,
-    margin: 20,
+  down: {
+    color: '#EB5252',
+    fontWeight: 400,
+    fontSize: 18,
+    lineHeight: '115%',
+  },
+  buttonContainer: {
+    marginRight: 20,
+    background: 'linear-gradient(135deg, #60C0CB 18.23%, #6868FC 100%)',
+    borderRadius: 4,
+    width: 190,
+    height: 32,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    background: 'linear-gradient(135deg, rgba(19, 30, 48, 0.5) 0%, #0F0F11 0%)',
+    margin: 1,
+    borderRadius: 4,
+    width: 188,
+    height: 30,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  assetContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  assetItems: {
+    marginLeft: 3,
+    marginRight: 3,
+  },
+  blueText: {
+    color: '#77E3EF',
+    lineHeight: '115%',
+    fontSize: 14,
+    fontWeight: 800,
+  },
+  thead: {
+    background: '#121838',
+    borderRadius: 8,
+    padding: 10,
+    display: 'table',
+  },
+  trHead: {
+    background: '#121838',
+    borderRadius: 8,
+    padding: 10,
+  },
+  tr: {
+    background: '#121838',
+    borderRadius: 8,
+    padding: 10,
+    '&:hover': {
+      cursor: 'pointer',
+      background: 'rgba(255, 255, 255, 0.07)',
+    },
+  },
+  th: {
+    textAlign: 'start',
+    padding: 15,
+    '&:first-child': {
+      borderTopLeftRadius: 8,
+      borderBottomLeftRadius: 8,
+    },
+    '&:last-child': {
+      borderTopRightRadius: 8,
+      borderBottomRightRadius: 8,
+    },
+  },
+  td: {
+    padding: 15,
+    textAlign: 'end',
+    '&:first-child': {
+      paddingLeft: 30,
+      borderTopLeftRadius: 8,
+      borderBottomLeftRadius: 8,
+    },
+    '&:last-child': {
+      paddingRight: 30,
+      borderTopRightRadius: 8,
+      borderBottomRightRadius: 8,
+    },
+  },
+  tdMultipleAssets: {
+    textAlign: 'end',
+    padding: 15,
+    '&:first-child': {
+      paddingLeft: 30,
+    },
+    '&:last-child': {
+      paddingRight: 30,
+    },
+  },
+  trMultipleAssets: {
+    '&:hover': {
+      cursor: 'pointer',
+      background: 'rgba(255, 255, 255, 0.07)',
+    },
   },
 });
 
-const CustomPoolDialog = () => {
+const BottomLight = () => {
   const classes = useStyles();
-  const history = useHistory();
-  const [poolSeed, setPoolSeed] = useState<string | null>(null);
-
-  const onChange = (e) => {
-    const input = e.target.value.trim();
-    setPoolSeed(input);
-  };
-
-  const onClick = () => {
-    const isValid = isValidPublicKey(poolSeed);
-    if (!isValid) {
-      notify({
-        message: 'Invalid Pool Seed',
-        variant: 'error',
-      });
-      return;
-    }
-    history.push(`/pool/${poolSeed}`);
-  };
-
   return (
-    <div className={classes.dialogContainer}>
-      <Grid container direction="column" justify="center" alignItems="center">
-        <Grid item className={classes.dialogGridItem}>
-          <Typography variant="body1">
-            <Trans>Custom Pool Seed</Trans>
-          </Typography>
-        </Grid>
-        <Grid item className={classes.dialogGridItem}>
-          <TextField
-            onChange={onChange}
-            value={poolSeed}
-            label="Pool Seed"
-            InputProps={{ className: classes.input }}
-          />
-        </Grid>
-        <Grid item className={classes.dialogGridItem}>
-          <CustomButton onClick={onClick}>
-            <Trans>Go</Trans>
-          </CustomButton>
-        </Grid>
-      </Grid>
+    <div className={classes.bottomLightContainer}>
+      <img src={bottomLight} className={classes.bottomLigt} alt="" />
     </div>
   );
 };
 
-export const productRows = (array: Pool[], n: number = 4) => {
-  const arrayRows = [...Array(Math.ceil(array.length / n))];
-  const arrayProductRows = arrayRows.map((row, idx) =>
-    array.slice(idx * n, idx * n + n),
+const TopLight = () => {
+  const classes = useStyles();
+  return (
+    <div className={classes.topLightContainer}>
+      <img src={topLight} className={classes.topLight} alt="" />
+    </div>
   );
-  return arrayProductRows;
 };
 
-export const StrategySection = ({
-  h2,
-  strategiesArray,
+const Title = () => {
+  const classes = useStyles();
+  return (
+    <div
+      style={{
+        height: 150,
+      }}
+    >
+      <TopLight />
+      <Typography align="center" className={classes.h1} variant="h1">
+        Strategies from trusted signal providers
+      </Typography>
+    </div>
+  );
+};
+
+const Head = () => {
+  const classes = useStyles();
+  const smallScreen = useSmallScreen();
+  return (
+    <thead>
+      <tr className={classes.trHead}>
+        <th className={classes.th}>
+          <Typography className={classes.headText}>Strategy</Typography>
+        </th>
+        <th className={classes.th}>
+          <Typography className={classes.headText}>Base token</Typography>
+        </th>
+        {!smallScreen && (
+          <>
+            <th className={classes.th}>
+              <Typography className={classes.headText}>
+                Value of pool (USD)
+              </Typography>
+            </th>
+            <th className={classes.th}>
+              <Typography className={classes.headText}>
+                Pool token value
+              </Typography>
+            </th>
+            <th className={classes.th}>
+              <Typography className={classes.headText}>
+                Pool token supply
+              </Typography>
+            </th>
+            <th className={classes.th}>
+              <Typography className={classes.headText}>Performance</Typography>
+            </th>
+          </>
+        )}
+      </tr>
+    </thead>
+  );
+};
+
+const AssetAndIcon = ({ asset }: { asset: string }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.assetContainer}>
+      <div className={classes.assetItems}>
+        <img src={getImageSource(asset)} style={{ height: 25 }} alt="" />
+      </div>
+      <div className={classes.assetItems}>{asset}</div>
+    </div>
+  );
+};
+
+const RowOneAsset = ({ poolSeed }: { poolSeed: string }) => {
+  const classes = useStyles();
+  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  const poolStats = usePoolStats(new PublicKey(poolSeed));
+  const history = useHistory();
+  const perf = roundToDecimal(poolStats?.inceptionPerformance, 1);
+  const assets = poolStats?.assets?.filter((a) => a !== 'USDC');
+  const smallScreen = useSmallScreen();
+  if (!assets) {
+    return null;
+  }
+  return (
+    <tr className={classes.tr} onClick={() => history.push(`pool/${poolSeed}`)}>
+      <td className={classes.td}>
+        <Typography className={classes.rowText} style={{ textAlign: 'start' }}>
+          {pool?.name || 'Unknown pool'}
+        </Typography>
+      </td>
+      <td className={classes.td}>
+        <Typography className={classes.rowText}>
+          <AssetAndIcon asset={assets[0]} />
+        </Typography>
+      </td>
+      {!smallScreen && (
+        <>
+          <td className={classes.td}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.usdValue, 1)}
+            </Typography>
+          </td>
+          <td className={classes.td}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.poolTokenValue, 1)}
+            </Typography>
+          </td>
+          <td className={classes.td}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.tokenSupply, 1)}
+            </Typography>
+          </td>
+          <td className={classes.td}>
+            {perf && (
+              <Typography className={perf > 0 ? classes.up : classes.down}>
+                {perf}%
+              </Typography>
+            )}
+          </td>
+        </>
+      )}
+    </tr>
+  );
+};
+
+const MultiAssetsRow = ({
+  pools,
+  strategyName,
 }: {
-  h2: string;
-  strategiesArray: Pool[];
+  pools: Pool[];
+  strategyName: string;
 }) => {
   const classes = useStyles();
-  const rows = productRows(strategiesArray);
   return (
-    <>
-      <Typography
-        variant="h2"
-        align="center"
-        style={{ fontSize: '1.38rem', marginTop: '2%' }}
-      >
-        {h2}
-      </Typography>
-      {rows.map((row) => (
-        <Grid
-          key={nanoid()}
-          className={classes.container}
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={10}
-        >
-          {row.map((pool, i) => {
-            return (
-              <Grid item className={classes.item} key={nanoid()}>
-                <StrategyCard pool={pool} left={i % 2 === 0 ? true : false} />
-              </Grid>
-            );
-          })}
-        </Grid>
+    <tbody className="fancy-card">
+      <tr>
+        <td className={classes.td} style={{ textAlign: 'start' }}>
+          <Typography className={classes.rowText}>{strategyName}</Typography>
+        </td>
+        <td>
+          <div className={classes.buttonContainer}>
+            <div className={classes.button}>
+              <Typography className={classes.blueText}>
+                Multiple token strategies
+              </Typography>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {pools.map((p) => (
+        <MultiAssetInnerRow pool={p} key={p.poolSeed.toBase58()} />
       ))}
-    </>
+    </tbody>
   );
 };
 
-const CreateYourOwn = () => {
+const MultiAssetInnerRow = ({ pool }: { pool: Pool }) => {
   const classes = useStyles();
+  const history = useHistory();
+  const poolStats = usePoolStats(pool.poolSeed);
+  const perf = roundToDecimal(poolStats?.inceptionPerformance, 1);
+  const assets = poolStats?.assets?.filter((a) => a !== 'USDC');
+  const smallScreen = useSmallScreen();
+  if (!assets) {
+    return null;
+  }
   return (
-    <>
-      <Typography align="center" variant="h2" className={classes.createYourOwn}>
-        <Trans i18nKey="cannotFind">
-          Cannot find your dream strategy?{' '}
-          <Link to="/create">Create your own</Link>
-        </Trans>
-      </Typography>
-    </>
+    <tr
+      className={classes.trMultipleAssets}
+      onClick={() => history.push(`pool/${pool.poolSeed.toBase58()}`)}
+    >
+      <td className={classes.tdMultipleAssets}></td>
+      <td className={classes.tdMultipleAssets}>
+        <Typography className={classes.rowText}>
+          <AssetAndIcon asset={assets[0]} />
+        </Typography>
+      </td>
+      {!smallScreen && (
+        <>
+          <td className={classes.tdMultipleAssets}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.usdValue, 1)}
+            </Typography>
+          </td>
+          <td className={classes.tdMultipleAssets}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.poolTokenValue, 1)}
+            </Typography>
+          </td>
+          <td className={classes.tdMultipleAssets}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.tokenSupply, 1)}
+            </Typography>
+          </td>
+          <td className={classes.tdMultipleAssets}>
+            {perf && (
+              <Typography className={perf > 0 ? classes.up : classes.down}>
+                {perf}%
+              </Typography>
+            )}
+          </td>
+        </>
+      )}
+    </tr>
   );
 };
 
 const ExplorerPage = () => {
   const classes = useStyles();
-  const history = useHistory();
-  const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
-
   return (
     <>
-      <Typography className={classes.addCustomPool} variant="h1" align="center">
-        <CustomButton
-          className={classes.addCustomPoolButton}
-          onClick={() => setOpen(true)}
-        >
-          <Trans>Add Custom Pool</Trans>
-        </CustomButton>
-        <Modal open={open} setOpen={setOpen}>
-          <CustomPoolDialog />
-        </Modal>
-        <CustomButton
-          className={classes.addCustomPoolButton}
-          onClick={() => history.push('/create')}
-        >
-          <Trans>Create Pool</Trans>
-        </CustomButton>
-      </Typography>
-      <StrategySection
-        h2={t('Overhead Strategies')}
-        strategiesArray={OVERHEAD_STRATEGIES}
-      />
-      <StrategySection
-        h2={t('Sentiment Strategy Pro [Benson]')}
-        strategiesArray={BENSON_STRATEGIES}
-      />
-      <StrategySection h2={t('BartBot')} strategiesArray={BARTBOT_STRATEGIES} />
-      <StrategySection
-        h2={t('CompendiuML')}
-        strategiesArray={COMPENDIUM_STRATEGIES}
-      />
-      <StrategySection h2="RSI Strategies" strategiesArray={RSI_STRATEGIES} />
-      <StrategySection
-        h2="Super Trend Strategies"
-        strategiesArray={SUPER_TRENDS_STRATEGIES}
-      />
-      <StrategySection h2="MACD Strategies" strategiesArray={MACD_STRATEGIES} />
-      <StrategySection
-        h2="Volatility Expansion Strategies"
-        strategiesArray={VOLATILITY_EXPANSION_STRATEGIES}
-      />
-      <CreateYourOwn />
+      <div className={classes.root}>
+        <div>
+          <Title />
+        </div>
+        <div style={{ marginTop: '10%', marginBottom: 40 }}>
+          <table style={{ borderSpacing: '0 4px', borderCollapse: 'separate' }}>
+            <Head />
+            <tbody>
+              {BENSON_STRATEGIES && (
+                <RowOneAsset poolSeed={BENSON_STRATEGIES.poolSeed.toBase58()} />
+              )}
+              {BARTBOT_STRATEGIES && (
+                <RowOneAsset
+                  poolSeed={BARTBOT_STRATEGIES.poolSeed.toBase58()}
+                />
+              )}
+              {VOLATILITY_EXPANSION_STRATEGIES && (
+                <RowOneAsset
+                  poolSeed={VOLATILITY_EXPANSION_STRATEGIES.poolSeed.toBase58()}
+                />
+              )}
+            </tbody>
+            <MultiAssetsRow
+              pools={RSI_STRATEGIES}
+              strategyName="RSI strategies"
+            />
+            <MultiAssetsRow
+              pools={MACD_STRATEGIES}
+              strategyName="MACD strategies"
+            />
+            <MultiAssetsRow
+              pools={SUPER_TRENDS_STRATEGIES}
+              strategyName="Super Trend strategies"
+            />
+            <MultiAssetsRow
+              pools={COMPENDIUM_STRATEGIES}
+              strategyName="Compendium ML strategies"
+            />
+          </table>
+          <div style={{ height: 200 }}>
+            <BottomLight />
+          </div>
+        </div>
+      </div>
     </>
   );
 };
 
 export default ExplorerPage;
+
+export const FancyTable = ({ poolSeeds }: { poolSeeds: string[] }) => {
+  return (
+    <table style={{ borderSpacing: '0 4px', borderCollapse: 'separate' }}>
+      <Head />
+      <tbody>
+        {poolSeeds.map((p) => {
+          return <RowOneAsset poolSeed={p} key={`fancy-table-${p}`} />;
+        })}
+      </tbody>
+    </table>
+  );
+};
