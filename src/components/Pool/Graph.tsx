@@ -20,8 +20,8 @@ const GraphSection = ({ data, xKey, yKey }) => {
         <XAxis dataKey={xKey} tick={false} />
         <YAxis dataKey={yKey} />
         <Tooltip />
-        <Line type="monotone" dataKey={xKey} stroke="#8884d8" />
-        <Line type="monotone" dataKey={yKey} stroke="#8884d8" />
+        <Line type="monotone" dataKey={xKey} stroke="#A6CEE3" />
+        <Line type="monotone" dataKey={yKey} stroke="#A6CEE3" />
       </LineChart>
     </ResponsiveContainer>
   );

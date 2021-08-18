@@ -7,7 +7,7 @@ export const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
+    fontFamily: 'Rota',
   },
   overrides: {
     MuiCssBaseline: {
@@ -36,14 +36,18 @@ export const theme = createMuiTheme({
     },
     MuiTabs: {
       indicator: {
-        backgroundColor: '#838383',
+        backgroundColor: '#77E3EF',
       },
     },
     MuiTab: {
       textColorPrimary: {
+        fontWeight: 700,
+        fontSize: 18,
+        color: '#FFFFFF',
         '&$selected': {
-          color: '#BA0202',
+          color: '#77E3EF',
           fontWeight: 700,
+          fontSize: 18,
         },
       },
     },

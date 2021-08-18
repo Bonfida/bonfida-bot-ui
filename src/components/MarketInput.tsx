@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { Input, TextField } from '@material-ui/core';
 import { USE_MARKETS } from '../utils/markets';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
@@ -64,7 +64,36 @@ const useStyles = makeStyles({
   },
 });
 
-const MarketInput = ({
+const fn = withStyles({
+  root: {
+    '& label': {
+      color: '#FFFFFF',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: '#FFFFFF',
+    },
+    '& .MuiOutlinedInput-root': {
+      background: '#181F2B',
+      '& fieldset': {
+        borderColor: 'rgba(155, 163, 181, 1)',
+      },
+      '&:hover fieldset': {
+        borderColor: '#FFFFFF',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#FFFFFF',
+      },
+      '& .MuiInputBase-input': {
+        color: '#C8CCD6',
+      },
+    },
+  },
+});
+
+export const CssTextField = fn(TextField);
+export const CssInput = fn(Input);
+
+export const MarketInput = ({
   marketAddresses,
   setMarketAddresses,
   index = 0,
@@ -96,7 +125,7 @@ const MarketInput = ({
         getOptionLabel={(option: any) => option.name}
         className={classes.autoComplete}
         renderInput={(params) => (
-          <TextField {...params} label="Market" variant="outlined" />
+          <CssTextField {...params} label="Market" variant="outlined" />
         )}
       />
     </div>

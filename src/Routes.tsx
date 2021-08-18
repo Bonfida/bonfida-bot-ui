@@ -5,8 +5,6 @@ import { useSnackbar } from 'notistack';
 import SnackbarUtils from './utils/SnackbarUtils';
 import NavigationFrame from './components/NavigationFrame';
 import PoolPage from './pages/PoolPage';
-import FaqPage from './pages/FaqPage';
-import BalancesPage from './pages/BalancesPage';
 import ExplorePage from './pages/ExplorePage';
 import CreatePoolPage from './pages/CreatePoolPage';
 import SignalProviderPage from './pages/SignalProviderPage';
@@ -45,8 +43,6 @@ export default function Routes() {
       <NavigationFrame>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/help" component={FaqPage} />
-          <Route extact path="/balances" component={BalancesPage} />
           <Route extact path="/explore" component={ExplorePage} />
           <Route extact path="/create" component={CreatePoolPage} />
           <Route exact path="/tradingview" component={TradingViewPage} />

@@ -415,10 +415,57 @@ export const findPoolFromAddress = (poolSeed: string | PublicKey) => {
   return USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
 };
 
-export const useSmallScreen = (breakpoint: string = 'sm') => {
-  const theme = useTheme();
-  // @ts-ignore
-  return useMediaQuery(theme.breakpoints.down(breakpoint));
+interface WindowSize {
+  width: number;
+  height: number;
+}
+
+export const useWindowSize = (): WindowSize => {
+  const [windowSize, setWindowSize] = useState<WindowSize>({
+    width: 0,
+    height: 0,
+  });
+
+  useEffect(() => {
+    const handler = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    // Set size at the first client-side load
+    handler();
+
+    window.addEventListener('resize', handler);
+
+    // Remove event listener on cleanup
+    return () => {
+      window.removeEventListener('resize', handler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return windowSize;
+};
+
+export const useSmallScreen = (breakpoint: number | string = 'sm') => {
+  const { width } = useWindowSize();
+  if (typeof breakpoint === 'number') {
+    return width < breakpoint;
+  }
+  switch (breakpoint) {
+    case 'xs':
+      return width < 600;
+    case 'sm':
+      return width < 960;
+    case 'md':
+      return width < 1280;
+    case 'lg':
+      return width < 1920;
+    default:
+      return width < 960;
+  }
 };
 
 export const formatSeconds = (sec: number): string => {

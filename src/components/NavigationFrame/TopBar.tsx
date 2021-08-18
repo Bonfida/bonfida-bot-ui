@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import WalletConnect from '../WalletConnect';
 import { useSmallScreen } from '../../utils/utils';
 import fida from '../../assets/icons/crypto/fida.svg';
+import { useHistory } from 'react-router-dom';
+import Link from '../Link';
 
 const useStyles = makeStyles({
   root: {
@@ -37,6 +39,9 @@ const useStyles = makeStyles({
     fontSize: 18,
     margin: 10,
     color: '#FFFFFF',
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
   linkContainer: {
     display: 'flex',
@@ -48,25 +53,26 @@ const useStyles = makeStyles({
 const topBarElements = [
   {
     name: 'Home',
-    link: '',
+    link: '/',
   },
   {
     name: 'Explore',
-    link: '',
+    link: '/explore',
   },
   {
-    name: 'Create',
-    link: '',
+    name: 'My Pools',
+    link: '/my-pools',
   },
   {
     name: 'FAQ',
-    link: '',
+    link: 'https://docs.bonfida.org/help/bonfida-bots/faq-bonfida-bots',
   },
 ];
 
 const LinkSection = () => {
   const classes = useStyles();
   const smallScreen = useSmallScreen();
+  const history = useHistory();
   if (smallScreen) {
     return <Logo />;
   }
@@ -76,7 +82,17 @@ const LinkSection = () => {
         <Logo />
       </div>
       {topBarElements.map((e, i) => {
-        return <div className={classes.topBarText}>{e.name}</div>;
+        return (
+          <Link
+            external={e.link.includes('https')}
+            to={e.link}
+            style={{ textDecoration: 'none' }}
+          >
+            <div key={`top-bar-el-${i}`} className={classes.topBarText}>
+              {e.name}
+            </div>
+          </Link>
+        );
       })}
     </div>
   );

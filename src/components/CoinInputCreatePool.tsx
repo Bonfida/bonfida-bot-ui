@@ -104,11 +104,11 @@ const CoinInput = ({
   tokenAccounts: any;
 }) => {
   const classes = useStyles();
-  const balance = useBalanceForMint(tokenAccounts, mint);
+  const [balance] = useBalanceForMint(tokenAccounts, mint);
   const { t } = useTranslation();
   const onChangeInput = (e) => {
     const parsed = parseFloat(e.target.value);
-    if (parsed > balance) {
+    if (balance && parsed > balance) {
       notify({
         message: 'Insufficient funds',
         variant: 'error',

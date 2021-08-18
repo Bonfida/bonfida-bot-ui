@@ -1,17 +1,16 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import CustomButton from '../components/CustomButton';
 import Grid from '@material-ui/core/Grid';
 import { useHistory } from 'react-router-dom';
-import { useSmallScreen, roundToDecimal } from '../utils/utils';
+import { roundToDecimal, useSmallScreen } from '../utils/utils';
 import wiredCube from '../assets/components/Homepage/wired-cube.svg';
 import topLight from '../assets/components/Homepage/light-top.svg';
 import bottomLight from '../assets/components/Homepage/light-bottom.svg';
 import robot from '../assets/icons/illustrations/robot.svg';
 import Link from '../components/Link';
-import { USE_POOLS, usePoolBalance, Pool, usePoolStats } from '../utils/pools';
-import { PublicKey } from '@solana/web3.js';
+import { USE_POOLS, Pool, usePoolStats } from '../utils/pools';
+import CreatePoolCard from '../components/CreatePoolCard';
 
 const SELECTED_POOL = USE_POOLS.find((p) => p.name.includes('Dreamcatcher'));
 
@@ -286,11 +285,10 @@ const InfoCol = ({
 };
 
 const StategyStats = ({ pool }: { pool: Pool }) => {
-  const classes = useStyles();
-  const poolStats = usePoolStats(pool);
+  const poolStats = usePoolStats(pool.poolSeed);
   return (
     <>
-      <Grid container justify="space-around" alignItems="center">
+      <Grid container justify="space-around" alignItems="center" spacing={2}>
         <Grid item>
           <InfoCol
             value={roundToDecimal(poolStats?.inceptionPerformance, 1) + '%'}
@@ -317,7 +315,7 @@ const StategyStats = ({ pool }: { pool: Pool }) => {
         </Grid>
         <Grid item>
           <InfoCol
-            value={poolStats?.assets.join(', ')}
+            value={poolStats?.assets?.join(', ')}
             label="Tokens in the pool"
           />
         </Grid>
@@ -334,6 +332,37 @@ const StrategyCard = ({
   description: React.ReactNode;
 }) => {
   const classes = useStyles();
+  const smallScreen = useSmallScreen(1180);
+
+  if (smallScreen) {
+    return (
+      <>
+        <div
+          style={{
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <img src={robot} />
+        </div>
+        <div style={{ marginLeft: '5%' }}>
+          <Typography className={classes.strategyCardTitle}>{title}</Typography>
+          <Typography className={classes.strategyCardText}>
+            {description}
+          </Typography>
+          <div style={{ marginTop: 10 }}>
+            <StategyStats
+              // @ts-ignore
+              pool={SELECTED_POOL}
+            />
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <div style={{ position: 'relative', height: 296, width: 1016 }}>
@@ -364,8 +393,12 @@ const StrategyCard = ({
 
 const ExploreButton = () => {
   const classes = useStyles();
+  const history = useHistory();
   return (
-    <div className={classes.exloreStrategiesButtonContainer}>
+    <div
+      className={classes.exloreStrategiesButtonContainer}
+      onClick={() => history.push('/explore')}
+    >
       <div className={classes.exloreStrategiesButton}>
         <Typography className={classes.exloreStrategiesButtonText}>
           Explore strategies
@@ -378,7 +411,13 @@ const ExploreButton = () => {
 const StrategySection = () => {
   const classes = useStyles();
   return (
-    <div style={{ marginTop: '10%', marginBottom: '5%' }}>
+    <div
+      style={{
+        marginTop: '10%',
+        marginBottom: '5%',
+        zIndex: 2,
+      }}
+    >
       <Grid
         container
         justify="center"
@@ -387,7 +426,9 @@ const StrategySection = () => {
         direction="column"
       >
         <Grid item>
-          <Typography className={classes.h2}>Profitable strategies</Typography>
+          <Typography className={classes.h2} style={{ zIndex: 2 }}>
+            Profitable strategies
+          </Typography>
         </Grid>
         <Grid item>
           <Typography
@@ -464,7 +505,7 @@ const CARDS = [
       </>
     ),
     buttonText: 'Find a strategy to follow',
-    buttonUrl: '',
+    buttonUrl: '/explore',
   },
   {
     title: <>I’m a signal provider and I want to create strategies</>,
@@ -475,15 +516,23 @@ const CARDS = [
       </>
     ),
     buttonText: 'Create a strategy',
-    buttonUrl: '',
+    buttonUrl: '/my-pools',
   },
 ];
 
 const SomethingSection = () => {
   const classes = useStyles();
+  const smallScreen = useSmallScreen(1180);
+
   return (
     <div style={{ position: 'relative', zIndex: 3, marginTop: '5%' }}>
-      <Grid container justify="flex-start" alignItems="center" spacing={5}>
+      <Grid
+        container
+        justify="flex-start"
+        alignItems="center"
+        spacing={5}
+        direction={smallScreen ? 'column' : 'row'}
+      >
         <Grid item>
           <div style={{ maxWidth: 288 }}>
             <Typography className={classes.h2}>
@@ -514,7 +563,6 @@ const SomethingSection = () => {
 
 const HomePage = () => {
   const classes = useStyles();
-  const history = useHistory();
   return (
     <>
       <div className={classes.root}>

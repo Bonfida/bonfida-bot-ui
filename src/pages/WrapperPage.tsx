@@ -173,7 +173,7 @@ const SolUnwrapper = () => {
   const classes = useStyles();
   const connection = useConnection();
   const { wallet, connected } = useWallet();
-  const [tokenAccounts] = useTokenAccounts(NATIVE_MINT.toBase58());
+  const [tokenAccounts] = useTokenAccounts([NATIVE_MINT]);
   const [selectedAccount, setSelectedAccount] = useState<null | string>(null);
 
   const onClick = async () => {

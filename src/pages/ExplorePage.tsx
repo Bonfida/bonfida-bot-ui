@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { USE_POOLS, STRATEGY_TYPES, Pool, usePoolStats } from '../utils/pools';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Typography, TextField, Box, Collapse } from '@material-ui/core';
-import CustomButton from '../components/CustomButton';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { notify } from '../utils/notifications';
-import StrategyCard from '../components/StrategyCard';
-import { nanoid } from 'nanoid';
-import Modal from '../components/Modal';
-import { isValidPublicKey, roundToDecimal } from '../utils/utils';
-import Link from '../components/Link';
-import Trans from '../components/Translation';
-import { useTranslation } from 'react-i18next';
+import { roundToDecimal, useSmallScreen } from '../utils/utils';
 import bottomLight from '../assets/components/ExplorePage/bottom-light.svg';
 import topLight from '../assets/components/ExplorePage/top-light.svg';
 import getImageSource from '../utils/icons';
 import '../index.css';
+import { PublicKey } from '@solana/web3.js';
 
 export const RSI_STRATEGIES = USE_POOLS.filter(
   (p) => p.strategyType === STRATEGY_TYPES.RSI,
@@ -53,7 +45,7 @@ export const OVERHEAD_STRATEGIES = USE_POOLS.filter(
 const useStyles = makeStyles({
   root: {
     display: 'flex',
-    paddingTop: '10%',
+    paddingTop: '5%',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
@@ -89,11 +81,11 @@ const useStyles = makeStyles({
     lineHeight: '107%',
     maxWidth: 1017,
   },
-  accordionHeadText: {
+  headText: {
     fontWeight: 700,
     fontSize: 18,
     lineHeight: '115%',
-    color: '#FFFFFF',
+    color: '#7C7CFF',
   },
   rowText: {
     fontWeight: 400,
@@ -114,6 +106,7 @@ const useStyles = makeStyles({
     lineHeight: '115%',
   },
   buttonContainer: {
+    marginRight: 20,
     background: 'linear-gradient(135deg, #60C0CB 18.23%, #6868FC 100%)',
     borderRadius: 4,
     width: 190,
@@ -171,6 +164,7 @@ const useStyles = makeStyles({
     },
   },
   th: {
+    textAlign: 'start',
     padding: 15,
     '&:first-child': {
       borderTopLeftRadius: 8,
@@ -183,17 +177,27 @@ const useStyles = makeStyles({
   },
   td: {
     padding: 15,
+    textAlign: 'end',
     '&:first-child': {
+      paddingLeft: 30,
       borderTopLeftRadius: 8,
       borderBottomLeftRadius: 8,
     },
     '&:last-child': {
+      paddingRight: 30,
       borderTopRightRadius: 8,
       borderBottomRightRadius: 8,
     },
   },
   tdMultipleAssets: {
+    textAlign: 'end',
     padding: 15,
+    '&:first-child': {
+      paddingLeft: 30,
+    },
+    '&:last-child': {
+      paddingRight: 30,
+    },
   },
   trMultipleAssets: {
     '&:hover': {
@@ -239,39 +243,38 @@ const Title = () => {
 
 const Head = () => {
   const classes = useStyles();
+  const smallScreen = useSmallScreen();
   return (
     <thead>
       <tr className={classes.trHead}>
         <th className={classes.th}>
-          <Typography className={classes.accordionHeadText}>
-            Strategy
-          </Typography>
+          <Typography className={classes.headText}>Strategy</Typography>
         </th>
         <th className={classes.th}>
-          <Typography className={classes.accordionHeadText}>
-            Base token
-          </Typography>
+          <Typography className={classes.headText}>Base token</Typography>
         </th>
-        <th className={classes.th}>
-          <Typography className={classes.accordionHeadText}>
-            Value of pool (USD)
-          </Typography>
-        </th>
-        <th className={classes.th}>
-          <Typography className={classes.accordionHeadText}>
-            Pool token value
-          </Typography>
-        </th>
-        <th className={classes.th}>
-          <Typography className={classes.accordionHeadText}>
-            Pool token supply
-          </Typography>
-        </th>
-        <th className={classes.th}>
-          <Typography className={classes.accordionHeadText}>
-            Performance
-          </Typography>
-        </th>
+        {!smallScreen && (
+          <>
+            <th className={classes.th}>
+              <Typography className={classes.headText}>
+                Value of pool (USD)
+              </Typography>
+            </th>
+            <th className={classes.th}>
+              <Typography className={classes.headText}>
+                Pool token value
+              </Typography>
+            </th>
+            <th className={classes.th}>
+              <Typography className={classes.headText}>
+                Pool token supply
+              </Typography>
+            </th>
+            <th className={classes.th}>
+              <Typography className={classes.headText}>Performance</Typography>
+            </th>
+          </>
+        )}
       </tr>
     </thead>
   );
@@ -289,50 +292,55 @@ const AssetAndIcon = ({ asset }: { asset: string }) => {
   );
 };
 
-const RowOneAsset = ({ pool }: { pool: Pool }) => {
+const RowOneAsset = ({ poolSeed }: { poolSeed: string }) => {
   const classes = useStyles();
-  const poolStats = usePoolStats(pool);
+  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
+  const poolStats = usePoolStats(new PublicKey(poolSeed));
   const history = useHistory();
   const perf = roundToDecimal(poolStats?.inceptionPerformance, 1);
   const assets = poolStats?.assets?.filter((a) => a !== 'USDC');
+  const smallScreen = useSmallScreen();
   if (!assets) {
     return null;
   }
   return (
-    <tr
-      className={classes.tr}
-      onClick={() => history.push(`pool/${pool.poolSeed.toBase58()}`)}
-    >
+    <tr className={classes.tr} onClick={() => history.push(`pool/${poolSeed}`)}>
       <td className={classes.td}>
-        <Typography className={classes.rowText}>{pool.name}</Typography>
+        <Typography className={classes.rowText} style={{ textAlign: 'start' }}>
+          {pool?.name || 'Unknown pool'}
+        </Typography>
       </td>
       <td className={classes.td}>
         <Typography className={classes.rowText}>
           <AssetAndIcon asset={assets[0]} />
         </Typography>
       </td>
-      <td className={classes.td}>
-        <Typography className={classes.rowText}>
-          ${roundToDecimal(poolStats?.usdValue, 1)}
-        </Typography>
-      </td>
-      <td className={classes.td}>
-        <Typography className={classes.rowText}>
-          ${roundToDecimal(poolStats?.poolTokenValue, 1)}
-        </Typography>
-      </td>
-      <td className={classes.td}>
-        <Typography className={classes.rowText}>
-          ${roundToDecimal(poolStats?.tokenSupply, 1)}
-        </Typography>
-      </td>
-      <td className={classes.td}>
-        {perf && (
-          <Typography className={perf > 0 ? classes.up : classes.down}>
-            {perf}%
-          </Typography>
-        )}
-      </td>
+      {!smallScreen && (
+        <>
+          <td className={classes.td}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.usdValue, 1)}
+            </Typography>
+          </td>
+          <td className={classes.td}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.poolTokenValue, 1)}
+            </Typography>
+          </td>
+          <td className={classes.td}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.tokenSupply, 1)}
+            </Typography>
+          </td>
+          <td className={classes.td}>
+            {perf && (
+              <Typography className={perf > 0 ? classes.up : classes.down}>
+                {perf}%
+              </Typography>
+            )}
+          </td>
+        </>
+      )}
     </tr>
   );
 };
@@ -346,9 +354,9 @@ const MultiAssetsRow = ({
 }) => {
   const classes = useStyles();
   return (
-    <tbody className="fancy-table">
+    <tbody className="fancy-card">
       <tr>
-        <td className={classes.td}>
+        <td className={classes.td} style={{ textAlign: 'start' }}>
           <Typography className={classes.rowText}>{strategyName}</Typography>
         </td>
         <td>
@@ -371,9 +379,10 @@ const MultiAssetsRow = ({
 const MultiAssetInnerRow = ({ pool }: { pool: Pool }) => {
   const classes = useStyles();
   const history = useHistory();
-  const poolStats = usePoolStats(pool);
+  const poolStats = usePoolStats(pool.poolSeed);
   const perf = roundToDecimal(poolStats?.inceptionPerformance, 1);
   const assets = poolStats?.assets?.filter((a) => a !== 'USDC');
+  const smallScreen = useSmallScreen();
   if (!assets) {
     return null;
   }
@@ -388,35 +397,38 @@ const MultiAssetInnerRow = ({ pool }: { pool: Pool }) => {
           <AssetAndIcon asset={assets[0]} />
         </Typography>
       </td>
-      <td className={classes.tdMultipleAssets}>
-        <Typography className={classes.rowText}>
-          ${roundToDecimal(poolStats?.usdValue, 1)}
-        </Typography>
-      </td>
-      <td className={classes.tdMultipleAssets}>
-        <Typography className={classes.rowText}>
-          ${roundToDecimal(poolStats?.poolTokenValue, 1)}
-        </Typography>
-      </td>
-      <td className={classes.tdMultipleAssets}>
-        <Typography className={classes.rowText}>
-          ${roundToDecimal(poolStats?.tokenSupply, 1)}
-        </Typography>
-      </td>
-      <td className={classes.tdMultipleAssets}>
-        {perf && (
-          <Typography className={perf > 0 ? classes.up : classes.down}>
-            {perf}%
-          </Typography>
-        )}
-      </td>
+      {!smallScreen && (
+        <>
+          <td className={classes.tdMultipleAssets}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.usdValue, 1)}
+            </Typography>
+          </td>
+          <td className={classes.tdMultipleAssets}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.poolTokenValue, 1)}
+            </Typography>
+          </td>
+          <td className={classes.tdMultipleAssets}>
+            <Typography className={classes.rowText}>
+              ${roundToDecimal(poolStats?.tokenSupply, 1)}
+            </Typography>
+          </td>
+          <td className={classes.tdMultipleAssets}>
+            {perf && (
+              <Typography className={perf > 0 ? classes.up : classes.down}>
+                {perf}%
+              </Typography>
+            )}
+          </td>
+        </>
+      )}
     </tr>
   );
 };
 
 const ExplorerPage = () => {
   const classes = useStyles();
-
   return (
     <>
       <div className={classes.root}>
@@ -427,10 +439,18 @@ const ExplorerPage = () => {
           <table style={{ borderSpacing: '0 4px', borderCollapse: 'separate' }}>
             <Head />
             <tbody>
-              {BENSON_STRATEGIES && <RowOneAsset pool={BENSON_STRATEGIES} />}
-              {BARTBOT_STRATEGIES && <RowOneAsset pool={BARTBOT_STRATEGIES} />}
+              {BENSON_STRATEGIES && (
+                <RowOneAsset poolSeed={BENSON_STRATEGIES.poolSeed.toBase58()} />
+              )}
+              {BARTBOT_STRATEGIES && (
+                <RowOneAsset
+                  poolSeed={BARTBOT_STRATEGIES.poolSeed.toBase58()}
+                />
+              )}
               {VOLATILITY_EXPANSION_STRATEGIES && (
-                <RowOneAsset pool={VOLATILITY_EXPANSION_STRATEGIES} />
+                <RowOneAsset
+                  poolSeed={VOLATILITY_EXPANSION_STRATEGIES.poolSeed.toBase58()}
+                />
               )}
             </tbody>
             <MultiAssetsRow
@@ -460,3 +480,16 @@ const ExplorerPage = () => {
 };
 
 export default ExplorerPage;
+
+export const FancyTable = ({ poolSeeds }: { poolSeeds: string[] }) => {
+  return (
+    <table style={{ borderSpacing: '0 4px', borderCollapse: 'separate' }}>
+      <Head />
+      <tbody>
+        {poolSeeds.map((p) => {
+          return <RowOneAsset poolSeed={p} key={`fancy-table-${p}`} />;
+        })}
+      </tbody>
+    </table>
+  );
+};

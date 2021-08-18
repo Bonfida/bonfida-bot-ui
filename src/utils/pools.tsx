@@ -18,7 +18,11 @@ import bs58 from 'bs58';
 import { getTokenPrice } from './markets';
 import { useEffect, useState } from 'react';
 import { useWallet } from './wallet';
-import { useTokenAccounts, tokenNameFromMint } from './tokens';
+import {
+  useTokenAccounts,
+  tokenNameFromMint,
+  findAssociatedTokenAddress,
+} from './tokens';
 import { poolTitleForExtSigProvider } from './externalSignalProviders';
 import { abbreviateString, apiGet, timeConverter } from './utils';
 import { USE_MARKETS } from './markets';
@@ -91,7 +95,11 @@ const superTrendDescription = (
       <b style={styles.b}>{tf} Super Trend</b> strategy on{' '}
       <b style={styles.b}>{marketName}</b>. Super Trend is a TradingView
       indicator, you can find more information about it on the{' '}
-      <Link external to="https://www.tradingview.com/script/P5Gu6F8k/">
+      <Link
+        style={{ textDecoration: 'none', color: '#FFFFFF', fontWeight: 600 }}
+        external
+        to="https://www.tradingview.com/script/P5Gu6F8k/"
+      >
         dedicated page
       </Link>
     </Trans>
@@ -118,7 +126,11 @@ const rsiDescription = (
       <b style={styles.b}>{{ marketName }}</b>. RSI is a momentum oscillator
       that measures the speed and change of price movements, learn more about it
       on the{' '}
-      <Link external to="https://www.investopedia.com/terms/r/rsi.asp">
+      <Link
+        style={{ textDecoration: 'none', color: '#FFFFFF', fontWeight: 600 }}
+        external
+        to="https://www.investopedia.com/terms/r/rsi.asp"
+      >
         dedicated page
       </Link>
     </Trans>
@@ -146,6 +158,7 @@ const macdDescription = (
       indicator, learn more about it on the{' '}
       <Link
         external
+        style={{ textDecoration: 'none', color: '#FFFFFF', fontWeight: 600 }}
         to="https://www.investopedia.com/articles/trading/08/macd-stochastic-double-cross.asp"
       >
         dedicated page
@@ -193,6 +206,7 @@ const volExpansionDescription = (
       in the market. Learn more about it on the{' '}
       <Link
         external
+        style={{ textDecoration: 'none', color: '#FFFFFF', fontWeight: 600 }}
         to="https://www.forex.academy/volatility-expansion-strategy/#:~:text=The%20Strategy,as%20a%20measure%20of%20volatility."
       >
         dedicated page
@@ -204,7 +218,11 @@ const volExpansionDescription = (
 const compendiumDescription = () => {
   return (
     <>
-      <Link external to={HelpUrls.compendium}>
+      <Link
+        style={{ textDecoration: 'none', color: '#FFFFFF', fontWeight: 600 }}
+        external
+        to={HelpUrls.compendium}
+      >
         CompendiumFi
       </Link>{' '}
       bots are powered by Compendium proprietary machine learning algorithm:
@@ -439,9 +457,10 @@ export const usePoolInfo = (poolSeed: PublicKey) => {
   );
 };
 
-export const usePoolBalance = (poolSeed: PublicKey) => {
+export const usePoolBalance = (poolSeed: PublicKey | null | undefined) => {
   const connection = useConnection();
   const get = async () => {
+    if (!poolSeed) return;
     const poolBalance = await fetchPoolBalances(
       connection,
       bs58.decode(poolSeed.toBase58()),
@@ -450,7 +469,7 @@ export const usePoolBalance = (poolSeed: PublicKey) => {
   };
   return useAsyncData(
     get,
-    tuple('usePoolBalance', connection, poolSeed.toBase58()),
+    tuple('usePoolBalance', connection, poolSeed?.toBase58()),
   );
 };
 
@@ -513,7 +532,13 @@ export const usePoolSeedsBySigProvider = (): [string[] | null, boolean] => {
         connection,
         wallet?.publicKey,
       );
-      setPoolSeeds(_poolSeeds.map((e) => bs58.encode(e)));
+      setPoolSeeds(
+        _poolSeeds
+          .map((e) => bs58.encode(e))
+          ?.sort((a, b) => {
+            return a.localeCompare(b);
+          }),
+      );
       setLoaded(true);
     };
     get();
@@ -524,34 +549,41 @@ export const usePoolSeedsBySigProvider = (): [string[] | null, boolean] => {
 export const usePoolSeedsForUser = (): [string[] | null, boolean] => {
   const connection = useConnection();
   const { wallet, connected } = useWallet();
-  const [tokenAccounts, tokenAccountsLoaded] = useTokenAccounts();
   const [poolSeeds, setPoolSeeds] = useState<string[] | null>(null);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const get = async () => {
-      if (!connection || !wallet || !connected || !tokenAccounts) {
+      if (!connection || !wallet || !connected) {
         return null;
       }
       const _poolSeeds: string[] = [];
       const _allPoolSeeds = await getPoolsSeedsBySigProvider(connection);
-      for (let seed of _allPoolSeeds) {
+      const fn = async (seed: Buffer) => {
         try {
           const mint = await getPoolTokenMintFromSeed(seed);
-          const hasPoolToken = tokenAccounts.find(
-            (acc) => acc.account.data.parsed.info.mint === mint.toBase58(),
+          const address = await findAssociatedTokenAddress(
+            wallet.publicKey,
+            mint,
           );
+          const accountInfo = await connection.getParsedAccountInfo(address);
+          const hasPoolToken =
+            !!accountInfo.value?.data &&
+            // @ts-ignore
+            !!accountInfo.value?.data.parsed.info.tokenAmount.uiAmount;
           if (!!hasPoolToken) {
             _poolSeeds.push(bs58.encode(seed));
           }
-        } catch {
-          continue;
-        }
-      }
+        } catch {}
+      };
+      await Promise.allSettled(_allPoolSeeds.map((seed) => fn(seed)));
+      _poolSeeds?.sort((a, b) => {
+        return a.localeCompare(b);
+      });
       setPoolSeeds(_poolSeeds);
       setLoaded(true);
     };
     get();
-  }, [connection, connected, wallet, tokenAccountsLoaded]);
+  }, [connection, connected, wallet]);
   return [poolSeeds, loaded];
 };
 
@@ -661,8 +693,9 @@ export const useHistoricalPerformance = (
   return useAsyncData(get, `getHistoricalPerformance-${poolSeed}`);
 };
 
-export const usePoolStats = (pool: Pool) => {
-  const [poolBalance, poolBalanceLoaded] = usePoolBalance(pool.poolSeed);
+export const usePoolStats = (poolSeed: PublicKey | null | undefined) => {
+  const pool = USE_POOLS.find((p) => poolSeed && p.poolSeed.equals(poolSeed));
+  const [poolBalance, poolBalanceLoaded] = usePoolBalance(poolSeed);
   const poolUsdValue = usePoolUsdBalance(poolBalance ? poolBalance[1] : null);
   let tokenSupply;
   let poolTokenValue;

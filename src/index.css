@@ -12,10 +12,10 @@ code {
     monospace;
 }
 
-.fancy-table {
+.fancy-card {
   position: relative;
 }
-.fancy-table::before {
+.fancy-card::before {
   content: '';
   z-index: -1;
   position: absolute;
@@ -38,4 +38,9 @@ code {
     rgba(255, 150, 252, 0.25) 66.15%,
     #ff72f9 100%
   );
+}
+
+@font-face {
+  font-family: 'Rota';
+  src: local('Rota'), url(./assets/fonts/rota-regular.ttf) format('truetype');
 }

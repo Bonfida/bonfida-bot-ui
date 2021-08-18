@@ -167,26 +167,28 @@ const CreatePoolCard = () => {
   const [createdPoolSeed, setCreatedPoolSeed] = useState<string | null>(null);
   const connection = useConnection();
   const { wallet, connected } = useWallet();
-  const [tokenAccounts] = useTokenAccounts();
   const [marketAddresses, setMarketAddresses] = useState<string[]>([
     FIDA_USDC_MARKET_ADDRESS,
   ]);
 
   // Fees
   const [feeRatio, setFeeRatio] = useState<string | null>('0.1');
-  const [feeCollectionPeriod, setFeeCollectionPeriod] =
-    useState<string | null>('604800');
+  const [feeCollectionPeriod, setFeeCollectionPeriod] = useState<string | null>(
+    '604800',
+  );
 
   // External Signal Provider
   // Set Fees by default
-  const [externalSigProvider, setExternalSigProvider] =
-    useState<string | null>(null);
+  const [externalSigProvider, setExternalSigProvider] = useState<string | null>(
+    null,
+  );
   const [checkedExtSigProvider, setCheckedExtSigProvider] = useState(false);
   const [extSigProviderDescription, setExtSigProviderDesciption] =
     useState<JSX.Element | null>(null);
   const [isTradingView, setIsTradingView] = useState(false);
-  const [tradingViewCredentials, setTradingViewCredentials] =
-    useState<string | null>(null);
+  const [tradingViewCredentials, setTradingViewCredentials] = useState<
+    string | null
+  >(null);
 
   const [assets, setAssets] = useState(
     getAssetsFromMarkets(marketAddresses).map((e) => {
@@ -197,6 +199,12 @@ const CreatePoolCard = () => {
       };
     }),
   );
+
+  const tokenAccounts = useTokenAccounts(
+    // @ts-ignore
+    assets.map((a) => new PublicKey(a.mint)),
+  );
+
   useMemo(() => {
     setIsTradingView(externalSigProvider === TV_CRANKER);
   }, [externalSigProvider]);
@@ -328,33 +336,11 @@ const CreatePoolCard = () => {
       });
 
       // Check if sourceAssetKeys exist, if not create the associated token account
-      let sourceAssetsKeys: PublicKey[] = [];
-      for (let asset of assets) {
-        if (!asset.mint) {
-          notify({
-            message: 'Error creating the token account - mint is undefined',
-            variant: 'error',
-          });
-          return;
+      for (let acc of tokenAccounts) {
+        const accountInfo = await connection.getParsedAccountInfo(acc.address);
+        if (!accountInfo) {
+          await createAssociatedTokenAccount(connection, wallet, acc.mint);
         }
-        let _key: PublicKey | null = null;
-        for (let token of tokenAccounts) {
-          if (token.account.data.parsed.info.mint === asset.mint) {
-            _key = new PublicKey(token.pubkey);
-          }
-        }
-        if (!_key) {
-          await createAssociatedTokenAccount(
-            connection,
-            wallet,
-            new PublicKey(asset.mint),
-          );
-          _key = await findAssociatedTokenAddress(
-            wallet.publicKey,
-            new PublicKey(asset.mint),
-          );
-        }
-        sourceAssetsKeys.push(_key);
       }
 
       let amounts: number[] = [];
@@ -374,8 +360,7 @@ const CreatePoolCard = () => {
       const [poolSeed, transactionInstructions] = await createPool(
         connection,
         wallet?.publicKey,
-        // @ts-ignore
-        sourceAssetsKeys,
+        tokenAccounts.map((t) => t.address),
         sigProvider,
         amounts,
         2 * marketAddresses.length,

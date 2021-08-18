@@ -563,14 +563,13 @@ const PoolTitle = ({ poolName }: { poolName: string | undefined }) => {
 
 const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
   const { t } = useTranslation();
-  const [tokenAccounts] = useTokenAccounts();
   const [poolBalance] = usePoolBalance(poolSeed);
   const [poolInfo] = usePoolInfo(poolSeed);
-
-  const userPoolTokenBalance = useBalanceForMint(
-    tokenAccounts,
-    poolInfo?.mintKey.toBase58(),
-  );
+  const tokenAccounts = useTokenAccounts(poolInfo?.assetMintkeys);
+  // const [userPoolTokenBalance] = useBalanceForMint(
+  //   tokenAccounts,
+  //   poolInfo?.mintKey.toBase58(),
+  // );
 
   const poolMarkets = poolInfo?.authorizedMarkets;
 
@@ -626,18 +625,17 @@ const PoolInformation = ({ poolSeed }: { poolSeed: PublicKey }) => {
           );
         })}
       </div>
-      <InformationRow
+      {/* <InformationRow
         label={t('Your Share of the Pool')}
         value={
-          poolBalance && poolBalance[0]?.uiAmount
+          userPoolTokenBalance && poolBalance && poolBalance[0]?.uiAmount
             ? roundToDecimal(
-                (100 * userPoolTokenBalance?.toLocaleString()) /
-                  poolBalance[0]?.uiAmount,
+                (100 * userPoolTokenBalance) / poolBalance[0]?.uiAmount,
                 2,
               )?.toString() + '%'
             : 0
         }
-      />
+      /> */}
     </>
   );
 };
