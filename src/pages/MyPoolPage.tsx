@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { usePoolSeedsBySigProvider, usePoolSeedsForUser } from '../utils/pools';
 import { useWallet } from '../utils/wallet';
 import { FancyTable } from './ExplorePage';
@@ -8,8 +8,6 @@ import WalletConnect from '../components/WalletConnect';
 import bottomLight from '../assets/components/MyPoolsPage/bottom-light.svg';
 import CreatePoolModal from '../components/CreatePoolModal';
 import { useState } from 'react';
-
-// Testing poolseed 4iFgZUWGevjnnhfgLxfghAH1EuogURqJcEBN8QuHkgA2
 
 const useStyles = makeStyles({
   root: {
@@ -76,7 +74,7 @@ const BottomLight = () => {
   const classes = useStyles();
   return (
     <div className={classes.bottomLightContainer}>
-      <img src={bottomLight} className={classes.bottomLigt} />
+      <img src={bottomLight} className={classes.bottomLigt} alt="" />
     </div>
   );
 };

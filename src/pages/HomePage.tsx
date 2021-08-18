@@ -224,8 +224,8 @@ const WiredCube = () => {
   const classes = useStyles();
   return (
     <div style={{ position: 'relative' }}>
-      <img className={classes.cube} src={wiredCube} />
-      <img className={classes.topLight} src={topLight} />
+      <img className={classes.cube} src={wiredCube} alt="" />
+      <img className={classes.topLight} src={topLight} alt="" />
     </div>
   );
 };
@@ -344,7 +344,7 @@ const StrategyCard = ({
             alignItems: 'center',
           }}
         >
-          <img src={robot} />
+          <img src={robot} alt="" />
         </div>
         <div style={{ marginLeft: '5%' }}>
           <Typography className={classes.strategyCardTitle}>{title}</Typography>
@@ -367,7 +367,7 @@ const StrategyCard = ({
       <div style={{ position: 'relative', height: 296, width: 1016 }}>
         <div className={classes.strategyCard}>
           <div>
-            <img src={robot} />
+            <img src={robot} alt="" />
           </div>
           <div style={{ marginLeft: '5%' }}>
             <Typography className={classes.strategyCardTitle}>
@@ -384,7 +384,7 @@ const StrategyCard = ({
             </div>
           </div>
         </div>
-        <img src={bottomLight} className={classes.bottomLight} />
+        <img src={bottomLight} className={classes.bottomLight} alt="" />
       </div>
     </>
   );

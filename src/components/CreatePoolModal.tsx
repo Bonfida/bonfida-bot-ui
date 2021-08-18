@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Modal, InputAdornment, Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { EXTERNAL_SIGNAL_PROVIDERS } from '../utils/externalSignalProviders';
@@ -19,11 +19,7 @@ import { notify } from '../utils/notifications';
 import Spin from './Spin';
 import { useConnection } from '../utils/connection';
 import { createPool, Numberu64 } from '@bonfida/bot';
-import {
-  signTransactions,
-  signTransaction,
-  sendSignedTransaction,
-} from '../utils/send';
+import { signTransactions, sendSignedTransaction } from '../utils/send';
 import bs58 from 'bs58';
 import {
   generateTradingViewCredentials,
@@ -437,7 +433,7 @@ const MarketRow = ({
 }) => {
   const classes = useStyles();
   const onClick = () => {
-    const filtered = marketAddresses.filter((m) => m != marketAddress);
+    const filtered = marketAddresses.filter((m) => m !== marketAddress);
     setMarketAddresses(filtered);
   };
   return (
@@ -452,6 +448,7 @@ const MarketRow = ({
           src={closeIcon}
           style={{ marginTop: 5, cursor: 'pointer' }}
           onClick={onClick}
+          alt=""
         />
       </Grid>
     </Grid>
@@ -471,7 +468,7 @@ const MarketPanel = ({
     if (!v) {
       return;
     }
-    const old = [...marketAddresses.filter((m) => m != v.address.toBase58())];
+    const old = [...marketAddresses.filter((m) => m !== v.address.toBase58())];
     old.push(v.address.toBase58());
     setMarketAddresses([...old]);
   };
@@ -566,7 +563,7 @@ const CreatePoolModal = ({
         };
       }),
     );
-  }, [marketAddresses]);
+  }, [marketAddresses, connected]);
 
   // Create strategy
 

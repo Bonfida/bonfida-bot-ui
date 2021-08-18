@@ -208,7 +208,7 @@ const BottomLight = () => {
   const classes = useStyles();
   return (
     <div className={classes.bottomLightContainer}>
-      <img src={bottomLight} className={classes.bottomLigt} />
+      <img src={bottomLight} className={classes.bottomLigt} alt="" />
     </div>
   );
 };
@@ -217,7 +217,7 @@ const TopLight = () => {
   const classes = useStyles();
   return (
     <div className={classes.topLightContainer}>
-      <img src={topLight} className={classes.topLight} />
+      <img src={topLight} className={classes.topLight} alt="" />
     </div>
   );
 };
@@ -282,7 +282,7 @@ const AssetAndIcon = ({ asset }: { asset: string }) => {
   return (
     <div className={classes.assetContainer}>
       <div className={classes.assetItems}>
-        <img src={getImageSource(asset)} style={{ height: 25 }} />
+        <img src={getImageSource(asset)} style={{ height: 25 }} alt="" />
       </div>
       <div className={classes.assetItems}>{asset}</div>
     </div>

@@ -64,14 +64,13 @@ const BottomLight = () => {
   const classes = useStyles();
   return (
     <div className={classes.bottomLightContainer}>
-      <img src={bottomLight} className={classes.bottomLigt} />
+      <img src={bottomLight} className={classes.bottomLigt} alt="" />
     </div>
   );
 };
 
 const PoolPageInner = ({ poolSeed }: { poolSeed: string }) => {
   const classes = useStyles();
-  const smallScreen = useSmallScreen();
   return (
     <div className={classes.innerContainer}>
       <PoolDepositWithdrawPanel poolSeed={poolSeed} />
@@ -91,7 +90,7 @@ const Title = () => {
         style={{ cursor: 'pointer' }}
       >
         <Typography className={classes.backToExplore}>
-          <img src={arrowBack} className={classes.arrow} />
+          <img src={arrowBack} className={classes.arrow} alt="" />
           Back to explore
         </Typography>
       </div>
