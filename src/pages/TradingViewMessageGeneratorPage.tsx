@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { TextField, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { USE_MARKETS } from '../utils/markets';
 import {
   generateTradingViewMessage,
@@ -12,6 +12,8 @@ import { notify } from '../utils/notifications';
 import CopyableDisplay from '../components/CopyableDisplay';
 import Trans from '../components/Translation';
 import { useTranslation } from 'react-i18next';
+import '../index.css';
+import { CssTextField } from '../components/MarketInput';
 
 const SIDES = [{ side: 'Buy' }, { side: 'Sell' }];
 
@@ -84,13 +86,15 @@ const Generator = () => {
     <>
       <Grid container direction="column" alignItems="center" justify="center">
         <Grid item className={classes.gridItem}>
-          <TextField
+          <CssTextField
+            variant="outlined"
             label={t('Pool Seed')}
             onChange={(e) => setPoolSeed(e.target.value.trim())}
           />
         </Grid>
         <Grid item className={classes.gridItem}>
-          <TextField
+          <CssTextField
+            variant="outlined"
             label={t('TradingView Password')}
             onChange={(e) => setAuth(e.target.value.trim())}
           />
@@ -102,7 +106,7 @@ const Generator = () => {
             options={USE_MARKETS}
             getOptionLabel={(option: any) => option.name}
             renderInput={(params) => (
-              <TextField
+              <CssTextField
                 {...params}
                 label={t('Market Name')}
                 variant="outlined"
@@ -117,12 +121,14 @@ const Generator = () => {
             options={SIDES}
             getOptionLabel={(option: any) => option.side}
             renderInput={(params) => (
-              <TextField {...params} label={t('Side')} variant="outlined" />
+              <CssTextField {...params} label={t('Side')} variant="outlined" />
             )}
           />
         </Grid>
         <Grid item className={classes.gridItem}>
-          <TextField
+          <CssTextField
+            type="number"
+            variant="outlined"
             label={t('Size')}
             onChange={(e) => setSize(e.target.value.trim())}
           />
@@ -149,7 +155,7 @@ const DisplayMessage = ({ message, prettyMessage }) => {
   return (
     <Grid container alignItems="center" justify="center">
       <Grid item>
-        <Typography variant="body1" align="center">
+        <Typography variant="body1" align="center" style={{ color: 'white' }}>
           {prettyMessage}
         </Typography>
       </Grid>
@@ -162,15 +168,29 @@ const DisplayMessage = ({ message, prettyMessage }) => {
 
 const TradingViewMessageGeneratorPage = () => {
   const smallScreen = useSmallScreen();
+
   return (
-    <Grid container direction="column" alignItems="center" justify="center">
-      <Typography align="center" variant="h2">
+    <div
+      className="fancy-card"
+      style={{
+        padding: 20,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: smallScreen ? 'auto' : '50%',
+        flexDirection: 'column',
+        margin: 'auto',
+        height: 'auto',
+        overflow: 'scroll',
+      }}
+    >
+      <Typography align="center" style={{ color: 'white' }} variant="h2">
         <Trans>TradingView Message Generator</Trans>
       </Typography>
       <div style={{ width: smallScreen ? '100%' : '30%' }}>
         <Generator />
       </div>
-    </Grid>
+    </div>
   );
 };
 

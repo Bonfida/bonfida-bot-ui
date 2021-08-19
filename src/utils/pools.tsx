@@ -18,11 +18,7 @@ import bs58 from 'bs58';
 import { getTokenPrice } from './markets';
 import { useEffect, useState } from 'react';
 import { useWallet } from './wallet';
-import {
-  useTokenAccounts,
-  tokenNameFromMint,
-  findAssociatedTokenAddress,
-} from './tokens';
+import { tokenNameFromMint, findAssociatedTokenAddress } from './tokens';
 import { poolTitleForExtSigProvider } from './externalSignalProviders';
 import { abbreviateString, apiGet, timeConverter } from './utils';
 import { USE_MARKETS } from './markets';
@@ -617,7 +613,7 @@ export const usePoolOrderInfos = (
       setLoaded(true);
     };
     get();
-  }, [connection]);
+  }, [connection, poolSeed]);
 
   return [orders, loaded];
 };
@@ -679,9 +675,10 @@ export const usePublicKeyFromSeed = (poolSeed: PublicKey) => {
 };
 
 export const useHistoricalPerformance = (
-  poolSeed: string,
+  poolSeed: string | undefined,
 ): [any | null, boolean] => {
   const get = async () => {
+    if (!poolSeed) return;
     const result = await apiGet(BONFIDA_API_URL_PERFORMANCE + poolSeed);
     return result?.performance?.map((e) => {
       return {
@@ -693,9 +690,20 @@ export const useHistoricalPerformance = (
   return useAsyncData(get, `getHistoricalPerformance-${poolSeed}`);
 };
 
+export const use30DPerformance = (poolSeed: string | undefined) => {
+  const [perf, perfLoaded] = useHistoricalPerformance(poolSeed);
+  if (perfLoaded || !poolSeed) {
+    return 0;
+  }
+  const n = perf.length - 1;
+  const endValue = perf[n];
+  const startValue = perf[n - Math.min(30, n)];
+  return (endValue - startValue) / startValue;
+};
+
 export const usePoolStats = (poolSeed: PublicKey | null | undefined) => {
   const pool = USE_POOLS.find((p) => poolSeed && p.poolSeed.equals(poolSeed));
-  const [poolBalance, poolBalanceLoaded] = usePoolBalance(poolSeed);
+  const [poolBalance] = usePoolBalance(poolSeed);
   const poolUsdValue = usePoolUsdBalance(poolBalance ? poolBalance[1] : null);
   let tokenSupply;
   let poolTokenValue;

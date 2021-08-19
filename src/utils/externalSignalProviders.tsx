@@ -1,24 +1,8 @@
 import { ExternalSignalProvider } from './types';
 import { PublicKey } from '@solana/web3.js';
-import { Typography } from '@material-ui/core';
-import Trans from '../components/Translation';
 
 export const MONTH = 30 * 24 * 60 * 60;
 export const FEES = 0.1;
-
-const styles = {
-  descriptionTitle: {
-    marginTop: 30,
-    marginBottom: 30,
-    fontSize: 20,
-    fontWeight: 600,
-  },
-  descriptionText: {
-    marginBottom: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-};
 
 export const getSignalProviderByName = (name: string) => {
   switch (name) {
