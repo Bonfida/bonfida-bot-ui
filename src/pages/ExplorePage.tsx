@@ -316,17 +316,17 @@ const RowOneAsset = ({ poolSeed }: { poolSeed: string }) => {
         <>
           <td className={classes.td}>
             <Typography className={classes.rowText}>
-              ${roundToDecimal(poolStats?.usdValue, 1)}
+              ${roundToDecimal(poolStats?.usdValue, 1)?.toLocaleString()}
             </Typography>
           </td>
           <td className={classes.td}>
             <Typography className={classes.rowText}>
-              ${roundToDecimal(poolStats?.poolTokenValue, 1)}
+              ${roundToDecimal(poolStats?.poolTokenValue, 1)?.toLocaleString()}
             </Typography>
           </td>
           <td className={classes.td}>
             <Typography className={classes.rowText}>
-              ${roundToDecimal(poolStats?.tokenSupply, 1)}
+              {roundToDecimal(poolStats?.tokenSupply, 1)?.toLocaleString()}
             </Typography>
           </td>
           <td className={classes.td}>
@@ -398,17 +398,17 @@ const MultiAssetInnerRow = ({ pool }: { pool: Pool }) => {
         <>
           <td className={classes.tdMultipleAssets}>
             <Typography className={classes.rowText}>
-              ${roundToDecimal(poolStats?.usdValue, 1)}
+              ${roundToDecimal(poolStats?.usdValue, 1)?.toLocaleString()}
             </Typography>
           </td>
           <td className={classes.tdMultipleAssets}>
             <Typography className={classes.rowText}>
-              ${roundToDecimal(poolStats?.poolTokenValue, 1)}
+              ${roundToDecimal(poolStats?.poolTokenValue, 1)?.toLocaleString()}
             </Typography>
           </td>
           <td className={classes.tdMultipleAssets}>
             <Typography className={classes.rowText}>
-              ${roundToDecimal(poolStats?.tokenSupply, 1)}
+              {roundToDecimal(poolStats?.tokenSupply, 1)?.toLocaleString()}
             </Typography>
           </td>
           <td className={classes.tdMultipleAssets}>

@@ -1011,7 +1011,7 @@ export const PoolDetails = ({ poolSeed }: { poolSeed: string }) => {
           <Grid item>
             <Typography className={classes.label}>Pool token supply</Typography>
             <Typography className={classes.poolValue}>
-              {roundToDecimal(poolBalance[0]?.uiAmount, 2)}
+              {roundToDecimal(poolBalance[0]?.uiAmount, 2)?.toLocaleString()}
             </Typography>
           </Grid>
         )}
