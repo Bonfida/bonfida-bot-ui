@@ -13,7 +13,7 @@ export const COMPETITION_BOTS: Pool[] = [
     initialPoolTokenUsdValue: 26,
   },
   {
-    name: `Overhead Gains (Earthshaker)`,
+    name: `Overhead Gains - Earthshaker`,
     poolSeed: new PublicKey('3Xi6B6bpoSHk9qC441tQKBxMhXLvYzwFS3V947wEUFhk'),
     illustration: null,
     description:

@@ -436,6 +436,9 @@ const ExplorerPage = () => {
           <table style={{ borderSpacing: '0 4px', borderCollapse: 'separate' }}>
             <Head />
             <tbody>
+              {OVERHEAD_STRATEGIES.map((s) => {
+                return <RowOneAsset poolSeed={s.poolSeed.toBase58()} />;
+              })}
               {BENSON_STRATEGIES && (
                 <RowOneAsset poolSeed={BENSON_STRATEGIES.poolSeed.toBase58()} />
               )}
@@ -451,20 +454,20 @@ const ExplorerPage = () => {
               )}
             </tbody>
             <MultiAssetsRow
-              pools={RSI_STRATEGIES}
-              strategyName="RSI strategies"
-            />
-            <MultiAssetsRow
-              pools={MACD_STRATEGIES}
-              strategyName="MACD strategies"
+              pools={COMPENDIUM_STRATEGIES}
+              strategyName="Compendium ML strategies"
             />
             <MultiAssetsRow
               pools={SUPER_TRENDS_STRATEGIES}
               strategyName="Super Trend strategies"
             />
             <MultiAssetsRow
-              pools={COMPENDIUM_STRATEGIES}
-              strategyName="Compendium ML strategies"
+              pools={RSI_STRATEGIES}
+              strategyName="RSI strategies"
+            />
+            <MultiAssetsRow
+              pools={MACD_STRATEGIES}
+              strategyName="MACD strategies"
             />
           </table>
           <div style={{ height: 200 }}>
