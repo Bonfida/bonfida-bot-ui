@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import WalletConnect from '../WalletConnect';
 import { useSmallScreen } from '../../utils/utils';
 import fida from '../../assets/icons/crypto/fida.svg';
-import { useHistory } from 'react-router-dom';
 import Link from '../Link';
 
 const useStyles = makeStyles({
@@ -72,7 +71,6 @@ const topBarElements = [
 const LinkSection = () => {
   const classes = useStyles();
   const smallScreen = useSmallScreen();
-  const history = useHistory();
   if (smallScreen) {
     return <Logo />;
   }
@@ -102,14 +100,13 @@ const Logo = () => {
   const classes = useStyles();
   return (
     <>
-      <img src={fida} className={classes.logo} />
+      <img src={fida} className={classes.logo} alt="" />
     </>
   );
 };
 
 const TopBar = () => {
   const classes = useStyles();
-  const smallScreen = useSmallScreen();
   return (
     <div className={classes.root}>
       <div>

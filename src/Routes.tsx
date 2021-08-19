@@ -7,7 +7,6 @@ import NavigationFrame from './components/NavigationFrame';
 import PoolPage from './pages/PoolPage';
 import ExplorePage from './pages/ExplorePage';
 import MyPoolPage from './pages/MyPoolPage';
-import TradingViewPage from './pages/TradingViewPage';
 import TradingViewMessageGeneratorPage from './pages/TradingViewMessageGeneratorPage';
 import WrapperPage from './pages/WrapperPage';
 import { ASSETS, STRATEGY_TYPES, USE_POOLS } from './utils/pools';
@@ -41,13 +40,12 @@ export default function Routes() {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route extact path="/explore" component={ExplorePage} />
-          <Route exact path="/tradingview" component={TradingViewPage} />
           <Route exact path="/wrapper" component={WrapperPage} />
-          {/* <Route
+          <Route
             exact
             path="/tradingview-generator"
             component={TradingViewMessageGeneratorPage}
-          /> */}
+          />
           <Route extact path="/my-pools" component={MyPoolPage} />
           <Route exact path="/pool/:poolSeed">
             <PoolPage />

@@ -361,7 +361,7 @@ const PoolBalanceRow = ({
 
 const PoolTradePanel = ({ poolSeed }: { poolSeed: string }) => {
   const classes = useStyles();
-  const { wallet, connected } = useWallet();
+  const { wallet } = useWallet();
   const connection = useConnection();
   const [poolBalance] = usePoolBalance(new PublicKey(poolSeed));
   const [marketAddress, setMarketAddress] = useState<string[]>([]);
@@ -843,7 +843,7 @@ export const PoolDepositWithdrawPanel = ({
         <Tab disableRipple label={<>Withdraw</>} />
         {isSP && <Tab disableRipple label={<>Trade</>} />}
       </Tabs>
-      {tab != 2 && (
+      {tab !== 2 && (
         <>
           <div className={classes.tabsInnerContainer}>
             <div className={classes.tabsInnerItem}>
@@ -1059,6 +1059,7 @@ export const PoolDetails = ({ poolSeed }: { poolSeed: string }) => {
                 marginLeft: 10,
                 transform: expandDetails ? 'rotate(180deg)' : undefined,
               }}
+              alt=""
             />
           </div>
         </div>
@@ -1100,7 +1101,6 @@ export const PoolDetails = ({ poolSeed }: { poolSeed: string }) => {
 export const PoolProfile = ({ poolSeed }: { poolSeed: string }) => {
   const classes = useStyles();
   const { wallet } = useWallet();
-  const pool = USE_POOLS.find((p) => p.poolSeed.toBase58() === poolSeed);
   const poolStats = usePoolStats(new PublicKey(poolSeed));
   const perf = roundToDecimal(poolStats.inceptionPerformance, 1);
   const [poolInfo] = usePoolInfo(new PublicKey(poolSeed));
@@ -1121,7 +1121,7 @@ export const PoolProfile = ({ poolSeed }: { poolSeed: string }) => {
         height: smallScreen ? 200 : undefined,
       }}
     >
-      <img src={robot} className={classes.poolProfilePic} />
+      <img src={robot} className={classes.poolProfilePic} alt="" />
       <div>
         {/* Pool performance */}
         <div className={classes.poolProfileItem}>
