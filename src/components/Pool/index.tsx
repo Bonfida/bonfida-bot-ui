@@ -811,6 +811,9 @@ export const PoolDepositWithdrawPanel = ({
         sendingMessage: `${tab === 0 ? 'Depositing' : 'Withdrawing'}...`,
       });
     } catch (err) {
+      if (err.includes('locked')) {
+        return notify({ message: `Please settle the pool first` });
+      }
       console.warn(`Error ${tab === 0 ? 'Depositing' : 'Withdrawing'} ${err}`);
       notify({
         message: `Error ${tab === 0 ? 'Depositing' : 'Withdrawing'} ${err}`,
