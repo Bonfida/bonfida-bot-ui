@@ -31,6 +31,9 @@ import {
   abbreviateAddress,
   useSmallScreen,
   getDecimalCount,
+  findAssociatedTokenAccountAndCreate,
+  BUY_AND_BURN,
+  INSURANCE_FUND,
 } from '../../utils/utils';
 import { notify } from '../../utils/notifications';
 import Spin from '../Spin';
@@ -632,6 +635,9 @@ export const PoolDepositWithdrawPanel = ({
     if (!connected) {
       return notify({ message: 'Connect your wallet' });
     }
+    if (!poolInfo?.signalProvider) {
+      return notify({ message: 'Pool information not loaded' });
+    }
     try {
       setLoading(true);
       let instructions: TransactionInstruction[] = [];
@@ -642,6 +648,28 @@ export const PoolDepositWithdrawPanel = ({
         console.log(`Noting to settle`);
       }
       try {
+        // Check if accounts exist
+        instructions = await findAssociatedTokenAccountAndCreate(
+          connection,
+          wallet.publicKey,
+          poolInfo?.signalProvider,
+          poolInfo?.mintKey,
+          instructions,
+        );
+        instructions = await findAssociatedTokenAccountAndCreate(
+          connection,
+          wallet.publicKey,
+          BUY_AND_BURN,
+          poolInfo?.mintKey,
+          instructions,
+        );
+        instructions = await findAssociatedTokenAccountAndCreate(
+          connection,
+          wallet.publicKey,
+          INSURANCE_FUND,
+          poolInfo?.mintKey,
+          instructions,
+        );
         const instr = await collectFees(connection, [
           new PublicKey(poolSeed).toBuffer(),
         ]);

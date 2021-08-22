@@ -284,35 +284,6 @@ export const decimalsFromMint = async (
   return decimals;
 };
 
-// export const useTokenAccounts = (mint?: string) => {
-//   const { wallet, connected } = useWallet();
-//   const getTokenAccounts = async () => {
-//     if (!connected) {
-//       return null;
-//     }
-//     let accounts = await getProgramAccounts(wallet?.publicKey);
-//     let associatedAccounts: any[] = [];
-//     for (let acc of accounts) {
-//       const associatedAcc = await findAssociatedTokenAddress(
-//         wallet.publicKey,
-//         new PublicKey(acc.account.data.parsed.info.mint),
-//       );
-//       if (acc.pubkey === associatedAcc.toBase58()) {
-//         associatedAccounts.push(acc);
-//       }
-//     }
-//     if (mint) {
-//       return accounts.filter((e) => e.account.data.parsed.info.mint === mint);
-//     }
-//     return accounts;
-//   };
-
-//   return useAsyncData(
-//     getTokenAccounts,
-//     tuple('getTokenAccounts', wallet, connected),
-//   );
-// };
-
 export const useTokenAccounts = (mints: PublicKey[] | undefined | null) => {
   const { wallet, connected } = useWallet();
   const [accounts, setAccounts] = useState<
@@ -333,6 +304,6 @@ export const useTokenAccounts = (mints: PublicKey[] | undefined | null) => {
       setAccounts(results);
     };
     fn();
-  }, [mints]);
+  }, [mints, connected, wallet.publicKey]);
   return accounts;
 };
