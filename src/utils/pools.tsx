@@ -55,6 +55,7 @@ export enum STRATEGY_TYPES {
   SENTIMENT_BENSON = 'Sentiment Strategy Pro [Benson]',
   COMPENDIUML = 'CompendiuML',
   BART = 'BartBot',
+  TYCHE = 'TYCHE',
   CUSTOM = 'Custom',
 }
 
@@ -434,6 +435,22 @@ export const USE_POOLS: Pool[] = [
     mintAddress: new PublicKey('JCDk3AABR2FCj1WHvAGBBdV14pSy6wJhQFrhrjXMzA8N'),
     mainAsset: ASSETS.BTC,
     strategyType: STRATEGY_TYPES.BART,
+  },
+  // TYCHE
+  {
+    name: 'Tyche',
+    poolSeed: new PublicKey('a4sAGUwpRhtmNSTDaz5EbvSTfdm6v3hp9ZLeiFaTD8R'),
+    illustration: null,
+    description: (
+      <>
+        Trades BTC/USD uses a mix of oscillators in different timeframes like
+        RSI, moving averages and trend breaks
+      </>
+    ),
+    shortDescription: '',
+    mintAddress: new PublicKey('9gtRuTTZWYR19c6FdjPc6P1p8gQM7dsNF8AzMfvZ5CVB'),
+    mainAsset: ASSETS.BTC,
+    strategyType: STRATEGY_TYPES.TYCHE,
   },
   ...COMPETITION_BOTS,
 ];

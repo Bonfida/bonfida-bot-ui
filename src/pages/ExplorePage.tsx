@@ -38,6 +38,10 @@ const BARTBOT_STRATEGIES = USE_POOLS.find(
   (p) => p.strategyType === STRATEGY_TYPES.BART,
 );
 
+const TYCHE_STRATEGY = USE_POOLS.find(
+  (p) => p.strategyType === STRATEGY_TYPES.TYCHE,
+);
+
 export const OVERHEAD_STRATEGIES = USE_POOLS.filter(
   (p) => p.name.includes('Dreamcatcher') || p.name.includes('Earthshaker'),
 );
@@ -446,6 +450,9 @@ const ExplorerPage = () => {
                 <RowOneAsset
                   poolSeed={BARTBOT_STRATEGIES.poolSeed.toBase58()}
                 />
+              )}
+              {TYCHE_STRATEGY && (
+                <RowOneAsset poolSeed={TYCHE_STRATEGY.poolSeed.toBase58()} />
               )}
               {VOLATILITY_EXPANSION_STRATEGIES && (
                 <RowOneAsset
