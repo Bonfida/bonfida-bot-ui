@@ -42,6 +42,10 @@ const TYCHE_STRATEGY = USE_POOLS.find(
   (p) => p.strategyType === STRATEGY_TYPES.TYCHE,
 );
 
+const NOVA_STRATEGY = USE_POOLS.find((p) => p.name.includes('Nova Kapital'));
+
+const DUNKUN_STRATEGY = USE_POOLS.find((p) => p.name.includes('Dukun'));
+
 export const OVERHEAD_STRATEGIES = USE_POOLS.filter(
   (p) => p.name.includes('Dreamcatcher') || p.name.includes('Earthshaker'),
 );
@@ -299,7 +303,7 @@ const RowOneAsset = ({ poolSeed }: { poolSeed: string }) => {
   const poolStats = usePoolStats(new PublicKey(poolSeed));
   const history = useHistory();
   const perf = roundToDecimal(poolStats?.inceptionPerformance, 1);
-  const assets = poolStats?.assets?.filter((a) => a !== 'USDC');
+  const assets = poolStats?.assets?.filter((a) => a !== 'USDC' && a !== 'USDT');
   const smallScreen = useSmallScreen();
   if (!assets) {
     return null;
@@ -382,7 +386,7 @@ const MultiAssetInnerRow = ({ pool }: { pool: Pool }) => {
   const history = useHistory();
   const poolStats = usePoolStats(pool.poolSeed);
   const perf = roundToDecimal(poolStats?.inceptionPerformance, 1);
-  const assets = poolStats?.assets?.filter((a) => a !== 'USDC');
+  const assets = poolStats?.assets?.filter((a) => a !== 'USDC' && a !== 'USDT');
   const smallScreen = useSmallScreen();
   if (!assets) {
     return null;
@@ -453,6 +457,12 @@ const ExplorerPage = () => {
               )}
               {TYCHE_STRATEGY && (
                 <RowOneAsset poolSeed={TYCHE_STRATEGY.poolSeed.toBase58()} />
+              )}
+              {NOVA_STRATEGY && (
+                <RowOneAsset poolSeed={NOVA_STRATEGY.poolSeed.toBase58()} />
+              )}
+              {DUNKUN_STRATEGY && (
+                <RowOneAsset poolSeed={DUNKUN_STRATEGY.poolSeed.toBase58()} />
               )}
               {VOLATILITY_EXPANSION_STRATEGIES && (
                 <RowOneAsset
