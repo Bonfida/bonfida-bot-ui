@@ -10,12 +10,9 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import Modal from '../components/Modal';
 import {
   WalletAdapter,
-  LedgerWalletAdapter,
-  SolongWalletAdapter,
   PhantomWalletAdapter,
   SolflareExtensionWalletAdapter,
   BloctoWalletAdapter,
-  MathWalletAdapter,
 } from '../wallet-adapters';
 import { useConnectionConfig } from '../utils/connection';
 import { useLocalStorageState } from '../utils/utils';

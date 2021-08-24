@@ -640,13 +640,18 @@ export const PoolDepositWithdrawPanel = ({
     }
     try {
       setLoading(true);
-      let instructions: TransactionInstruction[] = [];
+
       try {
         const instr = await settlePool(connection, bs58.decode(poolSeed));
-        instructions.push(...instr);
+        await sendTransaction({
+          connection: connection,
+          wallet: wallet,
+          transaction: new Transaction().add(...instr),
+        });
       } catch {
         console.log(`Noting to settle`);
       }
+      let instructions: TransactionInstruction[] = [];
       try {
         // Check if accounts exist
         instructions = await findAssociatedTokenAccountAndCreate(
