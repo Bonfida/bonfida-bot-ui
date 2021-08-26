@@ -13,6 +13,7 @@ import {
   PhantomWalletAdapter,
   SolflareExtensionWalletAdapter,
   BloctoWalletAdapter,
+  Coin98ExtensionWalletAdapter,
 } from '../wallet-adapters';
 import { useConnectionConfig } from '../utils/connection';
 import { useLocalStorageState } from '../utils/utils';
@@ -20,6 +21,7 @@ import { notify } from '../utils/notifications';
 import { makeStyles } from '@material-ui/core/styles';
 import blockto from '../assets/wallets/blocto.png';
 import solflare from '../assets/wallets/solflare.svg';
+import coin98 from '../assets/wallets/coin98.png';
 
 const useStyles = makeStyles({
   buttonContainer: {
@@ -90,6 +92,12 @@ export const WALLET_PROVIDERS = [
     url: 'https://www.solflare.com',
     icon: solflare,
     adapter: SolflareExtensionWalletAdapter,
+  },
+  {
+    name: 'Coin98',
+    url: 'https://coin98.com/',
+    icon: coin98,
+    adapter: Coin98ExtensionWalletAdapter,
   },
 ];
 
