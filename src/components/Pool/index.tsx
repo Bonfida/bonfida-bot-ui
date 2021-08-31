@@ -614,7 +614,10 @@ export const PoolDepositWithdrawPanel = ({
   const [sliderValue, setSliderValue] = useState(0);
   const [input, setInput] = useState(0);
   const tokenAccounts = useTokenAccounts(poolInfo?.assetMintkeys);
-  const isSP = connected && poolInfo?.signalProvider.equals(wallet.publicKey);
+  const isSP =
+    connected &&
+    wallet?.publicKey &&
+    poolInfo?.signalProvider.equals(wallet?.publicKey);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
