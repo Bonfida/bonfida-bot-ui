@@ -29,7 +29,7 @@ const ConnectionContext: React.Context<null | ConnectionContextValues> =
 export function ConnectionProvider({ children }) {
   const [endpoint, setEndpoint] = useLocalStorageState<string>(
     'connectionEndpts',
-    ENDPOINTS[2].endpoint,
+    ENDPOINTS[0].endpoint,
   );
   const [customEndpoints, setCustomEndpoints] = useLocalStorageState<
     EndpointInfo[]
